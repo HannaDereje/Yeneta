@@ -1,38 +1,41 @@
-.App {
-  text-align: center;
+
+.conbg{
+  width: 100%;
+  height: 550px;
+  background:url("h1_hero.png") no-repeat,linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8));
+  background-size: 100%;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.navStyle{
+  position: sticky;
+  background: linear-gradient(to bottom, #4a3179 5%, #2c4083 100%);
+  height: 80px;
+
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.contextstyle{
+  position: absolute;
+  top:40%;
+  left: 8%;
+  width:50%;
   color: white;
 }
-
-.App-link {
-  color: #61dafb;
+.navStyle2{
+  position: sticky;
+  background: linear-gradient(to bottom, #4a3179 5%, #2c4083 100%);
+  height: 40px;
+}
+.imgStyle{
+  border-radius: 50%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.brand{
+  margin-left: 30px;
+}
+.lessonlink{
+  margin-right: 15px;
+}
+.quizlink{
+  margin-right: 15px;
 }

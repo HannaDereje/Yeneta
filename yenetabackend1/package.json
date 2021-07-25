@@ -1,0 +1,14 @@
+{
+  "name": "yenetabackend",
+  "version": "1.0.0",
+  "description": "yenetabackend",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yeneta Team",
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^5.13.3"
+  }
+}

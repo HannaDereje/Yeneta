@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const ActivityAnswerSchema = new Schema({
-
+const ActivityAnswerSchema = new Schema
+({
     useranswer: {
          type: String,
           required: true 
@@ -14,7 +14,8 @@ const ActivityAnswerSchema = new Schema({
         type : Schema.Types.ObjectId,
         ref:"ActivityClass"
     }
-}, {
+}, 
+ {
         timestamps: true
     })
 

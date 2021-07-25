@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const ActivitySchema = new Schema({
+const ActivitySchema = new Schema
+({
     level: { type: String, required: true },
     due_date: { type: Date, required: true },
     questions:[{
@@ -8,7 +9,8 @@ const ActivitySchema = new Schema({
         ref:"QuestionClass"
     }],
 
-}, {
+},
+ {
         timestamps: true
     })
 class Activity {
@@ -18,5 +20,6 @@ class Activity {
         this.questions = questions
     }
 }
+
 ActivitySchema.loadClass(Activity)
 module.exports = mongoose.model('ActivityClass', ActivitySchema)

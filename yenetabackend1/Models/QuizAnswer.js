@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const QuizAnswerSchema = new Schema({
+const QuizAnswerSchema = new Schema
+({
     useranswer: {
          type: String,
           required: true 
@@ -15,7 +16,8 @@ const QuizAnswerSchema = new Schema({
         ref:"QuizClass",
         required:true
     }
-}, {
+}, 
+ {
         timestamps: true
     })
 class QuizAnswer {
@@ -25,5 +27,6 @@ class QuizAnswer {
         this.quiz = quiz;
     }
 }
+
 QuizAnswerSchema.loadClass(QuizAnswer)
 module.exports = mongoose.model('QuizAnswerClass', QuizAnswerSchema)

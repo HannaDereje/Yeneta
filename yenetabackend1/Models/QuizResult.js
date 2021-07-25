@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const QuizResultSchema = new Schema({
+const QuizResultSchema = new Schema
+({
     result: { 
         type: Number, 
         required: true
@@ -15,7 +16,8 @@ const QuizResultSchema = new Schema({
         ref:"QuizClass",
         required:true
     }
-}, {
+}, 
+ {
         timestamps: true
     })
 class QuizResult {
@@ -25,5 +27,6 @@ class QuizResult {
         this.quiz = quiz;
     }
 }
+
 QuizResultSchema.loadClass(QuizResult)
 module.exports = mongoose.model('QuizResultClass', QuizResultSchema)

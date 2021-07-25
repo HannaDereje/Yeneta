@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const ActivityResultSchema = new Schema({
-
+const ActivityResultSchema = new Schema
+({
     result: {
          type: Number,
           required: true 
@@ -14,7 +14,8 @@ const ActivityResultSchema = new Schema({
         type : Schema.Types.ObjectId,
         ref:"ActivityClass"
     }
-}, {
+}, 
+ {
         timestamps: true
     })
 class ActivityResult {

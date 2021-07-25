@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
 const QuizResultSchema = new Schema({
-
     result: { 
         type: Number, 
         required: true
@@ -20,18 +18,12 @@ const QuizResultSchema = new Schema({
 }, {
         timestamps: true
     })
-
 class QuizResult {
-
     constructor(result, user, quiz) {
         this.result = result;
         this.user = user;
         this.quiz = quiz;
     }
-
 }
-
-
 QuizResultSchema.loadClass(QuizResult)
-
 module.exports = mongoose.model('QuizResultClass', QuizResultSchema)

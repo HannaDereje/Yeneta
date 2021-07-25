@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
 const ActivityResultSchema = new Schema({
 
     result: {
@@ -18,19 +17,13 @@ const ActivityResultSchema = new Schema({
 }, {
         timestamps: true
     })
-
 class ActivityResult {
-
     constructor(result, user, activity) {
         this.result = result;
         this.user = user;
         this.activity = activity;
-
     }
-
 }
 
-
 ActivityResultSchema.loadClass(ActivityResult)
-
 module.exports = mongoose.model('ActivityResultClass', ActivityResultSchema)

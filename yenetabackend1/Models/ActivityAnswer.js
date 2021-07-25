@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
 const ActivityAnswerSchema = new Schema({
 
     useranswer: {
@@ -20,17 +19,12 @@ const ActivityAnswerSchema = new Schema({
     })
 
 class ActivityAnswer {
-
     constructor(useranswer, user, activity) {
         this.useranswer = useranswer;
         this.user = user;
         this.activity = activity;
-
     }
-
 }
 
-
 ActivityAnswerSchema.loadClass(ActivityAnswer)
-
 module.exports = mongoose.model('ActivityAnswerClass', ActivityAnswerSchema)

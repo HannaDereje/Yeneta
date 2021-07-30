@@ -22,7 +22,7 @@ export default class HomeNavBar extends Component {
                 <NavDropdown.Item href="/studentRegister">Student</NavDropdown.Item>
                 <NavDropdown.Item href="/teacherRegister">Teacher</NavDropdown.Item>
               </NavDropdown>
-              <Button variant="light" className="loginButton">Login</Button>
+              <a  variant="light" href="/studentLogin" className="loginButton btn btn-light">Login</a>
             </Nav>
 
           </Navbar.Collapse>

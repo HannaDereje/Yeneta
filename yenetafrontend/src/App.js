@@ -12,6 +12,8 @@ import AdminHome from './components/AdminHomeComponent'
 import Studentlist from './components/StudentsListComponent'
 import TeacherHome from './components/TeacherHomeComponent'
 import ClassRoom from './components/StudentClassRoomComponent' 
+import StudentProfile from "./components/StudentProfileComponent"
+import TeacherProfile from "./components/TeacherProfileComponent"
 
 function App() {
   return ( 
@@ -25,6 +27,8 @@ function App() {
     <Route  path="/adminHome"  component={AdminHome} />
     <Route  path="/teacherHome"  component={TeacherHome} />
     <Route path="/classroom" component={ClassRoom}/>
+    <Route path="/studentProfile" component={StudentProfile}/>
+    <Route path="/teacherProfile" component={TeacherProfile}/>
     </Router>
    
   );

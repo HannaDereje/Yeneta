@@ -20,7 +20,7 @@ export default class StudentNavBar extends Component {
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="floatright">
                             <Nav.Link href="" className="mr-3" onClick={this.props.handleShow}>Create Chat</Nav.Link>
-                            <Nav.Link href="" className="mr-3"><img src="../images/img2.jpg" width="40" height="40" className="imgStyle" /></Nav.Link>
+                            <Nav.Link href="" className="mr-3" href= "/studentProfile"><img src="../images/img2.jpg" width="40" height="40" className="imgStyle" /></Nav.Link>
                         </Nav>
 
                     </Navbar.Collapse>

@@ -20,7 +20,7 @@ export default class TeacherNavBar extends Component {
                         <Nav className="floatright">
                             <Nav.Link href="" className="mr-3 lessonlink" onClick={this.props.handleNewLessonsClick} >Add New Lesson</Nav.Link>
                             <Nav.Link href="" className="mr-3 quizlink" onClick={this.props.handleNewQuizesClick} >Add New Quiz</Nav.Link>
-                            <Nav.Link href="" className="mr-3"><img src="../images/img2.jpg" width="40" height="40" className="imgStyle" /></Nav.Link>
+                            <Nav.Link href="" className="mr-3" href="/teacherProfile"><img src="../images/img2.jpg" width="40" height="40" className="imgStyle" /></Nav.Link>
                         </Nav>
 
                     </Navbar.Collapse>

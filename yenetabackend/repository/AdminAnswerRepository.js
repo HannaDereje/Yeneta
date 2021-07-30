@@ -22,13 +22,24 @@ class AdminAnswerRepository {
 
     getOne(id) {
         return new Promise((resolve, reject) => {
-            const aneAdminAnswer = this.model.findById(id)
+            const aneAdminAnswer = this.model.findById({ _id: id })
             resolve(oneAdminAnswer)
+        });
+    }
+    updateOne(id, adminAnswer) {
+        let set = {};
+        for (const key in adminAnswer) {
+            set[key] = adminAnswer[key];
+
+        }
+        return new Promise((resolve, reject) => {
+            const oneAdminAnswer = this.model.updateOne({ _id: id }, { $set: set })
+            resolve(adminAnswer)
         });
     }
     deleteOne(id) {
         return new Promise((resolve, reject) => {
-            const oneAdminAnswer1 = this.model.remove(id)
+            const oneAdminAnswer1 = this.model.remove({ _id: id })
             resolve(oneAdminAnswer1)
         });
     }

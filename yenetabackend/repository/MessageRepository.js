@@ -22,13 +22,24 @@ class MessageRepository {
 
     getOne(id) {
         return new Promise((resolve, reject) => {
-            const oneMessage = this.model.findById(id)
+            const oneMessage = this.model.findById({ _id: id })
+            resolve(oneMessage)
+        });
+    }
+    updateOne(id, message) {
+        let set = {};
+        for (const key in message) {
+            set[key] = message[key];
+
+        }
+        return new Promise((resolve, reject) => {
+            const oneMessage = this.model.updateOne({ _id: id }, { $set: set })
             resolve(oneMessage)
         });
     }
     deleteOne(id) {
         return new Promise((resolve, reject) => {
-            const oneMessage1 = this.model.remove(id)
+            const oneMessage1 = this.model.remove({ _id: id })
             resolve(oneMessage1)
         });
     }

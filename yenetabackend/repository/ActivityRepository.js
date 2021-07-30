@@ -22,13 +22,24 @@ class ActivityRepository {
 
     getOne(id) {
         return new Promise((resolve, reject) => {
-            const oneActivity = this.model.findById(id)
+            const oneActivity = this.model.findById({ _id: id })
             resolve(oneActivity)
+        });
+    }
+    updateOne(id, activity) {
+        let set = {};
+        for (const key in activity) {
+            set[key] = activity[key];
+
+        }
+        return new Promise((resolve, reject) => {
+            const activity = this.model.updateOne({ _id: id }, { $set: set })
+            resolve(activity)
         });
     }
     deleteOne(id) {
         return new Promise((resolve, reject) => {
-            const oneActivity1 = this.model.remove(id)
+            const oneActivity1 = this.model.remove({ _id: id })
             resolve(oneActivity1)
         });
     }

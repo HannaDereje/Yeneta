@@ -22,13 +22,24 @@ class QuizRepository {
 
     getOne(id) {
         return new Promise((resolve, reject) => {
-            const oneQuiz = this.model.findById(id)
+            const oneQuiz = this.model.findById({ _id: id })
+            resolve(oneQuiz)
+        });
+    }
+    updateOne(id, quiz) {
+        let set = {};
+        for (const key in quiz) {
+            set[key] = quiz[key];
+
+        }
+        return new Promise((resolve, reject) => {
+            const oneQuiz = this.model.updateOne({ _id: id }, { $set: set })
             resolve(oneQuiz)
         });
     }
     deleteOne(id) {
         return new Promise((resolve, reject) => {
-            const oneQuiz1 = this.model.remove(id)
+            const oneQuiz1 = this.model.remove({ _id: id })
             resolve(oneQuiz1)
         });
     }

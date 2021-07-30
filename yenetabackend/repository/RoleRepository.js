@@ -22,13 +22,24 @@ class RoleRepository {
 
     getOne(id) {
         return new Promise((resolve, reject) => {
-            const oneRole = this.model.findById(id)
+            const oneRole = this.model.findById({ _id: id })
+            resolve(oneRole)
+        });
+    }
+    updateOne(id, role) {
+        let set = {};
+        for (const key in role) {
+            set[key] = role[key];
+
+        }
+        return new Promise((resolve, reject) => {
+            const oneRole = this.model.updateOne({ _id: id }, { $set: set })
             resolve(oneRole)
         });
     }
     deleteOne(id) {
         return new Promise((resolve, reject) => {
-            const oneRole1 = this.model.remove(id)
+            const oneRole1 = this.model.remove({ _id: id })
             resolve(oneRole1)
         });
     }

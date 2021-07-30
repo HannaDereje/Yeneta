@@ -26,6 +26,17 @@ class StudentRepository {
             resolve(oneStudent)
         });
     }
+    updateOne(id, student) {
+        let set = {};
+        for (const key in student) {
+            set[key] = student[key];
+
+        }
+        return new Promise((resolve, reject) => {
+            const oneStudent = this.model.updateOne({ _id: id }, { $set: set })
+            resolve(oneStudent)
+        });
+    }
     deleteOne(id) {
         return new Promise((resolve, reject) => {
             const oneStudent = this.model.deleteOne({ _id: id })

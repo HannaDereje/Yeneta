@@ -22,13 +22,24 @@ class LessonRepository {
 
     getOne(id) {
         return new Promise((resolve, reject) => {
-            const alesson = this.model.findById(id)
+            const alesson = this.model.findById({ _id: id })
+            resolve(alesson)
+        });
+    }
+    updateOne(id, lesson) {
+        let set = {};
+        for (const key in lesson) {
+            set[key] = lesson[key];
+
+        }
+        return new Promise((resolve, reject) => {
+            const alesson = this.model.updateOne({ _id: id }, { $set: set })
             resolve(alesson)
         });
     }
     deleteOne(id) {
         return new Promise((resolve, reject) => {
-            const alesson = this.model.remove(id)
+            const alesson = this.model.remove({ _id: id })
             resolve(alesson)
         });
     }

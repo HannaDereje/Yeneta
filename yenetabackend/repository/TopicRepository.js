@@ -26,6 +26,17 @@ class Topic {
             resolve(oneTopic)
         });
     }
+    updateOne(id, topic) {
+        let set = {};
+        for (const key in topic) {
+            set[key] = topic[key];
+
+        }
+        return new Promise((resolve, reject) => {
+            const oneTopic = this.model.updateOne({ _id: id }, { $set: set })
+            resolve(oneTopic)
+        });
+    }
     deleteOne(id) {
         return new Promise((resolve, reject) => {
             const oneTopic = this.model.deleteOne({ _id: id })

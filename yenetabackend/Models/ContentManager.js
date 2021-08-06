@@ -24,6 +24,11 @@ const ContentManagerSchema = new Schema({
     job:{
         type: String, 
         required: true
+    },
+user: {  
+        type : Schema.Types.ObjectId, 
+        ref:"UserClass" , 
+        require:true 
     }
 }, {
         timestamps: true

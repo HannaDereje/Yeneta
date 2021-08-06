@@ -9,6 +9,7 @@ class StudentService{
         this.deleteOne = this.deleteOne.bind(this);
         this.deleteAll = this.deleteAll.bind(this);
         this.updateOne = this.updateOne.bind(this);
+        this.getOneByEmail = this.getOneByEmail.bind(this)
     }
 
      insert(student){
@@ -27,7 +28,11 @@ class StudentService{
         const student = this.studentRepository.getOne(id);
         return new Promise((resolve, reject)=>{resolve(student)})
     }
-
+getOneByEmail(email){ 
+ 
+        const auser = this.userRepository.getOneByEmail(email); 
+        return new Promise((resolve, reject)=>{resolve(auser)}) 
+    }
     updateOne(id, student){
 
         const student = this.studentRepository.updateOne(id, student);

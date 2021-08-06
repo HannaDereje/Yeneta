@@ -26,6 +26,12 @@ class LessonRepository {
             resolve(alesson)
         });
     }
+getOneByNumber(number){ 
+        return new Promise((resolve, reject)=>{ 
+            const alesson = this.model.findOne({number:number}) 
+            resolve(alesson) 
+        }); 
+    }
     updateOne(id, lesson) {
         let set = {};
         for (const key in lesson) {

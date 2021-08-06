@@ -26,6 +26,12 @@ class StudentRepository {
             resolve(oneStudent)
         });
     }
+getOneByEmail(email){ 
+        return new Promise((resolve, reject)=>{ 
+            const auser = this.model.findOne({email:email}) 
+            resolve(auser) 
+        }); 
+    }
     updateOne(id, student) {
         let set = {};
         for (const key in student) {

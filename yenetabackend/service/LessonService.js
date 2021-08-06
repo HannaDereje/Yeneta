@@ -9,6 +9,7 @@ class LessonService{
         this.deleteOne = this.deleteOne.bind(this);
         this.deleteAll = this.deleteAll.bind(this);
         this.updateOne = this.updateOne.bind(this);
+        this.getOneByNumber = this.getOneByNumber.bind(this)
     }
 
      insert(lesson){
@@ -27,7 +28,11 @@ class LessonService{
         const alesson = this.lessonRepository.getOne(id);
         return new Promise((resolve, reject)=>{resolve(alesson)})
     }
-
+getOneByNumber(number){ 
+ 
+        const alesson = this.lessonRepository.getOneByNumber(number); 
+        return new Promise((resolve, reject)=>{resolve(alesson)}) 
+    }
     updateOne(id, lesson){
 
         const alesson = this.lessonRepository.updateOne(id, lesson);

@@ -49,6 +49,10 @@ const StudentSchema = new Schema({
         ref:"LessonClass",
         required:true
     }],
+quizes:[{ 
+        type : Schema.Types.ObjectId, 
+        ref:"QuizClass" 
+    }]
 }, {
         timestamps: true
     })

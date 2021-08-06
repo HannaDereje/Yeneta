@@ -26,6 +26,19 @@ class User {
             resolve(oneUser)
         });
     }
+getOneByEmail(email){ 
+        return new Promise((resolve, reject)=>{ 
+            const oneuser = this.model.findOne({email:email}) 
+            resolve(oneuser) 
+        }); 
+    } 
+ 
+    getOneByToken(token){ 
+        return new Promise((resolve, reject)=>{ 
+            const oneuser = this.model.findOne({accessToken:token}) 
+            resolve(oneuser) 
+        }); 
+    }
     updateOne(id, user) {
         let set = {};
         for (const key in user) {

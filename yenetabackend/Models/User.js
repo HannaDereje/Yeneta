@@ -7,11 +7,12 @@ const UserSchema = new Schema({
         type: String, 
         required: true,
         trim:true,
-        minlength:7 
+        minlength:10
     },
     password: { 
         type: String, 
-        required: true 
+        required: true ,
+        minlength:8 
     },
     email: { 
         type: String,
@@ -19,7 +20,6 @@ const UserSchema = new Schema({
         lowercase: true,
         unique: true,
         required:true,
-        validate: [validateEmail, 'Please fill a valid email address'],
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
     },
     accessToken:{

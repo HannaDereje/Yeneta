@@ -14,7 +14,6 @@ const ContentManagerSchema = new Schema({
         lowercase: true,
         unique: true,
         required: true,
-        validate: [validateEmail, 'Please fill a valid email address'],
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
     },
     experience:{
@@ -36,11 +35,12 @@ user: {
 
 class ContentManager {
 
-    constructor(name, email, experience, job) {
+    constructor(name, email, experience, job, user) {
         this.name = name;
         this.email = email;
         this.experience = experience;
         this.job = job;
+        this.user = user
     }
 
 }

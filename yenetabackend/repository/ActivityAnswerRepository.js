@@ -26,6 +26,12 @@ class ActivityAnswerRepository {
             resolve(oneActivityAnswer)
         });
     }
+    getByActivity(id) {
+        return new Promise((resolve, reject) => {
+            const oneActivityAnswer = this.model.findOne({ activity: id })
+            resolve(oneActivityAnswer)
+        });
+    }
     updateOne(id, activityAnswer) {
         let set = {};
         for (const key in activityAnswer) {

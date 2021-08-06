@@ -26,6 +26,12 @@ class QuizAnswerRepository {
             resolve(oneQuizAnswer)
         });
     }
+    getByQuiz(id) {
+        return new Promise((resolve, reject) => {
+            const oneQuizAnswer = this.model.findOne({ quiz: id })
+            resolve(oneQuizAnswer)
+        });
+    }
     updateOne(id, quizAnswer) {
         let set = {};
         for (const key in quizAnswer) {

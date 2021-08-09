@@ -93,14 +93,24 @@ class UserController{
         }
     }
 
-    async emailConfirmation(req, res, next){
+    async verifyUser(req, res, next){
+        console.log(req.params.accessToken)
+         this.userService.getOneByToken(req.params.accessToken)
+                         .then((user)=>{
 
-        var errors = validationResult(req)
-         if(!errors.isEmpty()){
-             return res.status(400).send(errors);
-         }
+                            if(!user){
+                                return res.status(404).send({message:"User Not found"});
+                            }
+                            user.status = "Active";
+                            this.userService.updateOne(user._id, user)
+                                     .then((user)=>{
+                                         console.log(user)
+                                        res.status(200).send({message:"User Verified"});  
+                                     })
 
-         const token = await this.userService.getOneByToken(req.body.token)
+                            next()
+                         }).catch((e)=>{ console.log("error", e)})
+
 
     }
 

@@ -58,7 +58,7 @@ quizes:[{
 
 class Student {
 
-    constructor(name, email, age, prefered_Date, country, image, level, user, lessons) {
+    constructor(name, email, age, prefered_Date, country, image, level, user, lessons, quizes) {
         this.name = name;
         this.email = email;
         this.age = age;
@@ -68,6 +68,7 @@ class Student {
         this.level = level;
         this.user = user;
         this.lessons = lessons;
+        this.quizes = quizes
     }
 
 }

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Navbar, Nav, NavDropdown, Button } from "react-bootstrap"
 import "../App.css"
+import "../css/register.css"
 
 export default class HomeNavBar extends Component {
   constructor(props) {
@@ -13,16 +14,17 @@ export default class HomeNavBar extends Component {
     return (
 
       <div>
-        <Navbar collapseOnSelect variant="dark" className="navStyle">
+        <Navbar sticky="top" collapseOnSelect expand="lg" variant="dark" className="navStyle">
           <Navbar.Brand href="/" className="brand">Yeneta/የኔታ</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="floatright">
-              <NavDropdown title="Register As" id="collasible-nav-dropdown" className="mr-5">
+              <NavDropdown title="Register As" id="responsive-nav-dropdown">
                 <NavDropdown.Item href="/studentRegister">Student</NavDropdown.Item>
                 <NavDropdown.Item href="/teacherRegister">Teacher</NavDropdown.Item>
               </NavDropdown>
-              <a  variant="light" href="/studentLogin" className="loginButton btn btn-light">Login</a>
+              <Nav.Link href="/studentLogin" style={{ color: "white" }}>Login</Nav.Link>
+
             </Nav>
 
           </Navbar.Collapse>

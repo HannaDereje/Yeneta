@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Navbar, Nav } from "react-bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "../App.css"
-
+import axios from 'axios'
 export default class AdminNavBar extends Component {
 
     constructor(props) {
@@ -14,7 +14,7 @@ export default class AdminNavBar extends Component {
         return (
 
             <div>
-                <Navbar variant="dark" className="navStyle">
+                <Navbar sticky="top" variant="dark" className="navStyle">
                     <Navbar.Brand href="/" className="brand">Yeneta/የኔታ Admin Page</Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">

@@ -1,14 +1,14 @@
-import React, {Component, useEffect, } from 'react'
-import {Button, Form} from "react-bootstrap"
+import React, { Component, useEffect, } from 'react'
+import { Button, Form } from "react-bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
+import axios from 'axios'
+export default class Activity extends Component {
 
-export default class Activity extends Component{
-
-    render(){
+    render() {
         return (
             <div>
                 <h4 className="text-center">Activity Form</h4>
-                <div className = "lessonstyle">
+                <div className="lessonstyle">
                     <Form>
                         <Form.Group className="form_width2">
                             <Form.Label>Activity Number</Form.Label>

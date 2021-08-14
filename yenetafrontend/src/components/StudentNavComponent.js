@@ -14,13 +14,13 @@ export default class StudentNavBar extends Component {
         return (
 
             <div>
-                <Navbar variant="dark" className="navStyle">
+                <Navbar sticky="top" variant="dark" className="navStyle">
                     <Navbar.Brand href="/" className="brand">Yeneta/የኔታ</Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="floatright">
                             <Nav.Link href="" className="mr-3" onClick={this.props.handleShow}>Create Chat</Nav.Link>
-                            <Nav.Link href="" className="mr-3" href= "/studentProfile"><img src="../images/img2.jpg" width="40" height="40" className="imgStyle" /></Nav.Link>
+                            <Nav.Link href="" className="mr-3" href="/studentProfile"><img src="../images/img2.jpg" width="40" height="40" className="imgStyle" /></Nav.Link>
                         </Nav>
 
                     </Navbar.Collapse>

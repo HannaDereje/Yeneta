@@ -42,8 +42,8 @@ getOneByEmail(email){
     }
     updateOne(id, user){
 
-        const user = this.userRepository.updateOne(id, user);
-        return new Promise((resolve, reject)=>{resolve(topic)})
+        const a_user = this.userRepository.updateOne(id, user);
+        return new Promise((resolve, reject)=>{resolve(a_user)})
     }
     deleteOne(id){
 

@@ -35,8 +35,8 @@ getOneByNumber(number){
     }
     updateOne(id, lesson){
 
-        const alesson = this.lessonRepository.updateOne(id, lesson);
-        return new Promise((resolve, reject)=>{resolve(alesson)})
+        const a_alesson = this.lessonRepository.updateOne(id, lesson);
+        return new Promise((resolve, reject)=>{resolve(a_alesson)})
     }
     deleteOne(id){
 

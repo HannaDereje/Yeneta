@@ -30,18 +30,24 @@ const UserSchema = new Schema({
         type : Schema.Types.ObjectId,
         ref:"RoleClass",
         required:true
+    },
+    status:{
+        type:String,
+        default:"Pending",
+        enum : ["Pending", "Active"]
     }
 
 })
 
 class User{
 
-    constructor(username, password,email, accessToken,  role){
+    constructor(username, password,email, accessToken,  role, status){
         this.username = username;
         this.password = password;
         this.role =role;
         this.email = email;
         this.accessToken = accessToken;
+        this.status = status;
     }
 
 }

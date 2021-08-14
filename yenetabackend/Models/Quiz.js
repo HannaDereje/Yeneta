@@ -6,6 +6,10 @@ const QuizSchema = new Schema
     level: { type: String, required: true },
     start_time: { type: Date, required: true },
     finish_time: { type: Date, required: true },
+    approved:{
+        type:Boolean,
+        default:false 
+    },
     questions:[{
         type : Schema.Types.ObjectId,
         ref:"QuestionClass"
@@ -16,12 +20,13 @@ const QuizSchema = new Schema
     })
 
 class Quiz {
-    constructor(date, level, start_time, finish_time, questions) {
+    constructor(date, level, start_time, finish_time, approved, questions) {
         this.date = date;
         this.level = level;
         this.start_time = start_time;
         this.finish_time = finish_time;
         this.questions = questions;
+        this.approved = approved;
     }
 }
 

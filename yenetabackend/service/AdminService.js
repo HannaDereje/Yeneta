@@ -30,8 +30,8 @@ class AdminService{
 
     updateOne(id, admin){
 
-        const admin = this.adminRepository.updateOne(id, admin);
-        return new Promise((resolve, reject)=>{resolve(admin)})
+        const a_admin = this.adminRepository.updateOne(id, admin);
+        return new Promise((resolve, reject)=>{resolve(a_admin)})
     }
     deleteOne(id){
 

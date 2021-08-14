@@ -30,8 +30,8 @@ class   ConntentManagerAnswerService{
 
     updateOne(id, contentManagerAnswer){
 
-        const contentManagerAnswer = this.contentManagerAnswerRepository.updateOne(id, contentManagerAnswer);
-        return new Promise((resolve, reject)=>{resolve(contentManagerAnswer)})
+        const a_contentManagerAnswer = this.contentManagerAnswerRepository.updateOne(id, contentManagerAnswer);
+        return new Promise((resolve, reject)=>{resolve(a_contentManagerAnswer)})
     }
     deleteOne(id){
 

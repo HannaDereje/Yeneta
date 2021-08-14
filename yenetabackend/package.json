@@ -9,6 +9,16 @@
   "author": "Yeneta Team",
   "license": "ISC",
   "dependencies": {
-    "mongoose": "^5.13.3"
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "concurrently": "^6.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.12.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.13.3",
+    "multer": "^1.4.3",
+    "nodemailer": "^6.6.3"
   }
 }

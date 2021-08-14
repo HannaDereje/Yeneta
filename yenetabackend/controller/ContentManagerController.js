@@ -5,6 +5,7 @@ class ContentManagerController {
         this.contentManagerService = contentManagerService;
         this.userService = userService
         this.register = this.register.bind(this)
+        this.getProfileInfo = this.getProfileInfo.bind(this)
 
     }
 
@@ -47,21 +48,17 @@ class ContentManagerController {
                            `;
                            this.sendEmail(user.email, "Registeration", message)
 
-                           let student = {
+                           let teacher = {
                                name:req.body.name,
                                email:req.body.email,
-                               age:req.body.age,
-                               prefered_Date:req.body.prefered_Date,
-                               country:req.body.country,
-                               image:req.file.originalname +"___" + req.file.mimetype,
-                               level:req.body.level,
-                               user:user._id,
-                               lessons:[]
+                               experience:req.body.experience,
+                               job:req.body.job,
+                               user:user._id
                            }
 
-                           this.studentService.insert(student)
-                           .then((student)=>{
-                               console.log(student)
+                           this.contentManagerService.insert(teacher)
+                           .then((contentManager)=>{
+                               console.log(contentManager)
                        })
                            return res.status(200).send("correct")
                
@@ -78,6 +75,21 @@ class ContentManagerController {
 
                      
    }
+
+   async getProfileInfo(req, res){
+
+    if(req.user_id === null){
+        res.status(403)
+        return res.send("You need to sign in.")
+    }
+    return  this.userService.getOne(req.user_id._id)
+                    .then((user)=>{
+                        this.contentManagerService.getOneByEmail(user.email)
+                            .then((contentManager)=>{
+                                res.status(200).json(contentManager);
+                            })
+                    })
+}
 
     
 

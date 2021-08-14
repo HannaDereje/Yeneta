@@ -21,7 +21,6 @@ class StudentController{
     }
 
      
-
     async register(req, res, next){
 
        
@@ -30,7 +29,7 @@ class StudentController{
         if(!errors.isEmpty()){
             return res.status(400).send(errors);
         }
-      return this.roleService.getOne("STUDENT")
+       return this.roleService.getOne("STUDENT")
            .then((role)=>{
 
            let user ={
@@ -49,50 +48,63 @@ class StudentController{
                       return res.status(200).json("email found")
                    }
                    else{
-
-                       this.userService.insert(user)
-                       .then((user)=>{
-
-                           const message = `
-                           <h1>Email Confirmation</h1>
-                           <h2>Hello ${req.body.name}</h2>
-                           <p>Thank You for subscribing. Please confirm your email by clicking the following link</p>
-                           <a href = http://localhost:5000/confirm/${user.accessToken}>Click Here</a>
-                           `;
-                           this.sendEmail(user.email, "Registeration", message)
-
-                           let student = {
-                               name:req.body.name,
-                               email:req.body.email,
-                               age:req.body.age,
-                               prefered_Date:req.body.prefered_Date,
-                               country:req.body.country,
-                               image:req.file.originalname +"___" + req.file.mimetype,
-                               level:req.body.level,
-                               user:user._id,
-                               lessons:[]
+                    const message = `
+                    <h1>Email Confirmation</h1>
+                    <h2>Hello ${req.body.name}</h2>
+                    <p>Thank You for subscribing. Please confirm your email by clicking the following link</p>
+                    <a href = http://localhost:3000/confirm/${user.accessToken}>Click Here</a>
+                    `;
+                    this.sendEmail(user.email, "Registeration", message)
+                    .then((info)=>{
+                        console.log(info)
+                        if(!info){
+                            this.userService.insert(user)
+                            .then((user)=>{
+     
+                                
+                                let student = {
+                                    name:req.body.name,
+                                    email:req.body.email,
+                                    age:req.body.age,
+                                    prefered_Date:req.body.prefered_Date,
+                                    country:req.body.country,
+                                    image:req.file.originalname +"___" + req.file.mimetype,
+                                    level:req.body.level,
+                                    user:user._id,
+                                    lessons:[],
+                                    quizes:[]
+                                }
+     
+                                this.studentService.insert(student)
+                                .then((student)=>{
+                                    console.log(student)
+                                    res.status(200).send("Confirm your Email Please !!")
+                                 }).catch((err)=>{
+                                     res.send(404)
+                                     console.log(err);
+                                 })  
+                                 
+                                  res.status(200).send("correct") 
+                            }).catch(err=>res.json({err}))  
+                        }
+                    }).catch((err)=>{
+                        res.send(404)
+                        console.log(err);
+                    })
+                                
                            }
-
-                           this.studentService.insert(student)
-                           .then((student)=>{
-                               console.log(student)
-                       })
-                           return res.status(200).send("correct")
-               
-                       }).catch(err=>res.json({err}))          
-                           }
-                           })
-                                        
-                           return res.status(200).send("correct")                        
+                           }).catch((err)=>{
+                            res.send(404)
+                            console.log(err);
+                        })                        
                        }).
                        catch((err)=>{
-                           res.send(403)
-                           console.log("err");
+                           res.send(404)
+                           console.log(err);
                        })  
 
                      
    }
-
     async getStudent(req, res){
 
         await this.userService.getOne(req.user_id._id)
@@ -196,9 +208,10 @@ class StudentController{
           
            transporter.sendMail(mailOptions, function(error, info){
             if (error) {
-              console.log(error);
+              return error
             } else {
               console.log('Email sent: ' + info.response);
+              return info
             }
           });
 

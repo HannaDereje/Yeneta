@@ -13,6 +13,7 @@ class UserController{
         this.verifyToken = this.verifyToken.bind(this)
         this.getAllUsers = this.getAllUsers.bind(this)
         this.authRole = this.authRole.bind(this)
+        this.verifyUser = this.verifyUser.bind(this)
     }
 
      generateAuthToken(id, role){
@@ -27,11 +28,17 @@ class UserController{
              this.userService.getOneByEmail(req.body.email)
                                         .then((user) =>{
                                         
-                                            if(!user)
-                                                res.status(404).send("User does not exist");
-                                                
-                                            if(!bcrypt.compare(req.body.password, user.password)){
-                                                res.status(404).send("Wrong Password");
+                                            if(!user){
+                                                res.send("User does not exist");
+                                                return
+                                            }
+                                            if(user.status !== "Active")
+                                            {
+                                                res.send("User is not verified");
+                                                return
+                                            }
+                                            if(!bcrypt.compareSync(req.body.password, user.password)){
+                                                res.send("Wrong Password");
                                                 return 
                                             }
 
@@ -40,15 +47,17 @@ class UserController{
 
                                                 const token = this.generateAuthToken(user._id, role.role)
                                        
-                                                res.status(200).send({
-                                                            user:user,
-                                                            token:token
-                                                }) 
+                                                res.status(200).send(
+                                                        role.role
+                                                ) 
+                                                }).catch((err)=>{
+                                                    res.sendStatus(403)
+                                                    console.log(err);
                                                 })
                                         })  
                                         .catch((err)=>{
                                             res.sendStatus(403)
-                                            console.log("err");
+                                            console.log(err);
                                         })
     }
 

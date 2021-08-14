@@ -1,5 +1,6 @@
 class AdminController {
-    constructor(studentService, contentManagerService, userService, lessonService, activityService, quizService) {
+    constructor(adminService, studentService, contentManagerService, userService, lessonService, activityService, quizService) {
+        this.adminService = adminService;
         this.contentManagerService = contentManagerService;
         this.studentService = studentService;
         this.userService = userService;
@@ -14,40 +15,48 @@ class AdminController {
     }
     manageAccounts(req, res) {
 
-    }
-    viewUserInfo(req, res) {
-        const user = this.userService.getOne(req.params.id);
-        role = user.role;
-        if (role == "STUDENT") {
-            return this.studentService.getOne(req.params.id);
-        }
-        else if (role == "TEACHER") {
-            return this.contentManagerService.getOne(req.params.id);
-        }
+        
 
     }
-    approveLesson(req, res) {
-        const lessons = this.lessonService.getAll()
-        for (lesson in lessons) {
-            if (lesson.approved == "false") {
-                lesson.approved == "true";
-            }
-        }
+   async viewUserInfo(req, res) {
+        return await  this.userService.getAll()
+        .then((response) => res.json(response))
+        .catch((err)=>{
+            res.send(403)
+            console.log("err");
+        })
+
     }
-    approveActivity(req, res) {
-        const activities = this.activityService.getAll()
-        for (activity in activities) {
-            if (activity.approved == "false") {
-                activity.approved == "true";
-            }
-        }
+   async approveLesson(req, res) {
+        return await this.lessonService.getOne(req.params.id)
+        .then((lesson)=>{
+            lesson.approve = "true"
+            this.lessonService.updateOne(lesson._id, lesson)
+            .then((lesson)=>{
+                res.json(lesson)
+            })
+        })
+    }
+    async approveActivity(req, res) {
+        return await this.activityService.getOne(req.params.id)
+        .then((activity)=>{
+            activity.approve = "true"
+            this.activityService.updateOne(activity._id, activity)
+            .then((activity)=>{
+                res.json(activity)
+            })
+        })
     }
     approveQuiz(req, res) {
-        const quizes = this.quizService.getAll()
-        for (quiz in quizes) {
-            if (quiz.approved == "false") {
-                quiz.approved == "true";
-            }
-        }
+        return await this.quizService.getOne(req.params.id)
+        .then((quiz)=>{
+            quiz.approve = "true"
+            this.quizService.updateOne(quiz._id, quiz)
+            .then((quiz)=>{
+                res.json(quiz)
+            })
+        })
     }
 }
+
+module.exports = AdminController

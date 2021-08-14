@@ -1,8 +1,8 @@
 class ActivityResultController{
 
-    constructor(activityService, activityAnswerService, questionService, activityResult){
+    constructor(activityService, activityAnswerService, questionService, activityResultService){
         this.questionService = questionService;
-        this.activityResult = activityResult
+        this.activityResultService = activityResultService
         this.activityService = activityService
         this.activityAnswerService = activityAnswerService
         this.checkResultForActivity = this.checkResultForActivity.bind(this)

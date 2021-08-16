@@ -3,13 +3,17 @@ const bodyParser = require("body-parser")
 const app = express();
 const cors = require('cors');
 const dotenv = require("dotenv");
+
+var options = {
+    cors:true, 
+    origins:["http://localhost:3000"]
+}
 const mongoose = require("mongoose");
 const activityRoute = require("./routes/Activity")
 const activityResultRoute = require("./routes/ActivityResult")
 const adminRoute = require("./routes/Admin")
 const answerRoute = require("./routes/Answer")
 const contentManagerRoute = require("./routes/ContentManager")
-//const discussionRoute = require("./routes/Discussionroom")
 const lessonRoute = require("./routes/Lesson")
 const questionRoute = require("./routes/Question")
 const quizRoute = require("./routes/Quiz")
@@ -29,15 +33,16 @@ class Server {
     }
 
     Start() {
-        // dotenv.config();
-        app.listen(5000, () => {
-            console.log("The app is listening on port " + 5000)
+        dotenv.config();
+        var server =   app.listen(process.env.PORT, ()=>{
+            console.log("The app is listening on port " + process.env.PORT)
         })
+        this.initSocket(server, options)
+       
     }
 
     initDB() {
 
-        // app.use(express.json());
         app.use(cors());
         app.use(bodyParser.json())
         mongoose.connect('mongodb://localhost/yeneta', {
@@ -57,7 +62,6 @@ class Server {
         adminRoute(app);
         answerRoute(app);
         contentManagerRoute(app);
-        //discussionRoute(app);
         lessonRoute(app);
         questionRoute(app);
         quizRoute(app);
@@ -70,7 +74,10 @@ class Server {
 
 
     }
-
+    initSocket(server){
+        const DiscussionRoomController = require("./controller/DiscussionRoomController")
+        const room = new DiscussionRoomController(server)
+    }
 
 }
 

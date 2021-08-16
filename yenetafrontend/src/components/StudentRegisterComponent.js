@@ -25,8 +25,9 @@ export default class StudentRegister extends Component {
 
         let input = this.state.input;
 
-        if (input[e.target.name] === "image") {
-            input[e.target.name] = e.target.files[0].name;
+        if(e.target.name === "image"){
+            input[e.target.name] = e.target.files[0];
+            console.log(e.target.files[0])
         }
         input[e.target.name] = e.target.value;
 
@@ -220,7 +221,7 @@ export default class StudentRegister extends Component {
                             </Form.Group>
                             <Form.Group className="form_width">
                                 <Form.Label>Profile Picture</Form.Label>
-                                <Form.Control type="file" className="image" value={this.state.input.image} name="image" onChange={this.handleChange} />
+                                <Form.Control type="file" className="image" name="image" onChange={this.handleChange} />
                                 <div className="text-danger">{this.state.errors.image}</div>
                             </Form.Group>
                             <Form.Group className="form_width btnstyle">

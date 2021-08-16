@@ -1,8 +1,8 @@
 
-class TopicService{
+class TopicService {
 
-    constructor(topicRepository){
-        this.topicRepository =  topicRepository;     
+    constructor(topicRepository) {
+        this.topicRepository = topicRepository;
         this.insert = this.insert.bind(this);
         this.getAll = this.getAll.bind(this);
         this.getOne = this.getOne.bind(this);
@@ -11,37 +11,37 @@ class TopicService{
         this.updateOne = this.updateOne.bind(this);
     }
 
-     insert(topic){
+    insert(topic) {
 
         return this.topicRepository.create(topic)
-                    
+
     }
-     getAll(){
+    getAll() {
 
         const topics = this.topicRepository.getAll();
-        return new Promise((resolve, reject)=>{resolve(topics)})
+        return new Promise((resolve, reject) => { resolve(topics) })
     }
 
-    getOne(id){
+    getOne(id) {
 
         const topic = this.topicRepository.getOne(id);
-        return new Promise((resolve, reject)=>{resolve(topic)})
+        return new Promise((resolve, reject) => { resolve(topic) })
     }
 
-    updateOne(id, topic){
+    updateOne(id, topic) {
 
-        const topic = this.topicRepository.updateOne(id, topic);
-        return new Promise((resolve, reject)=>{resolve(topic)})
+        const topic2 = this.topicRepository.updateOne(id, topic);
+        return new Promise((resolve, reject) => { resolve(topic2) })
     }
-    deleteOne(id){
+    deleteOne(id) {
 
         const deletedtopic = this.topicRepository.deleteOne(id);
-        return new Promise((resolve, reject)=>{resolve(deletedtopic)})
+        return new Promise((resolve, reject) => { resolve(deletedtopic) })
     }
-    deleteAll(){
+    deleteAll() {
 
         const deletedtopics = this.topicRepository.deleteAll();
-        return new Promise((resolve, reject)=>{resolve(deletedtopics)})
+        return new Promise((resolve, reject) => { resolve(deletedtopics) })
     }
 
 }

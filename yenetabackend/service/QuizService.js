@@ -1,8 +1,8 @@
 
-class QuizService{
+class QuizService {
 
-    constructor(quizRepository){
-        this.quizRepository =  quizRepository;     
+    constructor(quizRepository) {
+        this.quizRepository = quizRepository;
         this.insert = this.insert.bind(this);
         this.getAll = this.getAll.bind(this);
         this.getOne = this.getOne.bind(this);
@@ -11,37 +11,37 @@ class QuizService{
         this.updateOne = this.updateOne.bind(this);
     }
 
-     insert(quiz){
+    insert(quiz) {
 
         return this.quizRepository.create(quiz)
-                    
+
     }
-     getAll(){
+    getAll() {
 
         const quizs = this.quizRepository.getAll();
-        return new Promise((resolve, reject)=>{resolve(quizs)})
+        return new Promise((resolve, reject) => { resolve(quizs) })
     }
 
-    getOne(id){
+    getOne(id) {
 
         const quiz = this.quizRepository.getOne(id);
-        return new Promise((resolve, reject)=>{resolve(quiz)})
+        return new Promise((resolve, reject) => { resolve(quiz) })
     }
 
-    updateOne(id, quiz){
+    updateOne(id, quiz) {
 
-        const quiz = this.quizRepository.updateOne(id, quiz);
-        return new Promise((resolve, reject)=>{resolve(quiz)})
+        const quiz2 = this.quizRepository.updateOne(id, quiz);
+        return new Promise((resolve, reject) => { resolve(quiz2) })
     }
-    deleteOne(id){
+    deleteOne(id) {
 
         const deletedquiz = this.quizRepository.deleteOne(id);
-        return new Promise((resolve, reject)=>{resolve(deletedquiz)})
+        return new Promise((resolve, reject) => { resolve(deletedquiz) })
     }
-    deleteAll(){
+    deleteAll() {
 
         const deletedquizs = this.quizRepository.deleteAll();
-        return new Promise((resolve, reject)=>{resolve(deletedquizs)})
+        return new Promise((resolve, reject) => { resolve(deletedquizs) })
     }
 
 }

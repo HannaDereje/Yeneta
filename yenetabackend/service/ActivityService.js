@@ -1,8 +1,8 @@
 
-class ActivityService{
+class ActivityService {
 
-    constructor(activityRepository){
-        this.activityRepository =  activityRepository;     
+    constructor(activityRepository) {
+        this.activityRepository = activityRepository;
         this.insert = this.insert.bind(this);
         this.getAll = this.getAll.bind(this);
         this.getOne = this.getOne.bind(this);
@@ -11,37 +11,37 @@ class ActivityService{
         this.updateOne = this.updateOne.bind(this);
     }
 
-     insert(activity){
+    insert(activity) {
 
         return this.activityRepository.create(activity)
-                    
+
     }
-     getAll(){
+    getAll() {
 
         const activitys = this.activityRepository.getAll();
-        return new Promise((resolve, reject)=>{resolve(activitys)})
+        return new Promise((resolve, reject) => { resolve(activitys) })
     }
 
-    getOne(id){
+    getOne(id) {
 
         const activity = this.activityRepository.getOne(id);
-        return new Promise((resolve, reject)=>{resolve(activity)})
+        return new Promise((resolve, reject) => { resolve(activity) })
     }
 
-    updateOne(id, activity){
+    updateOne(id, activity) {
 
-        const a_activity = this.activityRepository.updateOne(id, activity);
-        return new Promise((resolve, reject)=>{resolve(a_activity)})
+        const activity2 = this.activityRepository.updateOne(id, activity);
+        return new Promise((resolve, reject) => { resolve(activity2) })
     }
-    deleteOne(id){
+    deleteOne(id) {
 
         const deletedactivity = this.activityRepository.deleteOne(id);
-        return new Promise((resolve, reject)=>{resolve(deletedactivity)})
+        return new Promise((resolve, reject) => { resolve(deletedactivity) })
     }
-    deleteAll(){
+    deleteAll() {
 
         const deletedactivitys = this.activityRepository.deleteAll();
-        return new Promise((resolve, reject)=>{resolve(deletedactivitys)})
+        return new Promise((resolve, reject) => { resolve(deletedactivitys) })
     }
 
 }

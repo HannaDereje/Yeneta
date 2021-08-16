@@ -35,8 +35,8 @@ class ActivityAnswerService {
     }
     updateOne(id, activityAnswer) {
 
-        const a_activityAnswer = this.activityAnswerRepository.updateOne(id, activityAnswer);
-        return new Promise((resolve, reject) => { resolve(a_activityAnswer) })
+        const activityAnswer2 = this.activityAnswerRepository.updateOne(id, activityAnswer);
+        return new Promise((resolve, reject) => { resolve(activityAnswer2) })
     }
     deleteOne(id) {
 

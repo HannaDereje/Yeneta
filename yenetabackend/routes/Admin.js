@@ -1,31 +1,37 @@
-const Student = require("../models/Student")
+const Student = require("../Models/Student")
 const StudentRepository = require("../repository/StudentRepository")
 const StudentService = require("../services/StudentService")
 
-const ContentManager = require("../models/ContentManager")
+const ContentManager = require("../Models/ContentManager")
 const ContentManagerRepository = require("../repository/ContentManagerRepository")
 const ContentManagerService = require("../services/ContentManagerService")
 
-const User = require("../models/User")
+const User = require("../Models/User")
 const UserRepository = require("../repository/UserRepository")
 const UserService = require("../services/UserService")
 
-const Lesson = require("../models/Lesson")
+const Lesson = require("../Models/Lesson")
 const LessonRepository = require("../repository/LessonRepository")
 const LessonService = require("../services/LessonService")
 
-const Activity = require("../models/Activity")
+const Activity = require("../Models/Activity")
 const ActivityRepository = require("../repository/ActivityRepository")
 const ActivityService = require("../services/ActivityService")
 
-const Quiz = require("../models/Quiz")
+const Quiz = require("../Models/Quiz")
 const QuizRepository = require("../repository/QuizRepository")
 const QuizService = require("../services/QuizService")
 
-const Admin = require("../models/Admin")
+const Admin = require("../Models/Admin")
 const AdminRepository = require("../repository/QuizRepository")
 const AdminService = require("../services/QuizService")
+const AdminController = require("../controller/AdminController")
 
+const Role = require("../Models/Role")
+const RoleRepository = require("../repository/RoleRepository")
+const RoleService = require("../services/RoleService")
+
+const UserController = require("../controller/UserController")
 const bodyParser = require("body-parser")
 
 
@@ -40,6 +46,9 @@ module.exports = (server) => {
 
     const userRepo = new UserRepository(User)
     const userServ = new UserService(userRepo)
+
+    const roleRepo = new RoleRepository(Role)
+    const roleServ = new RoleService(roleRepo)
 
     const lessonRepo = new LessonRepository(Lesson)
     const lessonServ = new LessonService(lessonRepo)

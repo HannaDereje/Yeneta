@@ -1,11 +1,11 @@
 const UserController = require("../controller/UserController")
 const User = require("../Models/User")
 const UserRepository = require("../repository/UserRepository")
-const UserService = require("../service/UserService")
+const UserService = require("../services/UserService")
 
 const Role = require("../Models/Role")
 const RoleRepository = require("../repository/RoleRepository")
-const RoleService = require("../service/RoleService")
+const RoleService = require("../services/RoleService")
 
 
 const { check, validationResult, body } = require("express-validator")
@@ -23,7 +23,7 @@ module.exports = (server) => {
 
     server.put("/confirm/:accessToken", new UserController(userServ, roleServ).verifyUser)
 
-    server.post("/login",
+    server.post("/Login",
         body('email').isEmail().notEmpty(),
         body('password').isLength({ min: 8 }),
         new UserController(userServ, roleServ).login)

@@ -1,7 +1,7 @@
 const AnswerController = require('../controller/AnswerController');
 const Answer = require("../Models/ContentManagerAnswer")
 const AnswerRepository = require("../repository/ContentManagerRepository")
-
+const AnswerService = require("../services/ContentManagerAnswerService")
 const UserController = require('../controller/UserController');
 const User = require("../Models/User")
 const UserRepository = require("../repository/UserRepository")

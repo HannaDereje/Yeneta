@@ -1,16 +1,16 @@
 const ActivityController = require('../controller/ActivityController');
 const Activity = require("../Models/Activity")
 const ActivityRepository = require("../repository/ActivityRepository")
-const ActivityService = require("../service/ActivityService")
+const ActivityService = require("../services/ActivityService")
 
 const UserController = require('../controller/UserController');
 const User = require("../Models/User")
 const UserRepository = require("../repository/UserRepository")
-const UserService = require("../service/UserService")
+const UserService = require("../services/UserService")
 
 const Role = require("../Models/Role")
 const RoleRepository = require("../repository/RoleRepository")
-const RoleService = require("../service/RoleService")
+const RoleService = require("../services/RoleService")
 const bodyParser = require("body-parser")
 
 

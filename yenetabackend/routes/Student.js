@@ -3,23 +3,23 @@ const UserController = require("../controller/UserController")
 
 const Student = require("../Models/Student")
 const StudentRepository = require("../repository/StudentRepository")
-const StudentService = require("../service/StudentService")
+const StudentService = require("../services/StudentService")
 
 const User = require("../Models/User")
 const UserRepository = require("../repository/UserRepository")
-const UserService = require("../service/UserService")
+const UserService = require("../services/UserService")
 
 const Role = require("../Models/Role")
 const RoleRepository = require("../repository/RoleRepository")
-const RoleService = require("../service/RoleService")
+const RoleService = require("../services/RoleService")
 
 const Lesson = require("../Models/Lesson")
 const LessonRepository = require("../repository/LessonRepository")
-const LessonService = require("../service/LessonService")
+const LessonService = require("../services/LessonService")
 
 const Quiz = require("../Models/Quiz")
 const QuizRepository = require("../repository/QuizRepository")
-const QuizService = require("../service/QuizService")
+const QuizService = require("../services/QuizService")
 
 const studentRepo = new StudentRepository(Student)
 const studentServ = new StudentService(studentRepo)

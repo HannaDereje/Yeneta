@@ -1,6 +1,6 @@
 const Lesson = require("../Models/lesson")
 const LessonRepository = require("../repository/LessonRepository")
-const LessonService = require("../service/LessonService")
+const LessonService = require("../services/LessonService")
 const LessonController = require("../controller/LessonController")
 const bodyParser = require("body-parser")
 
@@ -27,13 +27,13 @@ module.exports = (server) => {
     const lessonServ = new LessonService(lessonRepo)
 
     server.post("/addLesson",
-        new UserController(userServ, roleServ).verifyToken,
-        new UserController(userServ, roleServ).authRole("TEACHER"),
+        //new UserController(userServ, roleServ).verifyToken,
+        //new UserController(userServ, roleServ).authRole("TEACHER"),
         new LessonController(lessonServ).insert)
 
     server.get("/getAllLessons",
-        new UserController(userServ, roleServ).verifyToken,
-        new UserController(userServ, roleServ).authRole("TEACHER"),
+        //new UserController(userServ, roleServ).verifyToken,
+        //new UserController(userServ, roleServ).authRole("TEACHER"),
         new LessonController(lessonServ).getAll)
 
     server.get("/getLesson/:id",
@@ -54,5 +54,5 @@ module.exports = (server) => {
     server.delete("/deleteLessons",
         new UserController(userServ, roleServ).verifyToken,
         new UserController(userServ, roleServ).authRole("TEACHER"),
-        new LessonController(lessonServ).delete)
+        new LessonController(lessonServ).deleteAll)
 }

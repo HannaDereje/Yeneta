@@ -71,6 +71,49 @@ export default class Lessons extends Component {
             console.log("invalid Inputs")
         }
     }
+    validate() {
+
+        let input = this.state.input;
+        let errors = {}
+        let isValid = true;
+
+        if (!input["lessonNumber"]) {
+            isValid = false;
+            errors["lessonNumber"] = "Please enter lesson Number.";
+        }
+        if (!input["lessonLevelType"]) {
+            isValid = false;
+            errors["lessonLevelType"] = "Please enter lesson level type.";
+        }
+        if (!input["notes"]) {
+            isValid = false;
+            errors["notes"] = "Please enter a note.";
+        }
+        if (!input["imageInput"]) {
+            isValid = false;
+            errors["imageInput"] = "Please enter image.";
+        }
+
+        if (!input["audio"]) {
+            isValid = false;
+            errors["audio"] = "Please enter an audio.";
+        }
+        if (!input["videoLink"]) {
+            isValid = false;
+            errors["videoLink"] = "Please enter the video link.";
+        }
+
+
+
+
+        this.setState({
+            errors: errors
+        });
+
+        return isValid;
+
+    }
+
 
     render() {
         return (
@@ -81,6 +124,7 @@ export default class Lessons extends Component {
                         <Form.Group className="form_width">
                             <Form.Label>Lesson Number</Form.Label>
                             <Form.Control type="text" name="lessonNumber" value={this.state.input.lessonNumber} onChange={this.handleChange} placeholder="Lesson Number" />
+                            <div className="text-danger">{this.state.errors.lessonNumber}</div>
                         </Form.Group>
                         <Form.Group className="form_width">
                             <Form.Label>Lesson Level Type</Form.Label>
@@ -89,31 +133,36 @@ export default class Lessons extends Component {
                                 <option>Intermediate</option>
                                 <option>Advanced</option>
                             </Form.Control>
+                            <div className="text-danger">{this.state.errors.lessonLevelType}</div>
                         </Form.Group>
                         <Form.Group className="form_width">
                             <Form.Label>Notes</Form.Label>
                             <p><textarea placeholder="Note" name="notes" value={this.state.input.notes} onChange={this.handleChange} className="areawidth" cols="74" rows="6"></textarea></p>
+                            <div className="text-danger">{this.state.errors.notes}</div>
                         </Form.Group>
                         <Form.Group className="form_width">
                             <Form.Label>Image Input</Form.Label>
-                            <Form.File value={this.state.input.imageInput} onChange={this.handleChange}
+                            <Form.File name="imageInput" value={this.state.input.imageInput} onChange={this.handleChange}
                                 id="custom-file"
                                 label="Custom file input"
                                 custom
                             /><br /><br />
+                            <div className="text-danger">{this.state.errors.imageInput}</div>
                             <p><textarea placeholder="Image Description" className="areawidth" cols="74" rows="4"></textarea></p>
                         </Form.Group>
                         <Form.Group className="form_width">
                             <Form.Label>Audio</Form.Label>
-                            <Form.File name="imageInput"
+                            <Form.File name="audioInput" onChange={this.handleChange}
                                 id="custom-file"
                                 label="Custom file input"
                                 custom
                             />
+                            <div className="text-danger">{this.state.errors.audioInput}</div>
                         </Form.Group>
                         <Form.Group className="form_width">
                             <Form.Label>Video Link</Form.Label>
-                            <Form.Control type="text" value={this.state.VideoLink} onChange={this.onChangeVideoLink} placeholder="Lesson Video Link" />
+                            <Form.Control type="text" name="videoLink" value={this.state.input.VideoLink} onChange={this.handleChange} placeholder="Lesson Video Link" />
+                            <div className="text-danger">{this.state.errors.videoLink}</div>
                         </Form.Group>
                         <Form.Group className="form_width btnstyle">
                             <Button type="submit" onClick={this.onSubmit} className="btnstyle">Add Lesson</Button>

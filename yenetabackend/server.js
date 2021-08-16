@@ -1,7 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser")
 const app = express();
-const server = bodyParser();
 const cors = require('cors');
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
@@ -30,7 +29,7 @@ class Server {
     }
 
     Start() {
-        dotenv.config();
+        // dotenv.config();
         app.listen(5000, () => {
             console.log("The app is listening on port " + 5000)
         })
@@ -38,7 +37,7 @@ class Server {
 
     initDB() {
 
-        app.use(express.json());
+        // app.use(express.json());
         app.use(cors());
         app.use(bodyParser.json())
         mongoose.connect('mongodb://localhost/yeneta', {

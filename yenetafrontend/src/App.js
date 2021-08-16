@@ -14,6 +14,7 @@ import TeacherHome from './components/TeacherHomeComponent'
 import ClassRoom from './components/StudentClassRoomComponent' 
 import StudentProfile from "./components/StudentProfileComponent"
 import TeacherProfile from "./components/TeacherProfileComponent"
+import DiscussionRoom from "./components/StudentDiscussionRoomComponent"
 
 function App() {
   return ( 
@@ -29,6 +30,7 @@ function App() {
     <Route path="/classroom" component={ClassRoom}/>
     <Route path="/studentProfile" component={StudentProfile}/>
     <Route path="/teacherProfile" component={TeacherProfile}/>
+    <Route path="/room" component = {DiscussionRoom}/>
     </Router>
    
   );

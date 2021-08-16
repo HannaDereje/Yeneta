@@ -3,48 +3,48 @@ const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
 
-    username: { 
-        type: String, 
+    username: {
+        type: String,
         required: true,
-        trim:true,
-        minlength:10
+        trim: true,
+        minlength: 10
     },
-    password: { 
-        type: String, 
-        required: true ,
-        minlength:8 
+    password: {
+        type: String,
+        required: true,
+        minlength: 8
     },
-    email: { 
+    email: {
         type: String,
         trim: true,
         lowercase: true,
         unique: true,
-        required:true,
+        required: true,
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
     },
-    accessToken:{
-        type:String
-        
+    accessToken: {
+        type: String
+
     },
-    role: { 
-        type : Schema.Types.ObjectId,
-        ref:"RoleClass",
-        required:true
+    role: {
+        type: Schema.Types.ObjectId,
+        ref: "RoleClass",
+        required: true
     },
-    status:{
-        type:String,
-        default:"Pending",
-        enum : ["Pending", "Active"]
+    status: {
+        type: String,
+        default: "Pending",
+        enum: ["Pending", "Active"]
     }
 
 })
 
-class User{
+class User {
 
-    constructor(username, password,email, accessToken,  role, status){
+    constructor(username, password, email, accessToken, role, status) {
         this.username = username;
         this.password = password;
-        this.role =role;
+        this.role = role;
         this.email = email;
         this.accessToken = accessToken;
         this.status = status;
@@ -54,4 +54,4 @@ class User{
 UserSchema.loadClass(User)
 
 
-module.exports = mongoose.model('UserClass', UserSchema)
+module.exports = mongoose.models.User || mongoose.model('UserClass', UserSchema)

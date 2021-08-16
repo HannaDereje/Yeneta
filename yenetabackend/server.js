@@ -5,8 +5,8 @@ const cors = require('cors');
 const dotenv = require("dotenv");
 
 var options = {
-    cors:true, 
-    origins:["http://localhost:3000"]
+    cors: true,
+    origins: ["http://localhost:3000"]
 }
 const mongoose = require("mongoose");
 const activityRoute = require("./routes/Activity")
@@ -34,11 +34,11 @@ class Server {
 
     Start() {
         dotenv.config();
-        var server =   app.listen(process.env.PORT, ()=>{
+        var server = app.listen(process.env.PORT, () => {
             console.log("The app is listening on port " + process.env.PORT)
         })
         this.initSocket(server, options)
-       
+
     }
 
     initDB() {
@@ -74,7 +74,7 @@ class Server {
 
 
     }
-    initSocket(server){
+    initSocket(server) {
         const DiscussionRoomController = require("./controller/DiscussionRoomController")
         const room = new DiscussionRoomController(server)
     }

@@ -1,17 +1,17 @@
 const Lesson = require("../Models/lesson")
 const LessonRepository = require("../repository/LessonRepository")
-const LessonService = require("../services/LessonService")
+const LessonService = require("../service/LessonService")
 const LessonController = require("../controller/LessonController")
 const bodyParser = require("body-parser")
 
 const UserController = require('../controller/UserController');
 const User = require("../Models/User")
 const UserRepository = require("../repository/UserRepository")
-const UserService = require("../services/UserService")
+const UserService = require("../service/UserService")
 
 const Role = require("../Models/Role")
 const RoleRepository = require("../repository/RoleRepository")
-const RoleService = require("../services/RoleService")
+const RoleService = require("../service/RoleService")
 
 
 module.exports = (server) => {

@@ -3,25 +3,25 @@ const Schema = mongoose.Schema;
 
 const AdminSchema = new Schema({
 
-    name: { 
-        type: String, 
-        required: true 
+    name: {
+        type: String,
+        required: true
     },
-    email: { 
+    email: {
         type: String,
         trim: true,
         lowercase: true,
         unique: true,
-        required:true,
+        required: true,
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
 
     },
-    user: { 
-        type : Schema.Types.ObjectId,
-        ref:"UserClass" ,
-        require:true
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "UserClass",
+        require: true
     }
-    
+
 }, {
         timestamps: true
     })
@@ -41,4 +41,4 @@ class Admin {
 
 AdminSchema.loadClass(Admin)
 
-module.exports = mongoose.model('AdminClass', AdminSchema)
+module.exports = mongoose.models.Admin || mongoose.model('AdminClass', AdminSchema)

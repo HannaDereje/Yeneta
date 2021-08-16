@@ -1,35 +1,35 @@
 const Student = require("../Models/Student")
 const StudentRepository = require("../repository/StudentRepository")
-const StudentService = require("../services/StudentService")
+const StudentService = require("../service/StudentService")
 
 const ContentManager = require("../Models/ContentManager")
 const ContentManagerRepository = require("../repository/ContentManagerRepository")
-const ContentManagerService = require("../services/ContentManagerService")
+const ContentManagerService = require("../service/ContentManagerService")
 
 const User = require("../Models/User")
 const UserRepository = require("../repository/UserRepository")
-const UserService = require("../services/UserService")
+const UserService = require("../service/UserService")
 
 const Lesson = require("../Models/Lesson")
 const LessonRepository = require("../repository/LessonRepository")
-const LessonService = require("../services/LessonService")
+const LessonService = require("../service/LessonService")
 
 const Activity = require("../Models/Activity")
 const ActivityRepository = require("../repository/ActivityRepository")
-const ActivityService = require("../services/ActivityService")
+const ActivityService = require("../service/ActivityService")
 
 const Quiz = require("../Models/Quiz")
 const QuizRepository = require("../repository/QuizRepository")
-const QuizService = require("../services/QuizService")
+const QuizService = require("../service/QuizService")
 
 const Admin = require("../Models/Admin")
 const AdminRepository = require("../repository/QuizRepository")
-const AdminService = require("../services/QuizService")
+const AdminService = require("../service/QuizService")
 const AdminController = require("../controller/AdminController")
 
 const Role = require("../Models/Role")
 const RoleRepository = require("../repository/RoleRepository")
-const RoleService = require("../services/RoleService")
+const RoleService = require("../service/RoleService")
 
 const UserController = require("../controller/UserController")
 const bodyParser = require("body-parser")

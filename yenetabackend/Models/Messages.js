@@ -4,18 +4,18 @@ const Schema = mongoose.Schema;
 const MessageSchema = new Schema({
 
     content: {
-         type: String, 
-         required: true 
-        },
+        type: String,
+        required: true
+    },
     date: {
-         type: Date, 
-         required: true 
-        },
+        type: Date,
+        required: true
+    },
     user: {
-         type: Schema.Types.ObjectId,
-         ref:"UserClass" ,
-         required:true 
-       }
+        type: Schema.Types.ObjectId,
+        ref: "UserClass",
+        required: true
+    }
 }, {
         timestamps: true
     })
@@ -33,4 +33,4 @@ class Message {
 
 MessageSchema.loadClass(Message)
 
-module.exports = mongoose.model('MessageClass', MessageSchema)
+module.exports = mongoose.models.Message || mongoose.model('MessageClass', MessageSchema)

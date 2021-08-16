@@ -15,47 +15,47 @@ class AdminController {
     }
     manageAccounts(req, res) {
 
-        
+
 
     }
-   async viewUserInfo(req, res) {
-        return await  this.userService.getAll()
-        .then((response) => res.json(response))
-        .catch((err)=>{
-            res.send(403)
-            console.log("err");
-        })
-
-    }
-   async approveLesson(req, res) {
-        return await this.lessonService.getOne(req.params.id)
-        .then((lesson)=>{
-            lesson.approve = "true"
-            this.lessonService.updateOne(lesson._id, lesson)
-            .then((lesson)=>{
-                res.json(lesson)
+    async viewUserInfo(req, res) {
+        return await this.userService.getAll()
+            .then((response) => res.json(response))
+            .catch((err) => {
+                res.send(403)
+                console.log("err");
             })
-        })
+
+    }
+    async approveLesson(req, res) {
+        return await this.lessonService.getOne(req.params.id)
+            .then((lesson) => {
+                lesson.approve = "true"
+                this.lessonService.updateOne(lesson._id, lesson)
+                    .then((lesson) => {
+                        res.json(lesson)
+                    })
+            })
     }
     async approveActivity(req, res) {
         return await this.activityService.getOne(req.params.id)
-        .then((activity)=>{
-            activity.approve = "true"
-            this.activityService.updateOne(activity._id, activity)
-            .then((activity)=>{
-                res.json(activity)
+            .then((activity) => {
+                activity.approve = "true"
+                this.activityService.updateOne(activity._id, activity)
+                    .then((activity) => {
+                        res.json(activity)
+                    })
             })
-        })
     }
-    approveQuiz(req, res) {
+    async approveQuiz(req, res) {
         return await this.quizService.getOne(req.params.id)
-        .then((quiz)=>{
-            quiz.approve = "true"
-            this.quizService.updateOne(quiz._id, quiz)
-            .then((quiz)=>{
-                res.json(quiz)
+            .then((quiz) => {
+                quiz.approve = "true"
+                this.quizService.updateOne(quiz._id, quiz)
+                    .then((quiz) => {
+                        res.json(quiz)
+                    })
             })
-        })
     }
 }
 

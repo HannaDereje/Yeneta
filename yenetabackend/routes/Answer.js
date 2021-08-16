@@ -1,15 +1,15 @@
 const AnswerController = require('../controller/AnswerController');
 const Answer = require("../Models/ContentManagerAnswer")
 const AnswerRepository = require("../repository/ContentManagerRepository")
-const AnswerService = require("../services/ContentManagerAnswerService")
+const AnswerService = require("../service/ContentManagerAnswerService")
 const UserController = require('../controller/UserController');
 const User = require("../Models/User")
 const UserRepository = require("../repository/UserRepository")
-const UserService = require("../services/UserService")
+const UserService = require("../service/UserService")
 
 const Role = require("../Models/Role")
 const RoleRepository = require("../repository/RoleRepository")
-const RoleService = require("../services/RoleService")
+const RoleService = require("../service/RoleService")
 
 const bodyParser = require("body-parser")
 

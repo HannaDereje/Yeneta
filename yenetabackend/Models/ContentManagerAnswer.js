@@ -3,16 +3,17 @@ const Schema = mongoose.Schema;
 
 const ContentManagerAnswerSchema = new Schema({
 
-    answer: { 
+    answer: {
         type: String,
-         required: true 
-        },
-    date: { 
+        required: true
+    },
+    date: {
         type: Date,
-        required: true },
-    user: { 
-        type : Schema.Types.ObjectId,
-        ref:"UserClass"
+        required: true
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "UserClass"
     }
 }, {
         timestamps: true
@@ -31,10 +32,10 @@ class ContentManagerAnswer {
 
 
 ContentManagerAnswerSchema.loadClass(ContentManagerAnswer)
-ContentManagerAnswerSchema.pre('save', function(next) {
+ContentManagerAnswerSchema.pre('save', function (next) {
     if (!this.date) this.start_time = new Date;
     next();
-  });
+});
 
 
-module.exports = mongoose.model('ContentManagerAnswerClass', ContentManagerAnswerSchema)
+module.exports = mongoose.models.ContentManagerAnswer || mongoose.model('ContentManagerAnswerClass', ContentManagerAnswerSchema)

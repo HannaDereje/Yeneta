@@ -1,7 +1,7 @@
 const TopicController = require('../controller/RoleController');
 const Topic = require("../Models/Topic")
 const TopicRepository = require("../repository/TopicRepository")
-const TopicService = require("../services/TopicService")
+const TopicService = require("../service/TopicService")
 const bodyParser = require("body-parser")
 const topicRepo = new TopicRepository(Topic)
 const topicServ = new TopicService(topicRepo)

@@ -4,15 +4,15 @@ const Schema = mongoose.Schema;
 const StudentQuestionSchema = new Schema({
 
     userquestion: {
-         type: String,
-          required: true 
-        },
+        type: String,
+        required: true
+    },
     user: {
-        type : Schema.Types.ObjectId,
-        ref:"UserClass",
-        required:true
-        }
-    
+        type: Schema.Types.ObjectId,
+        ref: "UserClass",
+        required: true
+    }
+
 }, {
         timestamps: true
     })
@@ -30,4 +30,4 @@ class StudentQuestion {
 
 StudentQuestionSchema.loadClass(StudentQuestion)
 
-module.exports = mongoose.model('StudentQuestionClass', StudentQuestionSchema)
+module.exports = mongoose.models.StudentQuestion || mongoose.model('StudentQuestionClass', StudentQuestionSchema)

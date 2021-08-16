@@ -1,8 +1,8 @@
 
-class ContentManagerService{
+class ContentManagerService {
 
-    constructor(contentManagerRepository){
-        this.contentManagerRepository =  contentManagerRepository;     
+    constructor(contentManagerRepository) {
+        this.contentManagerRepository = contentManagerRepository;
         this.insert = this.insert.bind(this);
         this.getAll = this.getAll.bind(this);
         this.getOne = this.getOne.bind(this);
@@ -12,41 +12,41 @@ class ContentManagerService{
         this.getOneByEmail = this.getOneByEmail.bind(this)
     }
 
-     insert(contentManager){
+    insert(contentManager) {
 
         return this.contentManagerRepository.create(contentManager)
-                    
+
     }
-     getAll(){
+    getAll() {
 
         const contentManagers = this.contentManagerRepository.getAll();
-        return new Promise((resolve, reject)=>{resolve(contentManagers)})
+        return new Promise((resolve, reject) => { resolve(contentManagers) })
     }
 
-    getOne(id){
+    getOne(id) {
 
         const contentManager = this.contentManagerRepository.getOne(id);
-        return new Promise((resolve, reject)=>{resolve(contentManager)})
+        return new Promise((resolve, reject) => { resolve(contentManager) })
     }
-getOneByEmail(email){ 
- 
-        const acontentManager = this.contentManagerRepository.getOneByEmail(email); 
-        return new Promise((resolve, reject)=>{resolve(acontentManager)}) 
-    }
-    updateOne(id, contentManager){
+    getOneByEmail(email) {
 
-        const contentManager = this.contentManagerRepository.updateOne(id, contentManager);
-        return new Promise((resolve, reject)=>{resolve(contentManager)})
+        const acontentManager = this.contentManagerRepository.getOneByEmail(email);
+        return new Promise((resolve, reject) => { resolve(acontentManager) })
     }
-    deleteOne(id){
+    updateOne(id, contentManager) {
+
+        const a_contentManager = this.contentManagerRepository.updateOne(id, contentManager);
+        return new Promise((resolve, reject) => { resolve(a_contentManager) })
+    }
+    deleteOne(id) {
 
         const deletedcontentManager = this.contentManagerRepository.deleteOne(id);
-        return new Promise((resolve, reject)=>{resolve(deletedcontentManager)})
+        return new Promise((resolve, reject) => { resolve(deletedcontentManager) })
     }
-    deleteAll(){
+    deleteAll() {
 
         const deletedcontentManagers = this.contentManagerRepository.deleteAll();
-        return new Promise((resolve, reject)=>{resolve(deletedcontentManagers)})
+        return new Promise((resolve, reject) => { resolve(deletedcontentManagers) })
     }
 
 }

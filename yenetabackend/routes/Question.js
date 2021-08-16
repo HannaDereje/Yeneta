@@ -1,7 +1,7 @@
 const QuestionController = require('../controller/QuestionController');
 const Question = require("../Models/Question")
 const QuestionRepository = require("../repository/QuestionRepository")
-const QuestionService = require("../services/QuestionService")
+const QuestionService = require("../service/QuestionService")
 const questionRepo = new QuestionRepository(Question)
 const questionServ = new QuestionService(questionRepo)
 const bodyParser = require("body-parser")

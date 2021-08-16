@@ -1,23 +1,23 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const QuizAnswerSchema = new Schema
-({
-    useranswer: {
-         type: String,
-          required: true 
+    ({
+        useranswer: {
+            type: String,
+            required: true
         },
-    user: {
-        type : Schema.Types.ObjectId,
-        ref:"UserClass",
-        required:true
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: "UserClass",
+            required: true
         },
-    quiz: { 
-        type : Schema.Types.ObjectId,
-        ref:"QuizClass",
-        required:true
-    }
-}, 
- {
+        quiz: {
+            type: Schema.Types.ObjectId,
+            ref: "QuizClass",
+            required: true
+        }
+    },
+    {
         timestamps: true
     })
 class QuizAnswer {
@@ -29,4 +29,4 @@ class QuizAnswer {
 }
 
 QuizAnswerSchema.loadClass(QuizAnswer)
-module.exports = mongoose.model('QuizAnswerClass', QuizAnswerSchema)
+module.exports = mongoose.models.QuizAnswer || mongoose.model('QuizAnswerClass', QuizAnswerSchema)

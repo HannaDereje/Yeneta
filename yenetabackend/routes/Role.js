@@ -1,7 +1,7 @@
 const RoleController = require('../controller/RoleController');
 const Role = require("../Models/Role")
 const RoleRepository = require("../repository/RoleRepository")
-const RoleService = require("../services/RoleService")
+const RoleService = require("../service/RoleService")
 const bodyParser = require("body-parser")
 
 

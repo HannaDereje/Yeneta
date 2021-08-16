@@ -1,8 +1,8 @@
 
-class StudentQuestionService{
+class StudentQuestionService {
 
-    constructor(studentQuestionRepository){
-        this.studentQuestionRepository =  studentQuestionRepository;     
+    constructor(studentQuestionRepository) {
+        this.studentQuestionRepository = studentQuestionRepository;
         this.insert = this.insert.bind(this);
         this.getAll = this.getAll.bind(this);
         this.getOne = this.getOne.bind(this);
@@ -11,37 +11,37 @@ class StudentQuestionService{
         this.updateOne = this.updateOne.bind(this);
     }
 
-     insert(studentQuestion){
+    insert(studentQuestion) {
 
         return this.studentQuestionRepository.create(studentQuestion)
-                    
+
     }
-     getAll(){
+    getAll() {
 
         const studentQuestions = this.studentQuestionRepository.getAll();
-        return new Promise((resolve, reject)=>{resolve(studentQuestions)})
+        return new Promise((resolve, reject) => { resolve(studentQuestions) })
     }
 
-    getOne(id){
+    getOne(id) {
 
         const studentQuestion = this.studentQuestionRepository.getOne(id);
-        return new Promise((resolve, reject)=>{resolve(studentQuestion)})
+        return new Promise((resolve, reject) => { resolve(studentQuestion) })
     }
 
-    updateOne(id, studentQuestion){
+    updateOne(id, studentQuestion) {
 
-        const studentQuestion = this.studentQuestionRepository.updateOne(id, studentQuestion);
-        return new Promise((resolve, reject)=>{resolve(studentQuestion)})
+        const a_studentQuestion = this.studentQuestionRepository.updateOne(id, studentQuestion);
+        return new Promise((resolve, reject) => { resolve(a_studentQuestion) })
     }
-    deleteOne(id){
+    deleteOne(id) {
 
         const deletedstudentQuestion = this.studentQuestionRepository.deleteOne(id);
-        return new Promise((resolve, reject)=>{resolve(deletedstudentQuestion)})
+        return new Promise((resolve, reject) => { resolve(deletedstudentQuestion) })
     }
-    deleteAll(){
+    deleteAll() {
 
         const deletedstudentQuestions = this.studentQuestionRepository.deleteAll();
-        return new Promise((resolve, reject)=>{resolve(deletedstudentQuestions)})
+        return new Promise((resolve, reject) => { resolve(deletedstudentQuestions) })
     }
 
 }

@@ -3,54 +3,54 @@ const Schema = mongoose.Schema;
 
 const StudentSchema = new Schema({
 
-    name: { 
-        type: String, 
-        required: true 
+    name: {
+        type: String,
+        required: true
     },
     email:
-     {     
-        type: String,
-        trim: true,
-        lowercase: true,
-        unique: true,
-        required:true,
-        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
-   },
-    age: { 
-        type: Number, 
+        {
+            type: String,
+            trim: true,
+            lowercase: true,
+            unique: true,
+            required: true,
+            match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+        },
+    age: {
+        type: Number,
         required: true,
-        max:18
-     },
-    prefered_Date: { 
-        type: Date, 
-        required: true 
+        max: 18
     },
-    country: { 
+    prefered_Date: {
+        type: Date,
+        required: true
+    },
+    country: {
         type: String,
-         required: true 
+        required: true
     },
-    image: { 
-         type: String,
-         required: true 
+    image: {
+        type: String,
+        required: true
     },
-    level: { 
-        type: String, 
-        required: true , 
+    level: {
+        type: String,
+        required: true,
         enum: ['BEGINEER', 'INTERMEDIATE', "ADVANCED"]
     },
-    user: { 
-        type : Schema.Types.ObjectId,
-        ref:"UserClass" ,
-        required:true
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "UserClass",
+        required: true
     },
-    lessons:[{
-        type : Schema.Types.ObjectId,
-        ref:"LessonClass",
-        required:true
+    lessons: [{
+        type: Schema.Types.ObjectId,
+        ref: "LessonClass",
+        required: true
     }],
-quizes:[{ 
-        type : Schema.Types.ObjectId, 
-        ref:"QuizClass" 
+    quizes: [{
+        type: Schema.Types.ObjectId,
+        ref: "QuizClass"
     }]
 }, {
         timestamps: true
@@ -77,4 +77,4 @@ class Student {
 StudentSchema.loadClass(Student)
 
 
-module.exports = mongoose.model('StudentClass', StudentSchema)
+module.exports = mongoose.models.Student || mongoose.model('StudentClass', StudentSchema)

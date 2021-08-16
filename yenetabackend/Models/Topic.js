@@ -3,10 +3,10 @@ const Schema = mongoose.Schema;
 
 const TopicSchema = new Schema({
 
-    topic: { 
+    topic: {
         type: String,
-         required: true
-         }
+        required: true
+    }
 }, {
         timestamps: true
     })
@@ -23,4 +23,4 @@ class Topic {
 
 TopicSchema.loadClass(Topic)
 
-module.exports = mongoose.model('TopicClass', TopicSchema)
+module.exports = mongoose.models.Topic || mongoose.model('TopicClass', TopicSchema)

@@ -1,21 +1,21 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const ActivityAnswerSchema = new Schema
-({
-    useranswer: {
-         type: String,
-          required: true 
+    ({
+        useranswer: {
+            type: String,
+            required: true
         },
-    user: {
-        type : Schema.Types.ObjectId,
-        ref:"UserClass"
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: "UserClass"
         },
-    activity: { 
-        type : Schema.Types.ObjectId,
-        ref:"ActivityClass"
-    }
-}, 
- {
+        activity: {
+            type: Schema.Types.ObjectId,
+            ref: "ActivityClass"
+        }
+    },
+    {
         timestamps: true
     })
 
@@ -28,4 +28,4 @@ class ActivityAnswer {
 }
 
 ActivityAnswerSchema.loadClass(ActivityAnswer)
-module.exports = mongoose.model('ActivityAnswerClass', ActivityAnswerSchema)
+module.exports = mongoose.models.ActivityAnswerClass || mongoose.model('ActivityAnswerClass', ActivityAnswerSchema)

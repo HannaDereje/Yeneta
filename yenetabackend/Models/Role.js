@@ -3,23 +3,23 @@ const Schema = mongoose.Schema;
 
 const RoleSchema = new Schema({
 
-    role: { 
-        type: String, 
-        default:"STUDENT",
-        enum : ["STUDENT", "TEACHER", "ADMIN"], 
-        required: true 
+    role: {
+        type: String,
+        default: "STUDENT",
+        enum: ["STUDENT", "TEACHER", "ADMIN"],
+        required: true
     }
 
 })
 
-class Role{
+class Role {
 
-    constructor(role){
-        this.role =role;
+    constructor(role) {
+        this.role = role;
     }
 
 }
 RoleSchema.loadClass(Role)
 
 
-module.exports = mongoose.model('RoleClass', RoleSchema)
+module.exports = mongoose.models.Role || mongoose.model('RoleClass', RoleSchema)

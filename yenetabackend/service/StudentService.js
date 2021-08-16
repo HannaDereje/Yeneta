@@ -1,8 +1,8 @@
 
-class StudentService{
+class StudentService {
 
-    constructor(studentRepository){
-        this.studentRepository =  studentRepository;     
+    constructor(studentRepository) {
+        this.studentRepository = studentRepository;
         this.insert = this.insert.bind(this);
         this.getAll = this.getAll.bind(this);
         this.getOne = this.getOne.bind(this);
@@ -12,41 +12,41 @@ class StudentService{
         this.getOneByEmail = this.getOneByEmail.bind(this)
     }
 
-     insert(student){
+    insert(student) {
 
         return this.studentRepository.create(student)
-                    
+
     }
-     getAll(){
+    getAll() {
 
         const students = this.studentRepository.getAll();
-        return new Promise((resolve, reject)=>{resolve(students)})
+        return new Promise((resolve, reject) => { resolve(students) })
     }
 
-    getOne(id){
+    getOne(id) {
 
         const student = this.studentRepository.getOne(id);
-        return new Promise((resolve, reject)=>{resolve(student)})
+        return new Promise((resolve, reject) => { resolve(student) })
     }
-getOneByEmail(email){ 
- 
-        const auser = this.userRepository.getOneByEmail(email); 
-        return new Promise((resolve, reject)=>{resolve(auser)}) 
-    }
-    updateOne(id, student){
+    getOneByEmail(email) {
 
-        const student = this.studentRepository.updateOne(id, student);
-        return new Promise((resolve, reject)=>{resolve(student)})
+        const auser = this.userRepository.getOneByEmail(email);
+        return new Promise((resolve, reject) => { resolve(auser) })
     }
-    deleteOne(id){
+    updateOne(id, student) {
+
+        const student2 = this.studentRepository.updateOne(id, student);
+        return new Promise((resolve, reject) => { resolve(student2) })
+    }
+    deleteOne(id) {
 
         const deletedstudent = this.studentRepository.deleteOne(id);
-        return new Promise((resolve, reject)=>{resolve(deletedstudent)})
+        return new Promise((resolve, reject) => { resolve(deletedstudent) })
     }
-    deleteAll(){
+    deleteAll() {
 
         const deletedstudents = this.studentRepository.deleteAll();
-        return new Promise((resolve, reject)=>{resolve(deletedstudents)})
+        return new Promise((resolve, reject) => { resolve(deletedstudents) })
     }
 
 }

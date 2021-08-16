@@ -1,59 +1,59 @@
 
-class UserService{
+class UserService {
 
-    constructor(userRepository){
-        this.userRepository =  userRepository;     
+    constructor(userRepository) {
+        this.userRepository = userRepository;
         this.insert = this.insert.bind(this);
         this.getAll = this.getAll.bind(this);
         this.getOne = this.getOne.bind(this);
         this.deleteOne = this.deleteOne.bind(this);
         this.deleteAll = this.deleteAll.bind(this);
         this.updateOne = this.updateOne.bind(this);
-        this.getOneByEmail = this.getOneByEmail.bind(this) 
+        this.getOneByEmail = this.getOneByEmail.bind(this)
         this.getOneByToken = this.getOneByToken.bind(this)
     }
 
-     insert(user){
+    insert(user) {
 
         return this.userRepository.create(user)
-                    
+
     }
-     getAll(){
+    getAll() {
 
         const users = this.userRepository.getAll();
-        return new Promise((resolve, reject)=>{resolve(users)})
+        return new Promise((resolve, reject) => { resolve(users) })
     }
 
-    getOne(id){
+    getOne(id) {
 
         const user = this.userRepository.getOne(id);
-        return new Promise((resolve, reject)=>{resolve(user)})
+        return new Promise((resolve, reject) => { resolve(user) })
     }
-getOneByEmail(email){ 
- 
-        const oneuser = this.userRepository.getOneByEmail(email); 
-        return new Promise((resolve, reject)=>{resolve(oneuser)}) 
-    } 
- 
-    getOneByToken(token){ 
- 
-        const oneuser = this.userRepository.getOneByToken(token); 
-        return new Promise((resolve, reject)=>{resolve(oneuser)}) 
+    getOneByEmail(email) {
+
+        const oneuser = this.userRepository.getOneByEmail(email);
+        return new Promise((resolve, reject) => { resolve(oneuser) })
     }
-    updateOne(id, user){
+
+    getOneByToken(token) {
+
+        const oneuser = this.userRepository.getOneByToken(token);
+        return new Promise((resolve, reject) => { resolve(oneuser) })
+    }
+    updateOne(id, user) {
 
         const a_user = this.userRepository.updateOne(id, user);
-        return new Promise((resolve, reject)=>{resolve(a_user)})
+        return new Promise((resolve, reject) => { resolve(a_user) })
     }
-    deleteOne(id){
+    deleteOne(id) {
 
         const deleteduser = this.userRepository.deleteOne(id);
-        return new Promise((resolve, reject)=>{resolve(deleteduser)})
+        return new Promise((resolve, reject) => { resolve(deleteduser) })
     }
-    deleteAll(){
+    deleteAll() {
 
         const deletedusers = this.userRepository.deleteAll();
-        return new Promise((resolve, reject)=>{resolve(deletedusers)})
+        return new Promise((resolve, reject) => { resolve(deletedusers) })
     }
 
 }

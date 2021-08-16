@@ -6,6 +6,7 @@ class RoleService {
         this.insert = this.insert.bind(this);
         this.getAll = this.getAll.bind(this);
         this.getOne = this.getOne.bind(this);
+        this.getOneById = this.getOneById.bind(this);
         this.deleteOne = this.deleteOne.bind(this);
         this.deleteAll = this.deleteAll.bind(this);
         this.updateOne = this.updateOne.bind(this);
@@ -22,9 +23,14 @@ class RoleService {
         return new Promise((resolve, reject) => { resolve(roles) })
     }
 
-    getOne(id) {
+    getOne(role) {
 
-        const role = this.roleRepository.getOne(id);
+        const role2 = this.roleRepository.getOne(role);
+        return new Promise((resolve, reject) => { resolve(role2) })
+    }
+    getOneById(id) {
+
+        const role = this.roleRepository.getOneById(id);
         return new Promise((resolve, reject) => { resolve(role) })
     }
 

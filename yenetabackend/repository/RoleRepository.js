@@ -20,10 +20,16 @@ class RoleRepository {
         });
     }
 
-    getOne(id) {
+    getOneById(id) {
         return new Promise((resolve, reject) => {
             const oneRole = this.model.findById({ _id: id })
             resolve(oneRole)
+        });
+    }
+    getOne(role) {
+        return new Promise((resolve, reject) => {
+            const oneRole2 = this.model.findOne({ role: role })
+            resolve(oneRole2)
         });
     }
     updateOne(id, role) {

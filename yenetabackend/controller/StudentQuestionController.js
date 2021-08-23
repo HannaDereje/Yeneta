@@ -1,11 +1,13 @@
 class StudentQuestionController{
 
-    constructor(studentService, userService, studentQuestionService){
+    constructor(studentService, userService, studentQuestionService, contentmanagerAnswerService){
         this.studentService = studentService;
         this.userService = userService;
         this.studentQuestionService = studentQuestionService;
+        this.contentmanagerAnswerService = contentmanagerAnswerService;
         this.addQuestion = this.addQuestion.bind(this);
         this.getProfileInfo = this.getProfileInfo.bind(this)
+        this.getAllquestionsandAnswer = this.getAllquestionsandAnswer.bind(this)
     }
 
     async addQuestion(req, res){
@@ -22,6 +24,21 @@ class StudentQuestionController{
        await this.studentQuestionService.insert(studentQuestion)
        
        return res.status(200).json(studentQuestion)
+    }
+    async getAllquestionsandAnswer(req, res){
+        if(req.user_id === null){
+            res.status(403)
+            return res.send("You need to sign in.")
+        }
+        this.studentQuestionService.getAll()
+            .then((questions)=>{
+
+                this.contentmanagerAnswerService.getAll()
+                    .then((answers)=>{
+                        return res.json({questions:questions, answers:answers})
+                    })
+            })
+       
     }
 
     async getProfileInfo(req, res){

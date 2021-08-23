@@ -38,7 +38,7 @@ module.exports = (server) => {
         body('experience').notEmpty(),
         new ContentManagerController(contentServ, userServ, roleServ).register)
 
-    server.get("/getProfile",
+    server.get("/getTeacher",
         new UserController(userServ, roleServ).verifyToken,
         new UserController(userServ, roleServ).authRole("TEACHER"),
         new ContentManagerController(contentServ, userServ, roleServ).getProfileInfo)

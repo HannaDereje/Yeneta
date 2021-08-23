@@ -5,14 +5,55 @@ import StudentNavBar from "./StudentNavComponent"
 import '../css/register.css'
 import Topic from "./TopicComponent"
 import axios from "axios"
+import Lessons from './LessonsComponent';
 
 export default class ClassRoom extends Component {
 
-    constructor(props) {
-        super(props)
-        this.state = { show: false }
+    constructor() {
+        super()
+        this.state = {
+            lesson: false,
+            les: "",
+            lessons: []
+        }
         this.handleShow = this.handleShow.bind(this)
         this.handleClose = this.handleClose.bind(this)
+        this.getOne = this.getOne.bind(this)
+        this.componentDidMount = this.componentDidMount.bind(this)
+        this.resetClicks = this.resetClicks.bind(this)
+        this.handleLessonsClick = this.handleLessonsClick.bind(this)
+    }
+    componentDidMount() {
+        const lesson2 = []
+        axios.get("http://localhost:5000/getAllLessons")
+            .then(res => {
+                const lesssons = res.data
+                for (var i = 0; i < lesssons.length; i++) {
+                    const alesson = lesssons[i]
+                    if (alesson.level == "Intermediate") {
+                        lesson2.push(alesson)
+
+                        //console.log(alesson)
+                    } this.setState({ lessons: lesson2 })
+                } this.setState({ lessons: lesson2 })
+
+
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+    }
+    resetClicks() {
+        this.setState({
+
+            les: ""
+        })
+    }
+    handleLessonsClick(id) {
+        //this.componentDidMount()
+        this.resetClicks();
+        this.getOne(id)
+
     }
 
 
@@ -24,8 +65,23 @@ export default class ClassRoom extends Component {
     handleClose() {
         this.setState({ show: false });
     }
+    getOne(id) {
+        //console.log(id)
+
+        axios.get(`http://localhost:5000/getLesson/${id}`)
+            .then(res => {
+
+                this.setState({ les: res.data })
+                console.log(res.data)
+
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+    }
 
     render() {
+
         return (
 
             <StudentNavBar handleShow={this.handleShow}>
@@ -36,19 +92,23 @@ export default class ClassRoom extends Component {
                         <div className="title">
                             <h4 className="text-center">Lessons</h4>
                         </div>
-                        <ul>
-                            <li><i ></i>Lesson 1</li>
-                            <li>Lesson 2</li>
-                            <li>Lesson 2</li>
-                            <li>Lesson 3</li>
-                        </ul>
+                        {this.state.lessons.map(lesson =>
+                            <ul>
+
+                                <li onClick={() => this.handleLessonsClick(lesson._id)} >Lesson {lesson.number}</li>
+
+                            </ul>)}
                     </div>
+
                     <div id="mainpage">
                         <p className="intro">Basic Introduction</p>
                         <div className="note_des divsindedent">
                             <p className="title">Notes</p>
+
                             <Card>
-                                <Card.Body>This is some text within a card body.loremVoluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</Card.Body>
+
+                                <Card.Body key={this.state.les._id}>{this.state.les.note}</Card.Body>
+
                             </Card>
 
                         </div>
@@ -56,17 +116,19 @@ export default class ClassRoom extends Component {
                             <p className="title">Description With Image</p>
                             <Card className="small">
 
-                                <Card.Img variant="bottom" src="../images/img1.jpg" />
+                                <Card.Img variant="bottom" src={this.state.les.image} />
                                 <Card.Body className="img_des_p">
-                                    Some quick example text to build on the card title and make up the bulk
-                                    of the card's content.
-                        </Card.Body>
+                                    {this.state.les.imageDescription}
+                                </Card.Body>
                             </Card>
                         </div>
                         <div className="note_des divsindedent">
                             <p className="title">Video Lesson</p>
                             <Card>
-                                <Card.Body><iframe></iframe></Card.Body>
+                                <Card.Body>
+
+                                    <iframe width="420" height="315" src={this.state.les.videoLink} frameborder="0" allowfullscreen></iframe>
+                                </Card.Body>
                             </Card>
                         </div>
 
@@ -85,10 +147,11 @@ export default class ClassRoom extends Component {
                         </div>
 
                     </div>
+
                 </div>
             </StudentNavBar>
         )
 
-
     }
+
 }

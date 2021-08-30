@@ -12,7 +12,24 @@ class AnswerController{
     }
 
      insert(req, res){
-         return  this.answerService.insert(req.body)
+
+        const answer ={
+            answer : Object.entries(req.body.answer)
+        }
+        const one={}
+
+        for(let i=1; i< answer.answer.length;i++){
+           
+            one["answer"]=answer.answer[i][1]
+            one["date"]=new Date
+            one["question"]= answer.answer[i][0].split("_")[1]
+            one["user"]=req.user_id._id
+            
+        }
+        console.log(one)
+        
+
+         return  this.answerService.insert(one)
                                 .then((response) => res.json(response))
                                 .catch((err)=>{
                                     res.status(403)

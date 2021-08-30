@@ -4,11 +4,14 @@ class QuestionService{
     constructor(questionRepository){
         this.questionRepository =  questionRepository;     
         this.insert = this.insert.bind(this);
+        this.insertMany = this.insertMany.bind(this)
         this.getAll = this.getAll.bind(this);
         this.getOne = this.getOne.bind(this);
         this.deleteOne = this.deleteOne.bind(this);
         this.deleteAll = this.deleteAll.bind(this);
         this.updateOne = this.updateOne.bind(this);
+        this.getRandom = this.getRandom.bind(this)
+        this.getMany = this.getMany.bind(this)
     }
 
      insert(question){
@@ -16,9 +19,23 @@ class QuestionService{
         return this.questionRepository.create(question)
                     
     }
+
+    insertMany(questions) {
+        return this.questionRepository.insertMany(questions)
+    }
+
+    getRandom() {
+        return this.questionRepository.getRandom()
+    }
      getAll(){
 
         const questions = this.questionRepository.getAll();
+        return new Promise((resolve, reject)=>{resolve(questions)})
+    }
+
+    getMany(ids){
+
+        const questions = this.questionRepository.getMany(ids);
         return new Promise((resolve, reject)=>{resolve(questions)})
     }
 

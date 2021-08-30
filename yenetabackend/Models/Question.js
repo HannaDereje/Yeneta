@@ -4,18 +4,18 @@ const Schema = mongoose.Schema;
 const QuestionSchema = new Schema({
 
     content: { type: String, required: true },
-    answer: { type: String, required: true },
-    level: { type: String, required: true }
+    level :{type:String},
+    answer: { type: String, required: true }
 }, {
         timestamps: true
     })
 
 class Question {
 
-    constructor(content, answer) {
+    constructor(content, level, answer) {
         this.content = content;
         this.answer = answer;
-
+        this.level = level;
     }
 
 }
@@ -23,4 +23,4 @@ class Question {
 
 QuestionSchema.loadClass(Question)
 
-module.exports = mongoose.models.QuestionClass || mongoose.model('QuestionClass', QuestionSchema)
+module.exports = mongoose.model('QuestionClass', QuestionSchema)

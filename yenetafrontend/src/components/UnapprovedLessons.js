@@ -7,23 +7,35 @@ export default class Studentlist extends Component {
     constructor() {
         super()
         this.state = {
-            approvedLessons: []
+            approvedLessons: [],
+            approvedLessons2: []
         }
         this.approve = this.approve.bind(this)
+
         this.componentDidMount = this.componentDidMount.bind(this)
     }
-    async approve() {
-        const updateLesson = lesson => {
-            axios.put(`http://localhost:5000/approveLesson/${lesson.id}`, lesson)
-                .then(res => {
-                    this.setState({ approvedLessons: res.data })
+    async approve(id) {
+        console.log(id)
+        axios.get(`http://localhost:5000/getLesson/${id}`)
+            .then(res => {
+                if (res.data.approved == false) {
+                    //res.data.approved=true
+                    axios.put(`http://localhost:5000/approveLesson/${id}`)
+                        .then(res => {
+                            console.log(res)
+                            this.componentDidMount()
+                        })
+                }
 
-                })
-                .catch(function (error) {
-                    console.log(error)
-                })
-        }
+                console.log(res)
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+
+
     }
+
     componentDidMount() {
         const lesson2 = []
         axios.get("http://localhost:5000/getAllLessons")
@@ -44,7 +56,7 @@ export default class Studentlist extends Component {
 
                 }
                 this.setState({ approvedLessons: lesson2 })
-
+                console.log(lesson2)
 
             })
             .catch(function (error) {
@@ -65,22 +77,21 @@ export default class Studentlist extends Component {
                     <th>Topic</th>
                     <th>level</th>
                     <th>note</th>
-                    <th>image</th>
-                    <th>image Description</th>
-                    <th>audio</th>
                     <th>video link</th>
+                    <th>Activity Questions</th>
+                    <th>Activity Answers</th>
                     {this.state.approvedLessons.map(approved =>
                         <tr>
                             <td key={approved.id}>{approved.number}</td>
                             <td key={approved.id}>{approved.topic}</td>
                             <td key={approved.id}>{approved.level}</td>
                             <td key={approved.id}>{approved.note}</td>
-                            <td key={approved.id}>{approved.image}</td>
-                            <td key={approved.id}>{approved.imageDescription}</td>
-                            <td key={approved.id}>{approved.audio}</td>
                             <td key={approved.id}>{approved.videoLink}</td>
-                            <Button type="submit" onClick={this.approve} className="btnstyle"><td>Approve</td></Button>
-                        </tr>)}
+                            <td key={approved.id}>{approved.questions}</td>
+
+                            <Button type="submit" onClick={() => this.approve(`${approved._id}`)} className="btnstyle"><td>Approve</td></Button>
+                        </tr>
+                    )}
 
                 </Table>
             </div >

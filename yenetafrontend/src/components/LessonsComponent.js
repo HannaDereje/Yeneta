@@ -7,17 +7,36 @@ import HomeNavbar from './HomeNavbarComponent'
 import { Row, Col } from "react-bootstrap"
 import '../css/register.css';
 import { isNumber } from 'util';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+import { CKEditor } from '@ckeditor/ckeditor5-react'
+
 export default class Lessons extends Component {
     constructor(props) {
         super(props)
         this.state = {
             input: {},
-            errors: {}
+            errors: {},
+            content: "",
+            questions: [],
+            answers: [],
+            activity2: {}
+
 
         }
         this.handleChange = this.handleChange.bind(this)
+        this.handleCkeditorState = this.handleCkeditorState.bind(this)
+        this.handleCkeditorState2 = this.handleCkeditorState2.bind(this)
         this.validate = this.validate.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
+        this.handleChange2 = this.handleChange2.bind(this)
+        this.createUI = this.createUI.bind(this)
+        this.addClick = this.addClick.bind(this)
+
+    }
+    handleCkeditorState2(i, e, editor) {
+        let questions = [...this.state.questions]
+        questions[i] = editor.getData()
+        this.setState({ questions })
 
     }
     handleChange(e) {
@@ -37,37 +56,96 @@ export default class Lessons extends Component {
             input: input
         })
     }
+    handleChange2(i, e) {
+        let answers = [...this.state.answers]
+        answers[i] = e.target.value
+        this.setState({ answers })
+    }
+    createUI() {
 
+        return ([this.state.questions.map((el, i) =>
+            <div key={i}>
+                <Form.Group className="form_width ">
+                    <Form.Label>Question</Form.Label>
+                    <CKEditor
+                        editor={ClassicEditor}
+                        onInit={editor => {
+
+                        }}
+
+                        config={{
+                            ckfinder: {
+                                uploadUrl: "http://localhost:5000/addPicture"
+                            }
+                        }}
+                        value={el || ''}
+                        onChange={this.handleCkeditorState2.bind(this, i)}
+
+                    />
+                    <br />
+                    <Form.Label>Answer</Form.Label>
+                    <input type="text" onChange={this.handleChange2.bind(this, i)} />
+
+                </Form.Group></div>)]
+        )
+
+
+
+
+
+    }
+
+
+    addClick() {
+        this.setState(prevState => ({ questions: [...prevState.questions, ''] }))
+        this.setState(prevState => ({ answers: [...prevState.answers, ''] }))
+    }
+    handleSubmit(event) {
+        console.log(this.state.questions)
+        console.log(this.state.answers)
+        event.preventDefault()
+    }
     onSubmit(e) {
+        const q = this.state.questions
+        const a = this.state.answers
+        const act = { content: q, answer: a }
+        this.setState({
+            activity2: act
+        })
+        // console.log(this.state.activity2)
+        console.log(act)
+        //console.log(activity)
         e.preventDefault();
         if (this.validate()) {
+            const date = new Date(this.state.input["due_date"])
             const lesson = {
-                number: this.state.input["number"],
+                number: parseInt(this.state.input["number"]),
                 level: this.state.input["level"],
-                note: this.state.input["note"],
-                imageInput: this.state.input["imageInput"],
-                imageDescription: this.state.input["imageDescription"],
-                audio: this.state.input["audio"],
+                note: this.state.content,
                 topic: this.state.input["topic"],
+                activity: act,
+                due_date: date.toDateString(),
                 videoLink: this.state.input["videoLink"]
 
             }
-
-            axios.post("http://localhost:5000/addLesson", lesson)
+            console.log(lesson)
+            axios.post("http://localhost:5000/insertLesson", lesson)
                 .then(res => {
                     console.log(res)
+                    console.log("fdghj")
+                    //const questions = res.activity
+                    //console.log(questions)
+
                 })
+
             let input = {};
             input["number"] = "";
             input["level"] = "";
             input["note"] = "";
-            input["imageInput"] = "";
-            input["imageDescription"] = "";
-            input["audio"] = "";
             input["topic"] = "";
             input["videoLink"] = "";
             this.setState({ input: input });
-            // window.location.href = "/teacherHome"
+            // window.location.href = "/teacherHome"*/
 
         }
 
@@ -89,23 +167,7 @@ export default class Lessons extends Component {
             isValid = false;
             errors["level"] = "Please enter the lesson level.";
         }
-        if (!input["note"]) {
-            isValid = false;
-            errors["note"] = "Please enter note.";
-        }
-        if (!input["imageInput"]) {
-            isValid = false;
-            errors["image"] = "Please enter image.";
-        }
 
-        if (!input["imageDescription"]) {
-            isValid = false;
-            errors["imageDescription"] = "Please enter image description.";
-        }
-        if (!input["audio"]) {
-            isValid = false;
-            errors["audio"] = "Please enter audio.";
-        }
         if (!input["videoLink"]) {
             isValid = false;
             errors["videoLink"] = "Please enter video link.";
@@ -123,6 +185,14 @@ export default class Lessons extends Component {
         return isValid;
 
     }
+    handleCkeditorState(e, editor) {
+        const data = editor.getData();
+        this.setState({
+            content: data
+        })
+        console.log(data)
+    }
+
 
     render() {
         return (
@@ -152,40 +222,47 @@ export default class Lessons extends Component {
                             </Form.Group>
                             <Form.Group className="form_width">
                                 <Form.Label>Notes</Form.Label>
-                                <p><textarea placeholder="Note" name="note" value={this.state.input.note} onChange={this.handleChange} className="areawidth" cols="74" rows="6"></textarea></p>
+                                <CKEditor
+                                    name="note"
+                                    value={this.state.input.note}
+                                    editor={ClassicEditor}
+                                    onInit={editor => {
+
+                                    }}
+
+                                    config={{
+                                        ckfinder: {
+                                            uploadUrl: "http://localhost:5000/addPicture"
+                                        }
+                                    }}
+
+                                    onChange={this.handleCkeditorState}
+
+                                />
                                 <div className="text-danger">{this.state.errors.notes}</div>
                             </Form.Group>
                             <Form.Group className="form_width">
-                                <Form.Label>Image Input</Form.Label>
-                                <Form.File name="imageInput" value={this.state.input.imageInput} onChange={this.handleChange}
-                                    id="custom-file"
-                                    label="Custom file input"
-                                    custom
-                                /><br /><br />
-                                <div className="text-danger">{this.state.errors.imageInput}</div>
-                                <p><textarea placeholder="Image Description" name="imageDescription" value={this.state.input.imageDescription} onChange={this.handleChange} className="areawidth" cols="74" rows="4"></textarea></p>
-                                <div className="text-danger">{this.state.errors.imageDescription}</div>
-                            </Form.Group>
-                            <Form.Group className="form_width">
-                                <Form.Label>Audio</Form.Label>
-                                <Form.File name="audio" value={this.state.input.audio} onChange={this.handleChange}
-                                    id="custom-file"
-                                    label="Custom file input"
-                                    custom
-                                />
-                                <div className="text-danger">{this.state.errors.audio}</div>
-                            </Form.Group>
-                            <Form.Group className="form_width">
                                 <Form.Label>Video Link</Form.Label>
-                                <Form.Control type="text" name="videoLink" value={this.state.ideoLink} onChange={this.handleChange} placeholder="Lesson Video Link" />
+                                <Form.Control type="text" name="videoLink" value={this.state.videoLink} onChange={this.handleChange} placeholder="Lesson Video Link" />
                                 <div className="text-danger">{this.state.errors.videoLink}</div>
                             </Form.Group>
-                            <Form.Group className="form_width btnstyle">
-                                <Button type="submit" onClick={this.onSubmit} className="btnstyle">Add Lesson</Button>
-                            </Form.Group>
+
                         </Form>
 
-                        <Activity></Activity>
+
+                        <h4 className="text-center">Activity</h4>
+                        <Form.Group controlId="duedate">
+                            <Form.Label>Due Date</Form.Label>
+                            <Form.Control type="date" name="due_date" value={this.state.input.due_date} onChange={this.handleChange} placeholder="Due date" />
+                        </Form.Group>
+                        <Form.Group className="form_width btnstyle">
+                            <Button onClick={this.addClick} className="btnstyle">Add Questions</Button>
+                            {this.createUI()}
+                        </Form.Group>
+
+                        <Form.Group className="form_width btnstyle">
+                            <Button type="submit" onClick={this.onSubmit} className="btnstyle">Add Lesson</Button>
+                        </Form.Group>
 
 
                     </div>

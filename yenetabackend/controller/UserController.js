@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken")
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const {check, validationResult, body} = require("express-validator");
 
 const nodemailer = require("nodemailer") 

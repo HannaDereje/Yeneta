@@ -1,14 +1,12 @@
 import React, { Component } from 'react'
-import { Card } from "react-bootstrap"
+import { Card, Form, Button} from "react-bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
 import StudentNavBar from "./StudentNavComponent"
 import '../css/register.css'
-import { Button, Form } from "react-bootstrap"
 import Topic from "./TopicComponent"
 import axios from "axios"
-import Lessons from './LessonsComponent';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-import { CKEditor } from '@ckeditor/ckeditor5-react'
+import {CKEditor} from '@ckeditor/ckeditor5-react'
 
 export default class ClassRoom extends Component {
 
@@ -17,41 +15,178 @@ export default class ClassRoom extends Component {
         this.state = {
             lesson: false,
             les: "",
+            topic:"",
+            user:"",
+            topics:[],
+            quizQuestions:[],
+            quiz:[], 
+            todayQuiz:[],
+            quizTaken:false,
+            activityTaken:false,
+            number:'',
+            content:'',
+            answer : {},
+            correctOnes:[],
+            tobeTaken:"",
+            tobelearnt:"",
             activity: "",
             questions2: [],
             lessons: [],
             value: "",
             answers: [],
             result: "",
-            total: ""
+            total: "",
+            availableLessons:[]
         }
         this.handleShow = this.handleShow.bind(this)
         this.handleClose = this.handleClose.bind(this)
         this.getOne = this.getOne.bind(this)
-        this.componentDidMount = this.componentDidMount.bind(this)
         this.resetClicks = this.resetClicks.bind(this)
-        this.onSubmit = this.onSubmit.bind(this)
         this.handleLessonsClick = this.handleLessonsClick.bind(this)
+        this.handleQuiz = this.handleQuiz.bind(this)
+        this.getTopics = this.getTopics.bind(this)
+        this.submitAnswerForQuiz = this.submitAnswerForQuiz.bind(this)
+        this.handleAnswer = this.handleAnswer.bind(this)
+        this.handleLesson = this.handleLesson.bind(this)
+        this.handlechat = this.handlechat.bind(this)
         this.handleChange = this.handleChange.bind(this)
+        this.onSubmitActivity = this.onSubmitActivity.bind(this)
+        this.getAvailableLessons = this.getAvailableLessons.bind(this)
     }
 
-    handleChange(i, e) {
-        let answers = [...this.state.answers]
-        answers[i] = e.target.value
-        this.setState({ answers })
+    handleLesson(level, header) {
+        
+        axios.get(`http://localhost:5000/takeLesson?level=${level}`, { headers: header })
+            .then(res => {
+
+                console.log(res.data)
+                axios.get("http://localhost:5000/getStudent",  {headers:header})
+                .then(response=>{
+
+                var lesson = response.data.Student.lessons
+                var tobelearnt = lesson[lesson.length - 1].split("_")[0]
+                this.setState({tobelearnt:tobelearnt})
+
+                axios.get(`http://localhost:5000/getLesson/${tobelearnt}`, { headers: header })
+                    .then(response => {
+                        console.log(response)
+                        this.setState({ les: response.data })
+                        axios.get(`http://localhost:5000/getActivity/${response.data.activity}`)
+                            .then(response => {
+                                console.log(response)
+                                this.setState({ activity: response.data })
+                                const questions = []
+                                for (let i = 0; i < response.data.questions.length; i++) {
+
+                                    axios.get(`http://localhost:5000/getQuestion/${response.data.questions[i]}`)
+                                        .then(response => {
+                                            console.log(response)
+                                            questions.push(response.data)
+
+
+                                            this.setState({ questions2: questions })
+                                        })
+
+                                }
+                            })
+                    })
+
+                })
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+
+        }
+
+    handleQuiz(level, header){
+
+        axios.get(`http://localhost:5000/takeQuiz?level=${level}`, {headers:header})
+        .then(res => {
+            var ids=[]
+
+            axios.get("http://localhost:5000/getStudent",  {headers:header})
+             .then(response=>{
+
+                console.log(response)
+                var quiz = response.data.Student.quizes
+                var tobeTaken = quiz[quiz.length-1].split("_")[0]
+                this.setState({tobeTaken:tobeTaken})
+
+                axios.get(`http://localhost:5000/getQuiz/${tobeTaken}`,  {headers:header})
+                    .then(response=>{
+                        console.log(response)
+
+                       var questionids= response.data.questions
+
+                       questionids.forEach(element=>{
+                           ids.push(element)
+                       })
+
+                       console.log(ids)
+
+                     axios.post("http://localhost:5000/getMany", {ids:ids}, {headers:header})  
+                           .then(response=>{
+                               console.log(response.data)
+
+                               this.setState({todayQuiz: response.data})
+                           })
+                    })
+
+             })
+        })
+        .catch(function (error) {
+            console.log(error)
+        }) 
+
     }
-    onSubmit(e) {
+
+    handleAnswer(e){
+        
+        let answer = this.state.answer
+
+        
+        this.setState({number : e.target.name
+            , content:e.target.value})
+        
+        answer[this.state.number] = this.state.content
+
+        this.setState({
+            answer:answer
+        })
+
+        console.log(this.state.answer)
+    }
 
 
 
+
+    getTopics(){
+
+        axios.get(`http://localhost:5000/getAllTopics`)
+        .then(res => {
+
+            this.setState({topics:res.data})
+            console.log(res.data)
+        })
+        .catch(function (error) {
+            console.log(error)
+        }) 
+
+    }
+
+
+
+
+    onSubmitActivity(e) {
         e.preventDefault()
         let j = 0
-        console.log(this.state.answers)
         let a1 = this.state.answers
+
+        console.log(this.state.tobelearnt)
+
         for (var i = 0; i < this.state.questions2.length; i++) {
 
-            //const answer = this.state.answers["answers"]
-            // this.state.answers.push(answer)
             let a2 = this.state.questions2[i].answer
             console.log(a2)
             if (a1[i] == a2) {
@@ -65,123 +200,236 @@ export default class ClassRoom extends Component {
                 }
 
             }
-            // console.log(j)
         }
-        this.setState({
-            result: j,
-            total: this.state.questions2.length
+        
+        var info ={
+            result:j,
+            activity:this.state.activity._id,
+            id:this.state.tobelearnt
+        }
+         var header ={
+            "x-access-token": localStorage.getItem("token")
+        } 
 
+        axios.post("http://localhost:5000/getResult",info, {headers:header})
+             .then(res=>{
 
-
-        })
-    }
-
-    componentDidMount() {
-        const lesson2 = []
-        axios.get("http://localhost:5000/getAllLessons")
-            .then(res => {
-                const lesssons = res.data
-                for (var i = 0; i < lesssons.length; i++) {
-                    const alesson = lesssons[i]
-                    if (alesson.level == "Intermediate") {
-                        lesson2.push(alesson)
-
-                        //console.log(alesson)
-                    } this.setState({ lessons: lesson2 })
-                } this.setState({ lessons: lesson2 })
-
-
+                this.setState({activityTaken:true})
+                this.setState({
+                    result: j,
+                    total: this.state.questions2.length
+                })
+                console.log(res.data)
             })
             .catch(function (error) {
                 console.log(error)
             })
+
+       
+
+
     }
+
+    handlechat(topic, header){
+
+
+        axios.get("http://localhost:5000/getCurrentUser", {headers:header})
+            .then(res => {
+                this.setState({ user: res.data })
+                if(topic && topic!== ""){
+                    window.location.href=`/room?topic=${topic}&username=${this.state.user.username}&id=${this.state.user._id}`
+                }
+        })
+            .catch(function (error) {
+                console.log(error)
+        })
+    }
+
+    
+    componentDidMount() {
+
+
+        const header ={
+            "x-access-token": localStorage.getItem("token")
+        }
+
+        const level = new URLSearchParams(this.props.location.search).get("level ")
+        console.log(level, this.props)
+
+
+        this.getAvailableLessons()
+        axios.get("http://localhost:5000/getStudent", { headers: header })
+            .then(response => {
+
+                var lesson = response.data.Student.lessons
+
+                if(lesson.length==0){
+                    this.handleLesson(level, header);
+                    
+                }
+                else if(lesson.length == 3){
+                    this.handleQuiz(level, header);
+                }
+                else{
+
+                    if(lesson[lesson.length - 1].split("_")[1] == "notsubmitted"){
+                        this.setState({tobelearnt:lesson[lesson.length - 1].split("_")[0]})
+
+                        axios.get(`http://localhost:5000/getLesson/${lesson[lesson.length - 1].split("_")[0]}`, { headers: header })
+                    .then(response => {
+                        console.log(response)
+                        this.setState({ les: response.data })
+                        axios.get(`http://localhost:5000/getActivity/${response.data.activity}`)
+                            .then(response => {
+                                console.log(response)
+                                this.setState({ activity: response.data })
+                                const questions = []
+                                for (let i = 0; i < response.data.questions.length; i++) {
+
+                                    axios.get(`http://localhost:5000/getQuestion/${response.data.questions[i]}`)
+                                        .then(response => {
+                                            console.log(response)
+                                            questions.push(response.data)
+
+
+                                            this.setState({ questions2: questions })
+                                        })
+
+                                }
+                            })
+                    })
+                    }else{
+                        this.handleLesson(level, header);
+
+                }
+            }
+
+                            })
+            .catch(function (error) {
+                console.log(error)
+            })
+
+            const topic = new URLSearchParams(this.props.location.search).get('topic')
+
+            this.handlechat(topic, header)
+            this.getTopics()
+           // this.getQuiz(level, header)
+
+
+       
+    }
+
+    componentDidUpdate(){
+
+    }
+
+    getAvailableLessons(){
+
+        const header ={
+            "x-access-token": localStorage.getItem("token")
+        }
+        axios.get("http://localhost:5000/getAvailable",  {headers:header})
+        .then(response=>{
+           this.setState({availableLessons:response.data})
+           console.log(response.data)
+        })
+    }
+
+
+
+    submitAnswerForQuiz(e){
+
+        e.preventDefault();  
+            const info ={
+                answer:this.state.answer,
+                quiz_id:this.state.tobeTaken
+            }
+            console.log(info)
+
+            const header ={
+                "x-access-token": localStorage.getItem("token")
+            }
+
+            axios.post("http://localhost:5000/getQuizResult", info, {headers:header})
+                 .then(response=>{
+                    this.setState({quizTaken:true})
+                    console.log(response.data)
+
+
+                    this.setState({content:""})
+                 })
+
+    }
+
     resetClicks() {
         this.setState({
-
+            lesson: false,
             les: ""
         })
     }
     handleLessonsClick(id) {
-        //this.componentDidMount()
         this.resetClicks();
         this.getOne(id)
 
     }
 
-
     handleShow() {
         this.setState({ show: true });
-        console.log("hhhfd")
     }
 
     handleClose() {
         this.setState({ show: false });
     }
     getOne(id) {
-        //console.log(id)
-
         axios.get(`http://localhost:5000/getLesson/${id}`)
             .then(res => {
-                console.log(res.data)
+                this.setState({ lesson: true })
                 this.setState({ les: res.data })
-
-                axios.get(`http://localhost:5000/getActivity/${res.data.activity}`)
-                    .then(res => {
-                        //  console.log(res)
-                        res.data.due_date = new Date(res.data.due_date).toDateString()
-                        this.setState({ activity: res.data })
-                        //console.log(res.activity)
-
-                        const questions = []
-                        // console.log(res.data.questions.length)
-                        for (let i = 0; i < res.data.questions.length; i++) {
-
-                            axios.get(`http://localhost:5000/getQuestion/${res.data.questions[i]}`)
-                                .then(res => {
-                                    //  console.log(res.data)
-                                    questions.push(res.data)
-                                    // this.setState((prev)=>({ questions: [...prev, res.data ]}))
-                                    // console.log(res.data)
-                                    this.setState({ questions2: questions })
-                                })
-
-                        }
-                        //this.setState({ questions2 })
-
-                        //console.log(this.state.questions2)
-                    })
-
-
-
-
+                console.log(res.data)
             })
             .catch(function (error) {
                 console.log(error)
             })
     }
 
+    handleChange(i, e) {
+        let answers = [...this.state.answers]
+        answers[i] = e.target.value
+        this.setState({ answers })
+
+    }
+
+    
+
+
     render() {
+
         return (
 
-            <StudentNavBar handleShow={this.handleShow}>
-
+            <StudentNavBar handleShow={this.handleShow} name ="Create Chat">
+                <Topic show={this.state.show} handleShow={this.handleShow} handleClose={this.handleClose} topics={this.state.topics}></Topic>
                 <div className="mainContainer bgpic">
 
                     <div id="sidebar">
                         <div className="title">
                             <h4 className="text-center">Lessons</h4>
                         </div>
-                        {this.state.lessons.map(lesson =>
-                            <ul>
 
-                                <li onClick={() => this.handleLessonsClick(lesson._id)} >Lesson {lesson.number}</li>
+                        <ul>
+                            {this.state.availableLessons.map((list, index)=>{
 
-                            </ul>)}
+                               return <li onClick={() => this.handleLessonsClick(list.split("_")[0])} >Lesson {index+1}</li>
+
+                            })}
+                           
+                        </ul>
                     </div>
 
-                    <div id="mainpage">
+                   
 
+                    <div id="mainpage">
+                        <p className="intro">Basic Introduction</p>
+                        
                         <p className="topic" key={this.state.les._id}>{this.state.les.topic}</p>
                         <div className="note_des divsindedent">
                             <p className="title">Notes</p>
@@ -202,6 +450,8 @@ export default class ClassRoom extends Component {
 
                         </div>
 
+
+        
                         <div className="note_des divsindedent">
                             <p className="title">Video Lesson</p>
                             <Card>
@@ -211,14 +461,13 @@ export default class ClassRoom extends Component {
                                 </Card.Body>
                             </Card>
                         </div>
+                        
 
                         <div className="note_des divsindedent">
                             <p className="title">Today's Activity</p>
-                            <Form.Label className="topic2">Due Date = {this.state.activity.due_date} </Form.Label>
-                            <hr />
-
-
-
+                        
+                            <Form className="textStyle ">
+                      
                             {this.state.questions2.map((e1, i) =>
                                 <Form.Group>
                                     <CKEditor
@@ -232,20 +481,70 @@ export default class ClassRoom extends Component {
 
                                     />
                                     <br />
-                                    <input type="text" onChange={this.handleChange.bind(this, i)} placeholder="answer" />
-                                    <br /><br />
+
+                                        <Form.Control  type="text" placeholder="add Answer" onChange={this.handleChange.bind(this, i)} /><br/>
                                 </Form.Group>
                             )}
                             <br />
-                            <Button type="submit" onClick={this.onSubmit} className="btnstyle">Submit</Button>
+
+                            <Form.Group className="btnStyle2">
+                                 <Button type="submit" onClick={this.onSubmitActivity} className="btnstyle">Submit Answer</Button>
+                            </Form.Group>
+                            </Form>
                             <br /><br />
-                            <div className="text-danger">{this.state.result}/{this.state.total}</div>
-                            <div className="text-danger">{this.state.comment}</div>
+                             {this.state.activityTaken === true?<div><div className="text-danger">{this.state.result}/{this.state.total}</div>
+                            <div className="text-danger">{this.state.comment}</div></div>:"" }
+                            
                         </div>
 
-                    </div>
+                        <div>
+                        <Form className="textStyle ">
+                      
+                            {this.state.todayQuiz.map((list, index)=>
+                        
 
-                </div>
+                        <div className="questions">
+                            <div className="top">
+                        <CKEditor
+                                key={list._id}
+                                data={list.content}
+                                disabled={true}
+                                editor={ClassicEditor}
+                                config={{
+                                    isReadOnly: true,
+                                    toolbar: ['']
+                                }}
+ 
+ 
+                            /> <Form>
+                                <Form.Group className="form_width">
+                                    <Form.Control type="text" placeholder="add Answer"  name={index+ "_"+list._id} onChange={this.handleAnswer} />
+                         </Form.Group>
+                         <Form.Group className="btnStyle2">
+                            <Button variant="success" onClick={this.submitAnswerForQuiz}>Submit Answer</Button>
+                        </Form.Group>
+                            </Form>
+                            <div></div>
+                            </div>
+                           
+
+                            <div>
+                            {this.state.quizTaken === true?
+                            <div><p>{this.state.result}</p><p><a href="">Ready for next Lessson Your Lesson?</a></p></div>: ""  
+                            }
+
+                            </div>
+                        </div>
+
+                            
+                    )}
+
+                        
+                    </Form>
+                    </div>
+                    </div>
+                    </div>
+              
             </StudentNavBar>
         )
 

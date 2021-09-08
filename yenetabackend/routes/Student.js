@@ -21,63 +21,97 @@ const Quiz = require("../Models/Quiz")
 const QuizRepository = require("../repository/QuizRepository")
 const QuizService = require("../service/QuizService")
 
+const ActivityResult = require("../Models/ActivityResult")
+const ActivityResultRepository = require("../repository/ActivityResultRepository")
+const ActivityResultService = require("../service/ActivityResultService")
+
 const studentRepo = new StudentRepository(Student)
 const studentServ = new StudentService(studentRepo)
+
 const userRepo = new UserRepository(User)
 const userServ = new UserService(userRepo)
+
 const roleRepo = new RoleRepository(Role)
 const roleServ = new RoleService(roleRepo)
+
 const lessonRepo = new LessonRepository(Lesson)
 const lessonServ = new LessonService(lessonRepo)
+
 const quizRepo = new QuizRepository(Quiz)
 const quizServ = new QuizService(quizRepo)
+
+const activityResultRepo = new ActivityResultRepository(ActivityResult)
+const activityResultServ = new ActivityResultService(activityResultRepo)
+
 const bodyParser = require("body-parser")
 const multer = require("multer");
 
-const { check, validationResult, body } = require("express-validator")
+const {check, validationResult, body} = require("express-validator")
+
+
+
 const storage = multer.diskStorage({
 
-    destination: function (req, file, cb) {
+    destination:function(req, file, cb){
         cb(null, './uploads/')
     },
-    filename: function (req, file, cb) {
+    filename:function(req, file, cb){
         cb(null, file.originalname)
     }
 })
-const upload = multer({ storage: storage });
+const upload = multer({storage:storage});
 
 
 
 module.exports = (server) => {
     server.use(bodyParser.json())
-
-    server.post("/addStudent",
+   
+    server.post("/register",
         upload.single('image'),
         body('username').notEmpty().isLength(10),
-        body('password').isLength({ min: 8 }),
+        body('password').isLength({min:8}),
         body('email').isEmail(),
         body('name').notEmpty(),
-        body('age').isInt({ max: 18 }),
+        body('age').isInt({max:18}),
         body('country').notEmpty(),
-        new StudentController(studentServ, userServ, roleServ, lessonServ, quizServ).register)
+     new StudentController(studentServ, userServ, roleServ, lessonServ, quizServ, activityResultServ).register)
 
-    server.get("/getStudent",
-        new UserController(userServ, roleServ).verifyToken,
-        new UserController(userServ, roleServ).authRole("STUDENT"),
-        new StudentController(studentServ, userServ, roleServ, lessonServ, quizServ).getStudent)
+    server.get("/getStudent", 
+                new UserController(userServ, roleServ).verifyToken, 
+                new UserController(userServ, roleServ).authRole("STUDENT"), 
+                new StudentController(studentServ, userServ, roleServ, lessonServ, quizServ, activityResultServ).getStudent)
 
-    server.get("/getLesson",
-        new UserController(userServ, roleServ).verifyToken,
-        new UserController(userServ, roleServ).authRole("STUDENT"),
-        new StudentController(studentServ, userServ, roleServ, lessonServ, quizServ).getLesson)
+    server.get("/getStudentBefore", 
+                //new UserController(userServ, roleServ).verifyToken, 
+                //new UserController(userServ, roleServ).authRole("STUDENT"), 
+                new StudentController(studentServ, userServ, roleServ, lessonServ, quizServ, activityResultServ).getStudentBeforeLogin)
 
-    server.post("/takeQuiz",
-        new UserController(userServ, roleServ).verifyToken,
-        new UserController(userServ, roleServ).authRole("STUDENT"),
-        new StudentController(studentServ, userServ, roleServ, lessonServ, quizServ).takeQuiz)
 
-    server.get("/getLessonNumber",
-        new UserController(userServ, roleServ).verifyToken,
-        new UserController(userServ, roleServ).authRole("STUDENT"),
-        new StudentController(studentServ, userServ, roleServ, lessonServ, quizServ).getAvailableLessonNumber)
+    server.put("/updateStudent", 
+                new UserController(userServ, roleServ).verifyToken, 
+                new UserController(userServ, roleServ).authRole("STUDENT"), 
+                new StudentController(studentServ, userServ, roleServ, lessonServ, quizServ, activityResultServ).updateStudent)
+
+
+    server.get("/takeLesson", 
+                new UserController(userServ, roleServ).verifyToken, 
+                new UserController(userServ, roleServ).authRole("STUDENT"), 
+                new StudentController(studentServ, userServ, roleServ, lessonServ, quizServ, activityResultServ).getLesson)
+
+    server.get("/takeQuiz", 
+                new UserController(userServ, roleServ).verifyToken, 
+                new UserController(userServ, roleServ).authRole("STUDENT"),
+                new StudentController(studentServ, userServ, roleServ, lessonServ, quizServ, activityResultServ).takeQuiz)
+
+
+    server.post("/getResult", 
+             new UserController(userServ, roleServ).verifyToken, 
+             new UserController(userServ, roleServ).authRole("STUDENT"), 
+             new StudentController(studentServ, userServ, roleServ, lessonServ, quizServ, activityResultServ).updateOnSubmission)
+
+    server.get("/getAvailable", 
+             new UserController(userServ, roleServ).verifyToken, 
+             new UserController(userServ, roleServ).authRole("STUDENT"), 
+             new StudentController(studentServ, userServ, roleServ, lessonServ, quizServ, activityResultServ).getAvailableLessons)
+
 }

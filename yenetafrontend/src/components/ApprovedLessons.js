@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import "bootstrap/dist/css/bootstrap.min.css"
 import axios from 'axios'
-
+import { Container, Button, Form, Table } from "react-bootstrap"
 export default class Studentlist extends Component {
     constructor() {
         super()
@@ -44,14 +44,11 @@ export default class Studentlist extends Component {
             <div>
                 <h4 className="text-center">Approved lessons</h4>
 
-                <table className="table table-striped table-bordered table-hover tablestyle">
+                <Table>
                     <th>Lesson Number</th>
                     <th>Topic</th>
                     <th>level</th>
                     <th>note</th>
-                    <th>image</th>
-                    <th>image Description</th>
-                    <th>audio</th>
                     <th>video link</th>
                     {this.state.approvedLessons.map(approved =>
                         <tr>
@@ -59,14 +56,11 @@ export default class Studentlist extends Component {
                             <td key={approved.id}>{approved.topic}</td>
                             <td key={approved.id}>{approved.level}</td>
                             <td key={approved.id}>{approved.note}</td>
-                            <td key={approved.id}>{approved.image}</td>
-                            <td key={approved.id}>{approved.imageDescription}</td>
-                            <td key={approved.id}>{approved.audio}</td>
                             <td key={approved.id}>{approved.videoLink}</td>
 
                         </tr>)}
 
-                </table>
+                </Table>
             </div>
         )
 

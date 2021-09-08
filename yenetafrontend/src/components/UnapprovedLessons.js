@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import "bootstrap/dist/css/bootstrap.min.css"
 import axios from 'axios'
+import '../css/register.css'
 import { Container, Button, Form, Table } from "react-bootstrap"
 
 export default class Studentlist extends Component {
@@ -70,9 +71,7 @@ export default class Studentlist extends Component {
             <div>
                 <h4 className="text-center">Unapproved lessons</h4>
 
-                <Table style={{
-                    "width": "100%", "borderStyle": "solid", "size": "lg", "background-color": "#C0C0C0"
-                }} striped bordered hover responsive="md">
+                <table className="tables">
                     <th>Lesson Number</th>
                     <th>Topic</th>
                     <th>level</th>
@@ -88,12 +87,13 @@ export default class Studentlist extends Component {
                             <td key={approved.id}>{approved.note}</td>
                             <td key={approved.id}>{approved.videoLink}</td>
                             <td key={approved.id}>{approved.questions}</td>
+                            <td key={approved.id}>{approved.answers}</td>
 
                             <Button type="submit" onClick={() => this.approve(`${approved._id}`)} className="btnstyle"><td>Approve</td></Button>
                         </tr>
                     )}
 
-                </Table>
+                </table>
             </div >
         )
 

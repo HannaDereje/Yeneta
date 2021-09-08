@@ -57,7 +57,18 @@ export default class UnapprovedQuizes extends Component {
             .then(res => {
                 console.log(res.data)
                 const quizes = res.data
-                res.data.forEach(element => {
+                for (var i = 0; i < quizes.length; i++) {
+                    var quiz = quizes[i]
+
+
+                    if (quiz.approved) {
+                        quiz2.push(quiz)
+                        // console.log(quiz2)
+                    }
+
+                }
+                this.setState({ approvedQuizes: quiz2 })
+                this.state.approvedQuizes.forEach(element => {
                     axios.post(`http://localhost:5000/getManyQs`, { ids: element.questions })
                         .then(res => {
                             var questions = []
@@ -70,20 +81,6 @@ export default class UnapprovedQuizes extends Component {
                             // console.log(this.state.questions2)
                         })
                 })
-                for (var i = 0; i < quizes.length; i++) {
-                    var quiz = quizes[i]
-
-
-                    if (!quiz.approved) {
-                        quiz2.push(quiz)
-                        // console.log(quiz2)
-                    }
-
-                }
-                this.setState({ approvedQuizes: quiz2 })
-
-
-
 
 
             })
@@ -91,27 +88,7 @@ export default class UnapprovedQuizes extends Component {
                 console.log(error)
             })
     }
-    async approve(id) {
-        console.log(id)
-        axios.get(`http://localhost:5000/getQuiz/${id}`)
-            .then(res => {
-                if (res.data.approved == false) {
-                    //res.data.approved=true
-                    axios.put(`http://localhost:5000/approveQuiz/${id}`)
-                        .then(res => {
-                            console.log(res)
-                            this.componentDidMount()
-                        })
-                }
 
-                console.log(res)
-            })
-            .catch(function (error) {
-                console.log(error)
-            })
-
-
-    }
 
     componentDidMount() {
         //this.resetClicks()
@@ -123,41 +100,33 @@ export default class UnapprovedQuizes extends Component {
         return (
 
             <div>
-                <h4 className="text-center">Unapproved Quizes</h4>
+                <h4 className="text-center">Approved Quizes</h4>
 
                 {this.state.questions2.map(question => {
                     return (
+
                         <table className="mt-3">
                             <tr>
                                 <th>LEVEL</th>
                                 <th>QUESTIONS</th>
                                 <th>ANSWERS</th>
                             </tr>
-
                             {question.map((qu2, i) => {
                                 return (
                                     <tr>
                                         <td>{qu2.level}</td>
                                         <td>{qu2.content}</td>
                                         <td >{qu2.answer}</td>
-
-                                    </tr>)
+                                    </tr>
+                                )
 
                             })}
-                            <tr>
 
-                                <Button type="submit" onClick={() => this.approve()} className="btnstyle">Approve</Button>
 
-                            </tr>
 
                         </table>
-
                     )
                 })}
-
-
-
-
             </div >
         )
     }

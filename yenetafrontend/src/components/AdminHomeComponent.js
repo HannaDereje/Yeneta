@@ -6,6 +6,8 @@ import Studentlist from "./StudentsListComponent"
 import Teacherlist from "./TeacherListComponent"
 import ApprovedLessons from "./ApprovedLessons"
 import UnapprovedLessons from "./UnapprovedLessons"
+import UnapprovedQuizes from "./UnapprovedQuizes"
+import ApprovedQuizes from "./ApprovedQuizes"
 import Lessons from "./LessonsComponent"
 import Spring from 'react-spring'
 import axios from 'axios'
@@ -100,7 +102,9 @@ export default class AdminHome extends Component {
 
                     {this.state.teachers ? <Teacherlist></Teacherlist> : ""}
                     {this.state.approvedLessons ? <ApprovedLessons></ApprovedLessons> : ""}
+                    {this.state.approvedQuizes ? <ApprovedQuizes></ApprovedQuizes> : ""}
                     {this.state.unapprovedLessons ? <UnapprovedLessons></UnapprovedLessons> : ""}
+                    {this.state.unapprovedQuizes ? <UnapprovedQuizes></UnapprovedQuizes> : ""}
 
 
                 </div>

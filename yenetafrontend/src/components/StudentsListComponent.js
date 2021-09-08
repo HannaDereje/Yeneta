@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import "bootstrap/dist/css/bootstrap.min.css"
 import axios from 'axios'
-
+import { Container, Jumbotron, Button, Form, Table } from "react-bootstrap"
 export default class Studentlist extends Component {
     constructor() {
         super()
@@ -15,7 +15,7 @@ export default class Studentlist extends Component {
         axios.get("http://localhost:5000/getAllStudent")
             .then(res => {
                 this.setState({ students: res.data })
-                console.log(res.data.email)
+                console.log(res.data)
             })
             .catch(function (error) {
                 console.log(error)
@@ -27,7 +27,7 @@ export default class Studentlist extends Component {
             <div>
                 <h4 className="text-center">Student List</h4>
 
-                <table className="table table-striped table-bordered table-hover tablestyle">
+                <Table>
                     <th>Full Name</th>
                     <th>Username</th>
                     <th>Email</th>
@@ -37,14 +37,14 @@ export default class Studentlist extends Component {
                     {this.state.students.map(student =>
                         <tr>
                             <td>{student.name}</td>
-                            <td key={student.name}>{student.username}</td>
+                            <td key={student.name}>{student.user.userName}</td>
                             <td key={student.name}>{student.email}</td>
                             <td key={student.name}>{student.age}</td>
                             <td key={student.name}>{student.country}</td>
                             <td key={student.name}>{student.level}</td>
                         </tr>)}
 
-                </table>
+                </Table>
             </div>
         )
 

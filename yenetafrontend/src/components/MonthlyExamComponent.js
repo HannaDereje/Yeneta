@@ -1,25 +1,25 @@
-import React, {Component, useEffect } from 'react'
-import {Button, Form} from "react-bootstrap"
+import React, { Component, useEffect } from 'react'
+import { Button, Form } from "react-bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-import {CKEditor} from '@ckeditor/ckeditor5-react'
+import { CKEditor } from '@ckeditor/ckeditor5-react'
 import '../css/register.css'
 import axios from "axios"
 
-export default class Exam extends Component{
+export default class Exam extends Component {
 
-    constructor(){
+    constructor() {
         super()
         this.state = {
 
-            input:{},
-            errors:{},
-            divItems:[],
-            count:0,
-            number:1,
-            content:'',
-            answer : {},
-            question:{}
+            input: {},
+            errors: {},
+            divItems: [],
+            count: 0,
+            number: 1,
+            content: '',
+            answer: {},
+            question: {}
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleCkeditorState = this.handleCkeditorState.bind(this)
@@ -30,104 +30,110 @@ export default class Exam extends Component{
 
     }
 
-    handleChange(e){
+    handleChange(e) {
 
         let input = this.state.input;
         input[e.target.name] = e.target.value;
-        
+
         this.setState({
-            input:input
+            input: input
         })
 
         console.log(this.state)
-            
+
     }
 
-    handleAnswer(e){
-        
+    handleAnswer(e) {
+
         let answer = this.state.answer
 
         this.setState({
-            number : this.state.count
+            number: this.state.count
         })
         this.setState({
-            content : e.target.value
+            content: e.target.value
         })
 
-        
+
         answer[this.state.number] = this.state.content
         this.setState({
-            answer:answer
+            answer: answer
         })
         console.log(this.state.answer)
     }
 
-    handleCkeditorState(e, editor){
+    handleCkeditorState(e, editor) {
 
         const data = editor.getData();
         let question = this.state.question
-        
+
         this.setState({
-            number : this.state.count
+            number: this.state.count
         })
         this.setState({
-            content : data
+            content: data
         })
 
         question[this.state.number] = this.state.content
 
         this.setState({
-            question:question
+            question: question
         })
 
         console.log(data)
     }
 
-    addQuiz(e){
-    
+    addQuiz(e) {
+
         e.preventDefault();
-        if(this.validate()){
-            
-            const info ={
-                level :this.state.input["quiz_level"],
-                question:this.state.question,
-                answer:this.state.answer
+        if (this.validate()) {
+
+            const info = {
+                level: this.state.input["quiz_level"],
+                question: this.state.question,
+                answer: this.state.answer
             }
+
+            const header = {
+                "x-access-token": localStorage.getItem("token")
+            }
+
+
             console.log(info)
-              axios.post("http://localhost:5000/insertQuiz", info, {})
-                .then(response=>{
+            axios.post("http://localhost:5000/insertQuiz", info, { headers: header })
+                .then(response => {
                     console.log(response)
 
-                })  
-            
+                })
 
-        }else{
+
+        } else {
             console.log("invalid Inputs")
         }
     }
 
-    
-   
 
-    renderInput(type){
+
+
+    renderInput(type) {
 
         const newdivs = [];
-        if(type){
-            
-            if(type == "shortanswer"){
+        if (type) {
+
+            if (type == "shortanswer") {
 
                 newdivs.push(
-                    
-                        <div className="top">
+
+                    <div className="top">
 
                         <CKEditor
                             editor={ClassicEditor}
-                            onInit={editor=>{
+                            onInit={editor => {
 
                             }}
-                            config= {{
-                                ckfinder:{
-                                    uploadUrl:"http://localhost:5000/insertQuiz"
+                            config={{
+                                ckfinder: {
+                                    uploadUrl: "http://localhost:5000/insertImage"
                                 }
                             }}
                             name={this.state.number}
@@ -135,46 +141,42 @@ export default class Exam extends Component{
 
                         />
                         <Form.Group className="form_width">
-                                <Form.Label>Question Number {this.state.count +1} Answer</Form.Label>
-                                <Form.Control type="text" placeholder="Add your answer" name={this.state.number}  onChange={this.handleAnswer}  />
+                            <Form.Label>Question Number {this.state.count + 1} Answer</Form.Label>
+                            <Form.Control type="text" placeholder="Add your answer" name={this.state.number} onChange={this.handleAnswer} />
                         </Form.Group>
-                        </div>
-                                            
-                        )
+                    </div>
+
+                )
+            }
+            this.setState({ count: this.state.count + 1 })
+            this.setState({ divItems: this.state.divItems.concat(newdivs) })
+
+
+
+
         }
-        this.setState({count:this.state.count+1})
-        this.setState({divItems:this.state.divItems.concat(newdivs)})
-                        
-            
-
-        
-    }
     }
 
- 
-   
 
 
-    validate(){
+
+
+    validate() {
 
         let input = this.state.input;
-        let errors ={}
+        let errors = {}
         let isValid = true;
 
-        if(!input["quiz_number"]){
-            isValid = false;
-            errors["quiz_number"] = "Please enter Quiz Number.";
-        }
-        if(!input["quiz_level"]){
+        if (!input["quiz_level"]) {
             isValid = false;
             errors["quiz_level"] = "Please enter Quiz Level.";
         }
-        if(!input["question_number"]){
+        if (!input["question_number"]) {
             isValid = false;
             errors["question_number"] = "Please enter Question Number.";
         }
 
-        if(!input["quiz_question_type"]){
+        if (!input["quiz_question_type"]) {
             isValid = false;
             errors["quiz_question_type"] = "Please enter Question Type.";
         }
@@ -182,30 +184,27 @@ export default class Exam extends Component{
 
         this.setState({
             errors: errors
-          });
-      
+        });
+
         return isValid;
 
     }
 
-    
 
 
 
-    render(){
-        
+
+    render() {
+
         return (
             <div>
                 <h4 className="text-center">Exam Form</h4>
-                <div className = "lessonstyle">
+                <div className="lessonstyle">
                     <Form>
                         <Form.Group className="form_width">
-                            <Form.Label>Exam Number</Form.Label>
-                            <Form.Control type="text" placeholder="Lesson Number" value={this.state.input.quiz_number} onChange={this.handleChange} name = "quiz_number"  />
-                        </Form.Group>
-                        <Form.Group className="form_width">
                             <Form.Label>Exam Level Type</Form.Label>
-                            <Form.Control as="select" name = "quiz_level" value={this.state.input.quiz_level} onChange={this.handleChange}>
+                            <Form.Control as="select" name="quiz_level" value={this.state.input.quiz_level} onChange={this.handleChange}>
+                                <option selected="true" disabled="disabled">Choose Level</option>
                                 <option>Beginner</option>
                                 <option>Intermediate</option>
                                 <option>Advanced</option>
@@ -214,22 +213,23 @@ export default class Exam extends Component{
 
                         <Form.Group className="form_width">
                             <Form.Label>Exam Question Type</Form.Label>
-                            <Form.Control as="select" name = "quiz_question_type"  value={this.state.input.quiz_question_type} onChange={this.handleChange}>
-                                <option value ="choose">Choose</option>
-                                <option value = "shortanswer">Short Answer</option>
-                                <option value = "match">Match</option>
+                            <Form.Control as="select" name="quiz_question_type" value={this.state.input.quiz_question_type} onChange={this.handleChange}>
+                                <option selected="true" disabled="disabled">Choose Question Type</option>
+                                <option value="choose">Choose</option>
+                                <option value="shortanswer">Short Answer</option>
+                                <option value="match">Match</option>
                             </Form.Control>
                         </Form.Group>
                         <Form.Group className="form_width">
                             <Form.Label>Exam Question Number</Form.Label>
-                            <Form.Control type="number" placeholder="Total Number" name= "question_number" value={this.state.input.question_number} onChange={e => { this.handleChange(e); this.renderInput(this.state.input.quiz_question_type) }} />
-                        </Form.Group> 
+                            <Form.Control type="number" placeholder="Total Number" name="question_number" value={this.state.input.question_number} onChange={e => { this.handleChange(e); this.renderInput(this.state.input.quiz_question_type) }} />
+                        </Form.Group>
 
                         <div className="top">
                             <label>Add Your Questions</label>
-                        
+
                         </div>
-                        {this.state.divItems}   
+                        {this.state.divItems}
                         <Form.Group className="form_width btnstyle">
                             <Button type="submit" className="btnstyle" onClick={this.addQuiz}>Add Exam</Button>
                         </Form.Group>

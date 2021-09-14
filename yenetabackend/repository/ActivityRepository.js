@@ -8,8 +8,7 @@ class ActivityRepository {
 
     create(activity) {
         return new Promise((resolve, reject) => {
-            this.model(activity).save();
-            resolve(activity);
+            resolve(this.model(activity).save());
         });
     }
 

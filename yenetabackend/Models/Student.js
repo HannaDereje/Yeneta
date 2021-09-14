@@ -21,10 +21,6 @@ const StudentSchema = new Schema({
         required: true,
         max:18
      },
-    prefered_Date: { 
-        type: Date, 
-        required: true 
-    },
     country: { 
         type: String,
          required: true 
@@ -36,7 +32,12 @@ const StudentSchema = new Schema({
     level: { 
         type: String, 
         required: true , 
-        enum: ['BEGINEER', 'INTERMEDIATE', "ADVANCED"]
+        enum: ['BEGINEER', 'INTERMEDIATE', "ADVANCED"],
+        default:"BEGINEER"
+    },
+    approved:{
+        type:Boolean,
+        default:false 
     },
     user: { 
         type : Schema.Types.ObjectId,
@@ -44,13 +45,12 @@ const StudentSchema = new Schema({
         required:true
     },
     lessons:[{
-        type : Schema.Types.ObjectId,
-        ref:"LessonClass",
+        type:String,
         required:true
     }],
 quizes:[{ 
-        type : Schema.Types.ObjectId, 
-        ref:"QuizClass" 
+        type:String,
+        required:true
     }]
 }, {
         timestamps: true
@@ -58,17 +58,17 @@ quizes:[{
 
 class Student {
 
-    constructor(name, email, age, prefered_Date, country, image, level, user, lessons, quizes) {
+    constructor(name, email, age, country, image, level, approved, user, lessons, quizes) {
         this.name = name;
         this.email = email;
         this.age = age;
-        this.prefered_Date = prefered_Date;
         this.country = country;
         this.image = image;
         this.level = level;
         this.user = user;
         this.lessons = lessons;
         this.quizes = quizes
+        this.approved = approved
     }
 
 }
@@ -77,4 +77,4 @@ class Student {
 StudentSchema.loadClass(Student)
 
 
-module.exports = mongoose.model('StudentClass', StudentSchema)
+module.exports = mongoose.models.StudentClass || mongoose.model('StudentClass', StudentSchema)

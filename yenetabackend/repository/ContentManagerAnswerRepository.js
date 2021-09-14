@@ -8,8 +8,7 @@ class ContentManagerAnswerRepository {
 
     create(contentmanagerAnswer) {
         return new Promise((resolve, reject) => {
-            this.model(contentmanagerAnswer).save();
-            resolve(contentmanagerAnswer);
+            resolve(this.model(contentmanagerAnswer).save());
         });
     }
 

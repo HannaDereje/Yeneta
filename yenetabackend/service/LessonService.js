@@ -1,52 +1,60 @@
 
-class LessonService{
+class LessonService {
 
-    constructor(lessonRepository){
-        this.lessonRepository =  lessonRepository;     
+    constructor(lessonRepository) {
+        this.lessonRepository = lessonRepository;
         this.insert = this.insert.bind(this);
         this.getAll = this.getAll.bind(this);
         this.getOne = this.getOne.bind(this);
         this.deleteOne = this.deleteOne.bind(this);
         this.deleteAll = this.deleteAll.bind(this);
         this.updateOne = this.updateOne.bind(this);
-        this.getOneByNumber = this.getOneByNumber.bind(this)
+        this.getCount = this.getCount.bind(this);
+        this.getOneByUser = this.getOneByUser.bind(this)
     }
 
-     insert(lesson){
+    async insert(lesson) {
 
         return this.lessonRepository.create(lesson)
-                    
+
+        
     }
-     getAll(){
+
+    getOneByUser(user){ 
+        return this.lessonRepository.getOneByUser(user)
+    }
+    async getAll() {
 
         const lessons = this.lessonRepository.getAll();
-        return new Promise((resolve, reject)=>{resolve(lessons)})
+        return new Promise((resolve, reject) => { resolve(lessons) })
     }
 
-    getOne(id){
+    async getOne(id) {
 
         const alesson = this.lessonRepository.getOne(id);
-        return new Promise((resolve, reject)=>{resolve(alesson)})
+        return new Promise((resolve, reject) => { resolve(alesson) })
     }
-getOneByNumber(number){ 
- 
-        const alesson = this.lessonRepository.getOneByNumber(number); 
-        return new Promise((resolve, reject)=>{resolve(alesson)}) 
+    getCount() {
+
+        const count = this.lessonRepository.getCount();
+        return new Promise((resolve, reject) => { resolve(count) })
+
     }
-    updateOne(id, lesson){
+
+    updateOne(id, lesson) {
 
         const alesson = this.lessonRepository.updateOne(id, lesson);
-        return new Promise((resolve, reject)=>{resolve(alesson)})
+        return new Promise((resolve, reject) => { resolve(alesson) })
     }
-    deleteOne(id){
+    deleteOne(id) {
 
         const deletedlesson = this.lessonRepository.deleteOne(id);
-        return new Promise((resolve, reject)=>{resolve(deletedlesson)})
+        return new Promise((resolve, reject) => { resolve(deletedlesson) })
     }
-    deleteAll(){
+    deleteAll() {
 
         const deletedlessons = this.lessonRepository.deleteAll();
-        return new Promise((resolve, reject)=>{resolve(deletedlessons)})
+        return new Promise((resolve, reject) => { resolve(deletedlessons) })
     }
 
 }

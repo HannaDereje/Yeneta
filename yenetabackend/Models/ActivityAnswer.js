@@ -28,4 +28,4 @@ class ActivityAnswer {
 }
 
 ActivityAnswerSchema.loadClass(ActivityAnswer)
-module.exports = mongoose.model('ActivityAnswerClass', ActivityAnswerSchema)
+module.exports = mongoose.models.ActivityAnswerClass || mongoose.model('ActivityAnswerClass', ActivityAnswerSchema)

@@ -2,26 +2,34 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const QuizSchema = new Schema
 ({
-    date: { type: Date, required: true },
-    level: { type: String, required: true },
-    start_time: { type: Date, required: true },
-    finish_time: { type: Date, required: true },
+    number:{type:Number},
+    date: { type: Date},
+    level: { type: String},
+    allowedTime:{type:Number},
     questions:[{
         type : Schema.Types.ObjectId,
         ref:"QuestionClass"
     }],
+    approved: { type: Boolean, default: false },
+    user: { 
+        type : Schema.Types.ObjectId,
+        ref:"UserClass" ,
+        required:true
+    }
 }, 
  {
         timestamps: true
     })
 
 class Quiz {
-    constructor(date, level, start_time, finish_time, questions) {
+    constructor(number, date, level, allowedTime, questions, approved, user) {
         this.date = date;
         this.level = level;
-        this.start_time = start_time;
-        this.finish_time = finish_time;
+        this.allowedTime = allowedTime;
         this.questions = questions;
+        this.number = number
+        this.approved = approved
+        this.user= user
     }
 }
 
@@ -31,4 +39,4 @@ QuizSchema.pre('save', function(next) {
     next();
   });
 
-module.exports = mongoose.model('QuizClass', QuizSchema)
+module.exports = mongoose.models.QuizClass || mongoose.model('QuizClass', QuizSchema)

@@ -29,4 +29,4 @@ class QuizResult {
 }
 
 QuizResultSchema.loadClass(QuizResult)
-module.exports = mongoose.model('QuizResultClass', QuizResultSchema)
+module.exports = mongoose.models.QuizResultClass || mongoose.model('QuizResultClass', QuizResultSchema)

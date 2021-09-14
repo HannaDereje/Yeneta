@@ -7,22 +7,27 @@ const {check, validationResult, body} = require("express-validator");
 
 class StudentController{
 
-    constructor(studentService, userService, roleService, lessonService){
+    constructor(studentService, userService, roleService, lessonService, quizService, activityResultService){
         this.studentService = studentService;
         this.userService = userService;
+        this.activityResultService = activityResultService
         this.roleService = roleService;
         this.lessonService = lessonService;
+        this.quizService = quizService
         this.register = this.register.bind(this);
         this.getStudent = this.getStudent.bind(this)
         this.getLesson = this.getLesson.bind(this)
         this.takeQuiz = this.takeQuiz.bind(this)
-        this.getAvailableLessonNumber = this.getAvailableLessonNumber.bind(this)
+        this.updateStudent = this.updateStudent.bind(this)
+        this.getStudentBeforeLogin = this.getStudentBeforeLogin.bind(this)
+        this.updateOnSubmission = this.updateOnSubmission.bind(this)
+        this.getAvailableLessons = this.getAvailableLessons.bind(this)
+        this.getAll= this.getAll.bind(this)
 
     }
 
      
-
-    async register(req, res, next){
+   async register(req, res, next){
 
        
 
@@ -30,7 +35,8 @@ class StudentController{
         if(!errors.isEmpty()){
             return res.status(400).send(errors);
         }
-      return this.roleService.getOne("STUDENT")
+        console.log(req.file)
+       return this.roleService.getOne("STUDENT")
            .then((role)=>{
 
            let user ={
@@ -38,140 +44,347 @@ class StudentController{
                password:bcrypt.hashSync(req.body.password, 10),
                email:req.body.email,
                accessToken:crypto.randomBytes(16).toString('hex'),
-               role:role._id
+               role:role._id,
+               expireDate:new Date().getDate()+1
                }
 
+               this.userService.getOneUsername(user.username)
+                .then(usernamedata=>{
+
+                    if(usernamedata){
+                        return res.status(200).json("email found")
+                     }
+                     else{
+                        this.userService.getOneByEmail(req.body.email)
+                        .then((userfromdata)=>{
+         
+                            if(userfromdata){
+                               return res.status(200).json("email found")
+                            }
+                            else{
+                             const message = `
+                             <h1>Email Confirmation</h1>
+                             <h2>Hello ${req.body.name}</h2>
+                             <p>Thank You for subscribing. Please confirm your email by clicking the following link</p>
+                             <a href = http://localhost:3000/confirm/${user.accessToken}>Click Here</a>
+                             `;
+                          this.sendEmail(user.email, "Registeration", message)
+                             .then((info)=>{
+                                 if(!info){
+                                     this.userService.insert(user)
+                                     .then((user)=>{
+                                         
+                                         let student = {
+                                             name:req.body.name,
+                                             email:req.body.email,
+                                             age:req.body.age,
+                                             country:req.body.country,
+                                             image:req.file.originalname,
+                                             user:user._id,
+                                             lessons:[],
+                                             quizes:[]
+                                         }
+              
+                                         this.studentService.insert(student)
+                                         .then((student)=>{
+                                             console.log(student)
+                                             res.status(200).send("Confirm your Email Please !!")
+                                          }) 
+                                          
+                                     })  
+                                 }
+                             })
+                                         
+                                    }
+                                 }) 
+                     }
+                })
                                        
-               this.userService.getOneByEmail(req.body.email)
-               .then((userfromdata)=>{
-
-                   if(userfromdata){
-                      return res.status(200).json("email found")
-                   }
-                   else{
-
-                       this.userService.insert(user)
-                       .then((user)=>{
-
-                           const message = `
-                           <h1>Email Confirmation</h1>
-                           <h2>Hello ${req.body.name}</h2>
-                           <p>Thank You for subscribing. Please confirm your email by clicking the following link</p>
-                           <a href = http://localhost:5000/confirm/${user.accessToken}>Click Here</a>
-                           `;
-                           this.sendEmail(user.email, "Registeration", message)
-
-                           let student = {
-                               name:req.body.name,
-                               email:req.body.email,
-                               age:req.body.age,
-                               prefered_Date:req.body.prefered_Date,
-                               country:req.body.country,
-                               image:req.file.originalname +"___" + req.file.mimetype,
-                               level:req.body.level,
-                               user:user._id,
-                               lessons:[]
-                           }
-
-                           this.studentService.insert(student)
-                           .then((student)=>{
-                               console.log(student)
-                       })
-                           return res.status(200).send("correct")
-               
-                       }).catch(err=>res.json({err}))          
-                           }
-                           })
-                                        
-                           return res.status(200).send("correct")                        
+                                      
                        }).
                        catch((err)=>{
-                           res.send(403)
-                           console.log("err");
+                           res.send(404)
+                           console.log(err);
                        })  
 
                      
    }
-
-    async getStudent(req, res){
-
-        await this.userService.getOne(req.user_id._id)
-                            .then((response) => res.json(response))
-                            .catch((err)=>{
-                                res.send(403)
-                                console.log("err");
+     getStudent(req, res){
+        if(req.user_id === null){
+            res.status(403)
+            return res.send("You need to sign in.")
+        }
+        return  this.userService.getOne(req.user_id._id)
+                    .then((user)=>{
+                        this.studentService.getOneByEmail(user.email)
+                            .then((student)=>{
+                                res.status(200).json({"Student":student, "user":user});
                             })
+                    })
 
 
     }
 
-    async getLesson(req, res){
+    getStudentBeforeLogin(req, res){
 
-       return this.userService.getOne(req.user_id._id)
-            .then((user)=>{
-                const lessons = user.lessons;
+        console.log(req.email)
+            this.studentService.getOneByEmail(req.email)
+                .then((student)=>{
+                    console.log(student)
+                    res.status(200).json({"Student":student});
+                })
 
-                if(lessons.length==0){
-                    this.lessonService.getOneByNumber(1)
-                        .then((lesson)=>{
-                            if(lessson){
-                            lessons.push(lessson)
-                            this.sendEmail(user.email, "Yeneta Contact", "New Lesson has uploaded")
-                            res.status(200).json(lessons)
-                            }
-                        })
-                }else{
-                    const lastlessson = lessons[length-1].number;
-                    this.lessonService.getOneByNumber(lastlessson+1)
-                        .then((nextlesson)=>{
-                            if(nextlesson){
-                                lessons.push(nextlesson)
-                                this.sendEmail(user.email, "Yeneta Contact", "New Lesson has uploaded")
-                                res.status(200).json(lessons)
-                            }else{
-                                return  res.status(200).json("Lesson is not Available")
-                             }
-                        })
-                }
+    }
+
+    async updateStudent(req, res){
+        
+        if(req.user_id === null){
+            res.status(403)
+            return res.send("You need to sign in.")
+        }
+
+        const level =req.body.level
+
+        return  this.userService.getOne(req.user_id._id)
+                    .then((user)=>{
+                        this.studentService.getOneByEmail(user.email)
+                            .then((student)=>{
+                                student.level = level
+                                student.approved = true
+                                this.studentService.updateOne(student._id, student)
+                                    .then(updatedStudent=>{
+                                        res.status(200).json({"Student":updatedStudent});
+                                        console.log(updatedStudent)
+                                    })
+                             })
+                    }).
+                    catch((err)=>{
+                        res.send(404)
+                        console.log(err);
+                    }) 
+    }
+
+     getLesson(req, res) {
+
+
+        const level2 = req.query.level.split(" ")[1];
+        console.log(level2)
+        var breake = true;
+        var ids = []
+
+        return this.userService.getOne(req.user_id._id)
+            .then((user) => {
+
+                return this.studentService.getOneByEmail(user.email)
+                    .then((student) => {
+
+                        return this.lessonService.getAll()
+                            .then((lessons) => {
+
+                                const approved = lessons.filter(lesson =>  lesson["level"] == level2)
+                                const sortedLessons = approved.sort((lesson1, lesson2) => { (lesson1.number < lesson2.number ? 1 : -1) })
+        
+
+                                if(lessons.length == 0){
+                                    res.status(200).send("No Available Lesson")
+                                }
+
+                            
+                                if(student.lessons.length == sortedLessons.length){
+
+                                    res.status(200).send("No Available Lesson")
+
+                                }else{
+                                sortedLessons.forEach(lesson => {
+
+                                    if (breake == true) {
+
+                                        var x = student.lessons.find( studentlesson => studentlesson.split("_")[0] == lesson._id );
+                                        console.log(x)    
+
+                                        if(!x){
+                                            var id = lesson._id + "_notsubmitted"
+                                            student.lessons.push(id)
+                                            breake = false
+                                        }
+                    
+                                        
+                                    }
+                                })
+                                this.studentService.updateOne(student._id, student)
+                                    .then((student) => {
+                                        this.sendEmail(user.email, "Yeneta Contact", "New Lesson has been uploaded")
+                                        
+                                        res.status(200).send(student)
+                                        
+                                    })
+                                }
+
+                            })
+                    })
+
+
+
 
             })
+    }
+
+     updateOnSubmission(req, res){
+
+          if(req.user_id === null){
+            res.status(403)
+            return res.send("You need to sign in.")
+        }  
+
+        const id = req.body.id
+        const result ={ 
+            result : req.body.result,
+            user:req.user_id._id,
+            activity:req.body.activity
         }
+        console.log(id)
+        console.log(result)
 
-       
+        return  this.userService.getOne(req.user_id._id)
+                    .then((user)=>{
+                        this.studentService.getOneByEmail(user.email)
+                            .then((student)=>{
 
-    async takeQuiz(req, res){
+                                const x = student.lessons.find( lesson => lesson.split("_")[0] === id );
+                                if(x !== undefined){
+                                    let index = student.lessons.findIndex(lesson => lesson.split("_")[0] === id);
+                                    console.log(x, index)
+    
+                                    student.lessons[index] = id + "_submitted"
 
-        const user = await this.userService.getOne(req.user_id._id)
+                                     this.studentService.updateOne(student._id, student)
+                                    .then(updatedStudent=>{
 
-        const lessons = user.lessons;
-        const quizes = user.quizes;
+                                        this.activityResultService.insert(result)
+                                            .then(result=>{
+                                                res.status(200).json({"Student":updatedStudent, "result": result});
+                                                console.log(updatedStudent)
+                                            })
+                                       
+                                    })
+                                }
+                               
 
-        const aquiz = "";
-
-        if(lessons.length < 3)
-            return res.status(200).json("No ready to take Quiz")
-        else{
-
-            for (let i = 0; i < lessons.length; i++) {
-                if(lessons.length % 3 == 0){
-                    quizes.push(aquiz)
-                }
-               if(quizes.length == 3){
-                return res.status(200).json("Ready for the next level...") 
-               } 
-            }
-
-        }
+                               
+                             })
+                    }).
+                    catch((err)=>{
+                        res.send(404)
+                        console.log(err);
+                    })
 
     }
 
-    async getAvailableLessonNumber(req, res){
-        const user = await this.userService.getOne(req.user_id._id)
-        return res.status(200).json(user.lessons.length);
+
+
+    getAvailableLessons(req, res){
+
+        if(req.user_id === null){
+            res.status(403)
+            return res.send("You need to sign in.")
+        }  
+        return  this.userService.getOne(req.user_id._id)
+        .then((user)=>{
+            this.studentService.getOneByEmail(user.email)
+                .then((student)=>{
+                    res.status(200).send(student.lessons)
+                })
+
+            })
+
     }
 
+    getAll(req, res) {
 
+        var emails=[]
+        return this.studentService.getAll()
+            .then(student=>{
+
+                student.forEach(element=>{
+                    emails.push(element.email)
+                })
+
+                 this.userService.getMany(emails)
+                    .then(users=>{
+                        res.status(200).send({"students":student, "users":users})
+                    })
+
+            })
+            .catch((err) => {
+                res.send(403)
+                console.log("err");
+            })
+
+
+    }
        
+
+     takeQuiz(req, res){
+
+        var breake = true;
+        var ids=[]
+        
+        const level = req.query.level.split(" ")[1];
+        console.log(level)
+
+        return this.userService.getOne(req.user_id._id)
+            .then((user)=>{
+
+            this.studentService.getOneByEmail(user.email)
+                .then((student)=>{
+                
+                    this.quizService.getAll()
+                        .then((retrivedQuiz)=>{
+
+                           
+                            const approved = retrivedQuiz.filter(quiz => quiz["level"] == level)
+                            const sortedQuiz = approved.sort((quiz1, quiz2) => (quiz1.number < quiz2.number ? 1:-1))
+                           console.log(approved)
+                          
+                             sortedQuiz.forEach(quiz => {
+
+                                if (breake == true) {
+
+                                    var x = student.quizes.find( studentquiz => studentquiz.split("_")[0] == quiz._id );
+                                    console.log(x)    
+
+                                    if(!x){
+                                        var id = quiz._id + "_notsubmitted"
+                                        student.quizes.push(id)
+                                        breake = false
+                                    }
+                
+                                    
+                                }
+                                    })
+
+                                this.studentService.updateOne(student._id, student)
+                                    .then((student)=>{
+                                      this.sendEmail(user.email, "Yeneta Contact", "New Quiz has been uploaded")
+    
+                                    res.status(200).send(student)
+                                    })
+                                
+                                }) 
+                                   
+    
+                            })
+
+                           
+                                
+                            });
+
+            
+
+        }
+
+
+    
     async sendEmail(to , subject, message){
 
         var transporter = nodemailer.createTransport({
@@ -191,14 +404,15 @@ class StudentController{
             from: ' "Yeneta contact" <yenetalear@gmail.com>',
             to:to,
             subject: subject,
-            text: message
+            html: message
           };
           
            transporter.sendMail(mailOptions, function(error, info){
             if (error) {
-              console.log(error);
+              return error
             } else {
               console.log('Email sent: ' + info.response);
+              return info
             }
           });
 

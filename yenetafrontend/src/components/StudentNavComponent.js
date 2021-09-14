@@ -9,6 +9,12 @@ export default class StudentNavBar extends Component {
         super(props)
 
     }
+    logout(){
+
+        localStorage.clear();
+        window.location.href = "/studentLogin";
+
+    }
 
     render() {
         return (
@@ -19,8 +25,9 @@ export default class StudentNavBar extends Component {
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="floatright">
-                            <Nav.Link href="" className="mr-3" onClick={this.props.handleShow}>Create Chat</Nav.Link>
-                            <Nav.Link href="" className="mr-3" href= "/studentProfile"><img src="../images/img2.jpg" width="40" height="40" className="imgStyle" /></Nav.Link>
+                            <Nav.Link href="" className="mr-3" onClick={this.props.handleShow} >{this.props.name}</Nav.Link>
+                            <Nav.Link href="" className="mr-3" href= "/studentProfile"><img src={this.props.image} width="40" height="40" className="imgStyle" /></Nav.Link>                           
+                            <Nav.Link href="" className="mr-3" onClick={this.logout}>Logout</Nav.Link>
                         </Nav>
 
                     </Navbar.Collapse>

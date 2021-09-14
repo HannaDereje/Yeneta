@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-class User {
+class UserRepository {
 
     constructor(model) {
         this.model = model;
@@ -8,8 +8,7 @@ class User {
 
     create(user) {
         return new Promise((resolve, reject) => {
-            this.model(user).save();
-            resolve(user);
+            resolve(this.model(user).save());
         });
     }
 
@@ -26,12 +25,25 @@ class User {
             resolve(oneUser)
         });
     }
+
+    getOneUsername(username) {
+        return new Promise((resolve, reject) => {
+            const oneUser = this.model.findOne({ username: username })
+            resolve(oneUser)
+        });
+    }
 getOneByEmail(email){ 
         return new Promise((resolve, reject)=>{ 
             const oneuser = this.model.findOne({email:email}) 
             resolve(oneuser) 
         }); 
     } 
+
+    getMany(emails) {
+        return new Promise((resolve, reject) => {
+            resolve(this.model.find({email:{$in:emails}}));
+        });
+    }
  
     getOneByToken(token){ 
         return new Promise((resolve, reject)=>{ 

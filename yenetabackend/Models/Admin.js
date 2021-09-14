@@ -41,4 +41,4 @@ class Admin {
 
 AdminSchema.loadClass(Admin)
 
-module.exports = mongoose.model('AdminClass', AdminSchema)
+module.exports = mongoose.models.AdminClass || mongoose.model('AdminClass', AdminSchema)

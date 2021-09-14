@@ -8,8 +8,7 @@ class StudentRepository {
 
     create(student) {
         return new Promise((resolve, reject) => {
-            this.model(student).save();
-            resolve(student);
+            resolve(this.model(student).save());
         });
     }
 
@@ -19,6 +18,7 @@ class StudentRepository {
             resolve(student)
         });
     }
+    
 
     getOne(id) {
         return new Promise((resolve, reject) => {

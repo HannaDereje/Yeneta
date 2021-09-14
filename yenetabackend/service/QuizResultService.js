@@ -1,8 +1,8 @@
 
-class QuizResultService{
+class QuizResultService {
 
-    constructor(quizResultRepository){
-        this.quizResultRepository =  quizResultRepository;     
+    constructor(quizResultRepository) {
+        this.quizResultRepository = quizResultRepository;
         this.insert = this.insert.bind(this);
         this.getAll = this.getAll.bind(this);
         this.getOne = this.getOne.bind(this);
@@ -11,37 +11,37 @@ class QuizResultService{
         this.updateOne = this.updateOne.bind(this);
     }
 
-     insert(quizResult){
+    insert(quizResult) {
 
         return this.quizResultRepository.create(quizResult)
-                    
+
     }
-     getAll(){
+    getAll() {
 
         const quizResults = this.quizResultRepository.getAll();
-        return new Promise((resolve, reject)=>{resolve(quizResults)})
+        return new Promise((resolve, reject) => { resolve(quizResults) })
     }
 
-    getOne(id){
+    getOne(id) {
 
         const quizResult = this.quizResultRepository.getOne(id);
-        return new Promise((resolve, reject)=>{resolve(quizResult)})
+        return new Promise((resolve, reject) => { resolve(quizResult) })
     }
 
-    updateOne(id, quizResult){
+    updateOne(id, quizResult) {
 
-        const quizResult = this.quizResultRepository.updateOne(id, quizResult);
-        return new Promise((resolve, reject)=>{resolve(quizResult)})
+        const quizResult2 = this.quizResultRepository.updateOne(id, quizResult);
+        return new Promise((resolve, reject) => { resolve(quizResult2) })
     }
-    deleteOne(id){
+    deleteOne(id) {
 
         const deletedquizResult = this.quizResultRepository.deleteOne(id);
-        return new Promise((resolve, reject)=>{resolve(deletedquizResult)})
+        return new Promise((resolve, reject) => { resolve(deletedquizResult) })
     }
-    deleteAll(){
+    deleteAll() {
 
         const deletedquizResults = this.quizResultRepository.deleteAll();
-        return new Promise((resolve, reject)=>{resolve(deletedquizResults)})
+        return new Promise((resolve, reject) => { resolve(deletedquizResults) })
     }
 
 }

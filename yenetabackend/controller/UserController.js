@@ -2,6 +2,8 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs");
 const {check, validationResult, body} = require("express-validator");
 
+const nodemailer = require("nodemailer") 
+
 
 class UserController{
 
@@ -13,6 +15,11 @@ class UserController{
         this.verifyToken = this.verifyToken.bind(this)
         this.getAllUsers = this.getAllUsers.bind(this)
         this.authRole = this.authRole.bind(this)
+        this.verifyUser = this.verifyUser.bind(this)
+        this.sendEmail = this.sendEmail.bind(this)
+        this.ResetPassword = this.ResetPassword.bind(this)
+        this.verifyPassword = this.verifyPassword.bind(this)
+        this.getCurrentUser = this.getCurrentUser.bind(this)
     }
 
      generateAuthToken(id, role){
@@ -27,11 +34,17 @@ class UserController{
              this.userService.getOneByEmail(req.body.email)
                                         .then((user) =>{
                                         
-                                            if(!user)
-                                                res.status(404).send("User does not exist");
-                                                
-                                            if(!bcrypt.compare(req.body.password, user.password)){
-                                                res.status(404).send("Wrong Password");
+                                            if(!user){
+                                                res.json({message:"User does not exist"});
+                                                return
+                                            }
+                                            if(user.status !== "Active")
+                                            {
+                                                res.json({message:"User is not verified"});
+                                                return
+                                            }
+                                            if(!bcrypt.compareSync(req.body.password, user.password)){
+                                                res.json({message:"Wrong Password"});
                                                 return 
                                             }
 
@@ -40,21 +53,34 @@ class UserController{
 
                                                 const token = this.generateAuthToken(user._id, role.role)
                                        
-                                                res.status(200).send({
-                                                            user:user,
-                                                            token:token
-                                                }) 
+                                                res.status(200).json({
+                                                        token:token,
+                                                        role:role.role
+                                                }
+                                                ) 
+                                                }).catch((err)=>{
+                                                    res.sendStatus(403)
+                                                    console.log(err);
                                                 })
                                         })  
                                         .catch((err)=>{
                                             res.sendStatus(403)
-                                            console.log("err");
+                                            console.log(err);
                                         })
     }
 
 
     async getAllUsers(req, res){
         return await this.userService.getAll() 
+                        .then((response) => res.json(response))
+                        .catch((err)=>{
+                            res.send(403)
+                            console.log("err");
+                        })
+    }
+
+    async getCurrentUser(req, res){
+        return await this.userService.getOne(req.user_id._id) 
                         .then((response) => res.json(response))
                         .catch((err)=>{
                             res.send(403)
@@ -97,8 +123,12 @@ class UserController{
         console.log(req.params.accessToken)
          this.userService.getOneByToken(req.params.accessToken)
                          .then((user)=>{
+                             console.log(user)
 
                             if(!user){
+                                return res.status(404).send({message:"User Not found"});
+                            }
+                            if(user.expireDate <= new Date().getDate()){
                                 return res.status(404).send({message:"User Not found"});
                             }
                             user.status = "Active";
@@ -113,6 +143,88 @@ class UserController{
 
 
     }
+
+    async sendEmail(to , subject, message){
+
+        var transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port:587,
+            secure:false,
+            auth: {
+              user: 'yenetalear@gmail.com',
+              pass: 'hhhk1234@#'
+            },
+            tls:{
+                rejectUnauthorized:false
+            }
+          });
+          
+          var mailOptions = {
+            from: ' "Yeneta contact" <yenetalear@gmail.com>',
+            to:to,
+            subject: subject,
+            text: message
+          };
+          
+           transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              return error
+            } else {
+              console.log('Email sent: ' + info.response);
+              return info
+            }
+          });
+
+    }
+
+     async ResetPassword(req, res){
+         
+        this.userService.getOneByEmail(req.body.email)
+                        .then((user)=>{
+
+                            if(!user){
+                                return res.status(404).send({message:"User Not found"});
+                            }
+                            const message = `
+                            <h1>Password Reset</h1>
+                            <h2>Hello ${user.username}</h2>
+                            <p>Please Reset your password clicking the following link</p>
+                            <a href = http://localhost:3000/passwordReset/${user.accessToken}>Click Here</a>
+                            `;
+                            this.sendEmail(user.email, "Password Reset", message)
+                                .then((info)=>{
+                                    console.log(info)
+                                }).catch((err)=>{
+                                    res.send(404)
+                                    console.log(err);
+                                }) 
+                        }).catch((err)=>{
+                            res.send(404)
+                            console.log(err);
+                        }) 
+     }
+
+     async verifyPassword(req, res){
+        
+        console.log(req.params.accessToken)
+        this.userService.getOneByToken(req.params.accessToken)
+                        .then((user)=>{
+
+                            if(!user){
+                                return res.status(404).send({message:"Invalid Link"});
+                            }
+
+                        user.password=bcrypt.hashSync(req.body.password, 10)
+                        this.userService.updateOne(user._id, user)
+                                        .then((user)=>{
+                                            console.log(user)
+                                            res.status(200).send({message:"Password Reseted"});  
+                                        })
+
+                         }).catch((e)=>{ console.log("error", e)})
+
+
+     }
 
 }
 module.exports = UserController

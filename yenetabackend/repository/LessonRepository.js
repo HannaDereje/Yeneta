@@ -8,8 +8,7 @@ class LessonRepository {
 
     create(lesson) {
         return new Promise((resolve, reject) => {
-            this.model(lesson).save();
-            resolve(lesson);
+            resolve(this.model(lesson).save());
         });
     }
 
@@ -26,12 +25,27 @@ class LessonRepository {
             resolve(alesson)
         });
     }
-getOneByNumber(number){ 
+getOneByUser(user){ 
         return new Promise((resolve, reject)=>{ 
-            const alesson = this.model.findOne({number:number}) 
+            const alesson = this.model.find({user:user}) 
             resolve(alesson) 
         }); 
     }
+
+    getOneByLevel(level){ 
+        return new Promise((resolve, reject)=>{ 
+            const lessons = this.model.findOne({level:level}) 
+            resolve(lessons) 
+        }); 
+    }
+
+    getCount(){
+
+        return new Promise((resolve, reject)=>{        
+            const count = this.model.count();
+            resolve(count)}); 
+    }
+
     updateOne(id, lesson) {
         let set = {};
         for (const key in lesson) {
@@ -39,8 +53,7 @@ getOneByNumber(number){
 
         }
         return new Promise((resolve, reject) => {
-            const alesson = this.model.updateOne({ _id: id }, { $set: set })
-            resolve(alesson)
+            resolve(this.model.updateOne({ _id: id }, { $set: set }))
         });
     }
     deleteOne(id) {

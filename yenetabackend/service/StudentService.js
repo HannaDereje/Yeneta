@@ -28,15 +28,15 @@ class StudentService{
         const student = this.studentRepository.getOne(id);
         return new Promise((resolve, reject)=>{resolve(student)})
     }
-getOneByEmail(email){ 
+    getOneByEmail(email){ 
  
-        const auser = this.userRepository.getOneByEmail(email); 
+        const auser = this.studentRepository.getOneByEmail(email); 
         return new Promise((resolve, reject)=>{resolve(auser)}) 
     }
     updateOne(id, student){
 
-        const student = this.studentRepository.updateOne(id, student);
-        return new Promise((resolve, reject)=>{resolve(student)})
+        const a_student = this.studentRepository.updateOne(id, student);
+        return new Promise((resolve, reject)=>{resolve(a_student)})
     }
     deleteOne(id){
 

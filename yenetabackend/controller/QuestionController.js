@@ -9,6 +9,8 @@ class QuestionController{
         this.deleteOne = this.deleteOne.bind(this);
         this.deleteAll = this.deleteAll.bind(this);
         this.updateOne = this.updateOne.bind(this);
+        this.getRandom = this.getRandom.bind(this);
+        this.getMany = this.getMany.bind(this)
     }
 
      insert(req, res){
@@ -28,8 +30,28 @@ class QuestionController{
                                     console.log("err");
                                 })
     }
+
+    getMany(req, res){
+
+        var ids = req.body.ids;
+         return  this.questionService.getMany(ids)
+                                .then((response) => res.json(response))
+                                .catch((err)=>{
+                                    res.send(403)
+                                    console.log("err");
+                                }) 
+    }
     getOne(req, res){
         return this.questionService.getOne(req.params.id)
+                                .then((response) => res.json(response))
+                                .catch((err)=>{
+                                    res.send(403)
+                                    console.log(err);
+                                })
+    }
+
+    getRandom(req, res){
+        return this.questionService.getRandom()
                                 .then((response) => res.json(response))
                                 .catch((err)=>{
                                     res.send(403)
@@ -38,14 +60,30 @@ class QuestionController{
     }
 
     updateOne(req, res){
-        return this.questionService.updateOne(req.params.id, req.body)
-                                .then((response) => res.json(response))
-                                .catch((err)=>{
+
+        const info= req.body;
+        console.log(info)
+        return this.questionService.getOne(req.params.id)
+                    .then(question=>{
+                        
+                        question.content= info.question
+                        question.answer= info.answer
+                        
+                    return this.questionService.updateOne(req.params.id, question)
+                    .then((response) =>{ 
+                        
+                        console.log(response)
+                        res.json(response)
+                        
+                    })
+                    }).catch((err)=>{
                                     res.send(403)
                                     console.log("err");
                                 })
     }
     deleteOne(req, res){
+
+        
         return this.questionService.deleteOne(req.params.id)
                                 .then((response) => res.json(response))
                                 .catch((err)=>{

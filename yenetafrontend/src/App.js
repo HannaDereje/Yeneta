@@ -14,6 +14,10 @@ import TeacherHome from './components/TeacherHomeComponent'
 import ClassRoom from './components/StudentClassRoomComponent' 
 import StudentProfile from "./components/StudentProfileComponent"
 import TeacherProfile from "./components/TeacherProfileComponent"
+import EntranceQuiz from "./components/QuizComponent"
+import DiscussionRoom from "./components/StudentDiscussionRoomComponent"
+import ResetPassword from "./components/ResetPasswordComponent"
+import PasswordResetLink from "./components/LinkToEmailToResetPasswordComponent"
 
 function App() {
   return ( 
@@ -22,6 +26,7 @@ function App() {
     
     <Route  path="/" exact component={Home} />
     <Route  path="/studentLogin"  component={StudentLogin} />
+    <Route path="/confirm/:code" component={Home}/>
     <Route  path="/studentRegister"  component={StudentRegister} />
     <Route  path="/teacherRegister"  component={TeacherRegister} />
     <Route  path="/adminHome"  component={AdminHome} />
@@ -29,6 +34,11 @@ function App() {
     <Route path="/classroom" component={ClassRoom}/>
     <Route path="/studentProfile" component={StudentProfile}/>
     <Route path="/teacherProfile" component={TeacherProfile}/>
+    <Route path="/entranceQuiz" component={EntranceQuiz}/>
+    <Route path="/room" component = {DiscussionRoom}/>
+    <Route path="/room?topic=''&username=''&id=''" component={DiscussionRoom}/>
+    <Route path="/reset" component = {ResetPassword}/>
+    <Route path="/passwordReset/:accessToken" component={PasswordResetLink}/>
     </Router>
    
   );

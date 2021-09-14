@@ -1,22 +1,26 @@
-import React, {Component } from 'react'
+import React, { Component } from 'react'
 import "bootstrap/dist/css/bootstrap.min.css"
-import  AdminNavBar from "./AdminNavComponent"
+import AdminNavBar from "./AdminNavComponent"
 import '../css/register.css'
 import Studentlist from "./StudentsListComponent"
+import Teacherlist from "./TeacherListComponent"
+import ApprovedLessons from "./ApprovedLessons"
+import UnapprovedLessons from "./UnapprovedLessons"
+import UnapprovedQuizes from "./UnapprovedQuizes"
+import ApprovedQuizes from "./ApprovedQuizes"
 import Lessons from "./LessonsComponent"
 import Spring from 'react-spring'
+import axios from 'axios'
+export default class AdminHome extends Component {
 
-export default class AdminHome extends Component{
-
-    constructor(props)
-    {
+    constructor(props) {
         super(props);
-        this.state = {students: false};
-        this.state = {teachers: false};
-        this.state = {approvedLessons: false};
-        this.state = {approvedQuizes: false};
-        this.state = {unapprovedLessons: false};
-        this.state = {unapprovedQuizes: false};
+        this.state = { students: false };
+        this.state = { teachers: false };
+        this.state = { approvedLessons: false };
+        this.state = { approvedQuizes: false };
+        this.state = { unapprovedLessons: false };
+        this.state = { unapprovedQuizes: false };
 
         this.handleStudentsClick = this.handleStudentsClick.bind(this)
         this.handleTeachersClick = this.handleTeachersClick.bind(this)
@@ -29,52 +33,52 @@ export default class AdminHome extends Component{
 
     handleStudentsClick() {
         this.resetClicks();
-        this.setState({students: true});
-        
+        this.setState({ students: true });
+
     }
 
     handleTeachersClick() {
         this.resetClicks();
-        this.setState({teachers: true});
-        
+        this.setState({ teachers: true });
+
     }
 
     handleApprovedLessonsClick() {
         this.resetClicks();
-        this.setState({approvedLessons: true});
-        
+        this.setState({ approvedLessons: true });
+
     }
 
     handleApprovedQuizesClick() {
         this.resetClicks();
-        this.setState({approvedQuizes: true});
-        
+        this.setState({ approvedQuizes: true });
+
     }
 
     handleUnApprovedLessonsClick() {
         this.resetClicks();
-        this.setState({unapprovedLessons: true});
+        this.setState({ unapprovedLessons: true });
 
     }
 
     handleUnApprovedQuizesClick() {
         this.resetClicks();
-        this.setState({unapprovedQuizes: true});
-        
+        this.setState({ unapprovedQuizes: true });
+
     }
 
-    resetClicks(){
+    resetClicks() {
         this.setState({
-            students: false, 
-            teachers: false, 
-            approvedLessons:false,
+            students: false,
+            teachers: false,
+            approvedLessons: false,
             approvedQuizes: false,
             unapprovedLessons: false,
             unapprovedQuizes: false
         })
     }
 
-    render(){
+    render() {
         return (
             <div>
 
@@ -94,13 +98,17 @@ export default class AdminHome extends Component{
                     </ul>
                 </div>
                 <div id="mainpage">
-                   {this.state.students ?<Studentlist></Studentlist> : ""}
-                   
-                   {this.state.teachers ?<Lessons></Lessons> : ""}
-                   
-                     
-                    </div>
-                
+                    {this.state.students ? <Studentlist></Studentlist> : ""}
+
+                    {this.state.teachers ? <Teacherlist></Teacherlist> : ""}
+                    {this.state.approvedLessons ? <ApprovedLessons></ApprovedLessons> : ""}
+                    {this.state.approvedQuizes ? <ApprovedQuizes></ApprovedQuizes> : ""}
+                    {this.state.unapprovedLessons ? <UnapprovedLessons></UnapprovedLessons> : ""}
+                    {this.state.unapprovedQuizes ? <UnapprovedQuizes></UnapprovedQuizes> : ""}
+
+
+                </div>
+
             </div>
         )
     }

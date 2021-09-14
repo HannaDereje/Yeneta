@@ -8,8 +8,7 @@ class StudentQuestionRepository {
 
     create(studentQuestion) {
         return new Promise((resolve, reject) => {
-            this.model(studentQuestion).save();
-            resolve(studentQuestion);
+            resolve(this.model(studentQuestion).save());
         });
     }
 

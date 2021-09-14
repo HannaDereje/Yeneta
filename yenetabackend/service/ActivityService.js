@@ -30,8 +30,8 @@ class ActivityService{
 
     updateOne(id, activity){
 
-        const activity = this.activityRepository.updateOne(id, activity);
-        return new Promise((resolve, reject)=>{resolve(activity)})
+        const a_activity = this.activityRepository.updateOne(id, activity);
+        return new Promise((resolve, reject)=>{resolve(a_activity)})
     }
     deleteOne(id){
 

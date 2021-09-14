@@ -30,4 +30,4 @@ class StudentQuestion {
 
 StudentQuestionSchema.loadClass(StudentQuestion)
 
-module.exports = mongoose.model('StudentQuestionClass', StudentQuestionSchema)
+module.exports = mongoose.models.StudentQuestionClass || mongoose.model('StudentQuestionClass', StudentQuestionSchema)

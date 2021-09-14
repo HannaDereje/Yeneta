@@ -22,4 +22,4 @@ class Role{
 RoleSchema.loadClass(Role)
 
 
-module.exports = mongoose.model('RoleClass', RoleSchema)
+module.exports = mongoose.models.RoleClass || mongoose.model('RoleClass', RoleSchema)

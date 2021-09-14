@@ -30,8 +30,8 @@ class StudentQuestionService{
 
     updateOne(id, studentQuestion){
 
-        const studentQuestion = this.studentQuestionRepository.updateOne(id, studentQuestion);
-        return new Promise((resolve, reject)=>{resolve(studentQuestion)})
+        const a_studentQuestion = this.studentQuestionRepository.updateOne(id, studentQuestion);
+        return new Promise((resolve, reject)=>{resolve(a_studentQuestion)})
     }
     deleteOne(id){
 

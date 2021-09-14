@@ -1,3 +1,5 @@
+const path = require("path")
+const fs = require("fs")
 
 class QuizController{
 
@@ -9,6 +11,7 @@ class QuizController{
         this.deleteOne = this.deleteOne.bind(this);
         this.deleteAll = this.deleteAll.bind(this);
         this.updateOne = this.updateOne.bind(this);
+        this.approveQuiz = this.approveQuiz.bind(this)
     }
 
      insert(req, res){
@@ -17,7 +20,7 @@ class QuizController{
                                 .catch((err)=>{
                                     res.status(403)
                                     console.log("err");
-                                })
+                                }) 
     }
 
     getAll(req, res){
@@ -60,6 +63,23 @@ class QuizController{
                                     res.send(403)
                                     console.log("err");
                                 })
+    }
+
+    approveQuiz(req, res) {
+        if (!req.body.approved) {
+            req.body.approved = true
+        }
+        return this.quizService.updateOne(req.params.id, req.body)
+            .then((response) => res.json(response))
+            .catch((err) => {
+                res.send(403)
+                console.log("err");
+            })
+
+
+    }
+
+    getTeachersQuiz(req, res){
     }
     
 

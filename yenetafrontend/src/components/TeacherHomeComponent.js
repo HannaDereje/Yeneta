@@ -4,7 +4,10 @@ import  TeacherNavBar from "./TeacherNavComponent"
 import '../css/register.css'
 import Lessons from "./LessonsComponent"
 import Questions from "./QuestionAnswerComponent"
-import Exam from "./MonthlyExamComponent"
+import Exam from "./MonthlyExamComponent copy"
+import TopicCreate from './CreateTopicComponent'
+import TeachersLessons from "./TeachersLessons"
+import TeachersQuizes from "./TeachersQuizes"
 
 export default class TeacherHome extends Component{
 
@@ -16,10 +19,12 @@ export default class TeacherHome extends Component{
         this.state = {questionAnswer: false};
         this.state = {newLesson :false}
         this.state = {newQuiz :false}
+        this.state = {newTopic :false}
 
         this.handleLessonsClick = this.handleLessonsClick.bind(this)
         this.handleQuizesClick = this.handleQuizesClick.bind(this)
         this.handleQuestionAnswersClick = this.handleQuestionAnswersClick.bind(this)
+        this.handleNewTopicClick = this.handleNewTopicClick.bind(this)
 
         
         this.handleNewQuizesClick = this.handleNewQuizesClick.bind(this)
@@ -40,6 +45,12 @@ export default class TeacherHome extends Component{
         
     }
 
+    handleNewTopicClick() {
+        this.resetClicks();
+        this.setState({newTopic: true});
+        
+    }
+
     handleQuestionAnswersClick() {
         this.resetClicks();
         this.setState({questionAnswer: true});
@@ -57,6 +68,12 @@ export default class TeacherHome extends Component{
         this.setState({newLesson: true});
         console.log(this.state.newLesson)
     }
+    logout(){
+
+        localStorage.clear();
+        window.location.href = "/studentLogin";
+
+    }
 
     resetClicks(){
         this.setState({
@@ -64,8 +81,13 @@ export default class TeacherHome extends Component{
             quizes: false, 
             questionAnswer:false,
             newLesson:false,
-            newQuiz:false
+            newQuiz:false,
+            newTopic:false
         })
+    }
+
+    componentDidMount(){
+
     }
 
     render(){
@@ -80,16 +102,18 @@ export default class TeacherHome extends Component{
                     <ul>
                         <li onClick={this.handleLessonsClick}>Lessons</li>
                         <li onClick={this.handleQuizesClick}>Quizes</li>
-                        <li onClick={this.handleQuestionAnswersClick}>Question And Answer</li>
-                        <li>Logout</li>
+                        <li onClick={this.handleQuestionAnswersClick}>Question And Answer</li>                       
+                        <li onClick={this.handleNewTopicClick}>Topic</li>
+                        <li onClick={this.logout}>Logout</li>
                     </ul>
                 </div>
                 <div id="mainpage">
-                {this.state.lessons ?<Lessons></Lessons> : ""}
+                {this.state.lessons ?<TeachersLessons></TeachersLessons> : ""}
                 {this.state.questionAnswer ?<Questions></Questions> : ""}
-                {this.state.quizes ?<Exam></Exam> : ""}
-                {this.state.newLesson ? <Exam></Exam> :""} 
+                {this.state.quizes ?<TeachersQuizes></TeachersQuizes> : ""}
+                {this.state.newLesson ? <Lessons></Lessons> :""} 
                 {this.state.newQuiz ? <Exam></Exam> :""}   
+                {this.state.newTopic ? <TopicCreate></TopicCreate> :""}   
                     </div>
                     </TeacherNavBar>
             </div>

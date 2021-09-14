@@ -4,29 +4,24 @@ const Schema = mongoose.Schema;
 const DiscussionRoomSchema = new Schema({
 
     topic: { 
-        type : Schema.Types.ObjectId,
-        ref:"TopicClass",
-        required: true 
+        type : String,
     },
     start_time: { 
-        type: Date, 
-        required: true 
+        type: String
     },
     expire_time: { 
-        type: Date, 
-        required: true 
+        type: String
     },
     status: { 
         type: String, 
         required: true 
     },
+    usernames:[{
+        type : String
+    }],
     users:[{
         type : Schema.Types.ObjectId,
         ref:"UserClass"
-    }],
-    messages:[{
-        type : Schema.Types.ObjectId,
-        ref:"MessageClass"
     }]
 }, {
         timestamps: true
@@ -47,10 +42,6 @@ class DiscussionRoom {
 
 
 DiscussionRoomSchema.loadClass(DiscussionRoom)
-DiscussionRoomSchema.pre('save', function(next) {
-    if (!this.start_time) this.start_time = new Date;
-    next();
-  });
 
 
-module.exports = mongoose.model('DiscussionRoomClass', DiscussionRoomSchema)
+module.exports = mongoose.models.DiscussionRoomClass || mongoose.model('DiscussionRoomClass', DiscussionRoomSchema)

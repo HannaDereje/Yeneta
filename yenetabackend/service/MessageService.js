@@ -9,6 +9,8 @@ class MessageService{
         this.deleteOne = this.deleteOne.bind(this);
         this.deleteAll = this.deleteAll.bind(this);
         this.updateOne = this.updateOne.bind(this);
+        this.getOneAndUpdateLike = this.getOneAndUpdateLike.bind(this)
+        this.getOneAndUpdateReport = this.getOneAndUpdateReport.bind(this)
     }
 
      insert(message){
@@ -25,6 +27,17 @@ class MessageService{
     getOne(id){
 
         const amessage = this.messageRepository.getOne(id);
+        return new Promise((resolve, reject)=>{resolve(amessage)})
+    }
+
+    getOneAndUpdateLike(id){
+        const amessage = this.messageRepository.getOneAndUpdateLike(id);
+        return new Promise((resolve, reject)=>{resolve(amessage)})
+    }
+
+    getOneAndUpdateReport(id){
+     
+        const amessage = this.messageRepository.getOneAndUpdateReport(id);
         return new Promise((resolve, reject)=>{resolve(amessage)})
     }
 

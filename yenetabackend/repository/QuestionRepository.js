@@ -8,8 +8,23 @@ class QuestionRepository {
 
     create(question) {
         return new Promise((resolve, reject) => {
-            this.model(question).save();
-            resolve(question);
+            resolve(this.model(question).save());
+        });
+    }
+    insertMany(questions) {
+        return new Promise((resolve, reject) => {
+            resolve(this.model.insertMany(questions));
+        });
+    }
+
+    getRandom() {
+        return new Promise((resolve, reject) => {
+            resolve(this.model.aggregate([{$sample:{size:6}}]));
+        });
+    }
+    getMany(ids) {
+        return new Promise((resolve, reject) => {
+            resolve(this.model.find({_id:{$in:ids}}));
         });
     }
 

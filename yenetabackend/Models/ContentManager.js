@@ -40,7 +40,7 @@ class ContentManager {
         this.email = email;
         this.experience = experience;
         this.job = job;
-        this.user = user
+        this.user = user;
     }
 
 }
@@ -49,4 +49,4 @@ class ContentManager {
 ContentManagerSchema.loadClass(ContentManager)
 
 
-module.exports = mongoose.model('ContentManagerClass', ContentManagerSchema)
+module.exports =  mongoose.models.ContentManagerClass || mongoose.model('ContentManagerClass', ContentManagerSchema)

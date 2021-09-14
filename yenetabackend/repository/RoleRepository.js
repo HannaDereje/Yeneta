@@ -8,8 +8,7 @@ class RoleRepository {
 
     create(role) {
         return new Promise((resolve, reject) => {
-            this.model(role).save();
-            resolve(role);
+            resolve(this.model(role).save());
         });
     }
 
@@ -20,10 +19,17 @@ class RoleRepository {
         });
     }
 
-    getOne(id) {
-        return new Promise((resolve, reject) => {
-            const oneRole = this.model.findById({ _id: id })
-            resolve(oneRole)
+    getOneById(id){
+        return new Promise((resolve, reject)=>{
+            const arole = this.model.findById({_id:id})
+            resolve(arole)
+        });
+        
+    }
+    getOne(role){
+        return new Promise((resolve, reject)=>{
+            const arole = this.model.findOne({role:role})
+            resolve(arole)
         });
     }
     updateOne(id, role) {

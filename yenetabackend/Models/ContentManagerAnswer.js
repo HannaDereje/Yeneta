@@ -10,6 +10,11 @@ const ContentManagerAnswerSchema = new Schema({
     date: { 
         type: Date,
         required: true },
+
+    question:{
+        type : Schema.Types.ObjectId,
+        ref:"StudentQuestionClass"
+    },
     user: { 
         type : Schema.Types.ObjectId,
         ref:"UserClass"
@@ -20,10 +25,11 @@ const ContentManagerAnswerSchema = new Schema({
 
 class ContentManagerAnswer {
 
-    constructor(answer, date, user) {
+    constructor(answer, date, question, user) {
         this.answer = answer;
         this.date = date;
         this.user = user;
+        this.question = question
 
     }
 
@@ -37,4 +43,4 @@ ContentManagerAnswerSchema.pre('save', function(next) {
   });
 
 
-module.exports = mongoose.model('ContentManagerAnswerClass', ContentManagerAnswerSchema)
+module.exports = mongoose.models.ContentManagerAnswerClass || mongoose.model('ContentManagerAnswerClass', ContentManagerAnswerSchema)

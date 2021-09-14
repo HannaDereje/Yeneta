@@ -11,6 +11,8 @@ class UserService{
         this.updateOne = this.updateOne.bind(this);
         this.getOneByEmail = this.getOneByEmail.bind(this) 
         this.getOneByToken = this.getOneByToken.bind(this)
+        this.getMany = this.getMany.bind(this)
+        this.getOneUsername = this.getOneUsername.bind(this)
     }
 
      insert(user){
@@ -40,10 +42,23 @@ getOneByEmail(email){
         const oneuser = this.userRepository.getOneByToken(token); 
         return new Promise((resolve, reject)=>{resolve(oneuser)}) 
     }
+
+    getMany(emails){
+        const users = this.userRepository.getMany(emails);
+        return new Promise((resolve, reject)=>{resolve(users)})
+    
+
+    }
+
+    
+    getOneUsername(username) {
+        const users = this.userRepository.getOneUsername(username);
+        return new Promise((resolve, reject)=>{resolve(users)})
+    }
     updateOne(id, user){
 
-        const user = this.userRepository.updateOne(id, user);
-        return new Promise((resolve, reject)=>{resolve(topic)})
+        const a_user = this.userRepository.updateOne(id, user);
+        return new Promise((resolve, reject)=>{resolve(a_user)})
     }
     deleteOne(id){
 

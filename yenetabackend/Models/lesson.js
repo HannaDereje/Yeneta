@@ -3,55 +3,55 @@ const Schema = mongoose.Schema;
 
 const LessonSchema = new Schema({
 
-    number :{
-        type :Number,
-        unique :true,
-        required:true
+    number: {
+        type: Number,
+        unique: true,
+        required: true
     },
-    topic:{
-        type:String,
-        required:true
+    topic: {
+        type: String,
+        required: true
     },
-    note:{
-        type:String,
-        required:true
+    note: {
+        type: String,
+        required: true
     },
-    level:{       
-        type:String,
-        required:true
+    level: {
+        type: String,
+        required: true
     },
-    image:{
-        type:String
+
+    videoLink: {
+        type: String
     },
-    audio:{
-        type:String 
+    approved: {
+        type: Boolean,
+        default: false
     },
-    videoLink:{
-        type:String 
-    },
-    approved:{
-        type:Boolean,
-        default:false 
-    },
-    activity:{
+    activity: {
+        type: Schema.Types.ObjectId,
+        ref: "ActivityClass",
+        required: true
+    },user: { 
         type : Schema.Types.ObjectId,
-        ref:"ActivityClass"
+        ref:"UserClass" ,
+        required:true
     }
 }, {
-    timestamps:true
-})
+        timestamps: true
+    })
 
-class Lesson{
+class Lesson {
 
-    constructor(number, topic, note, level, image, audio, videoLink, activity){
+    constructor(number, topic, note, level, videoLink,approved, activity, user) {
         this.number = number;
         this.topic = topic;
-        this.note =note;
+        this.note = note;
         this.level = level;
-        this.image = image;
-        this.audio = audio;
         this.videoLink = videoLink;
         this.activity = activity;
+        this.approved = approved
+        this.user = user
     }
 
 }
@@ -59,4 +59,4 @@ class Lesson{
 
 LessonSchema.loadClass(Lesson)
 
-module.exports = mongoose.model('LessonClass', LessonSchema)
+module.exports = mongoose.models.LessonClass || mongoose.model('LessonClass', LessonSchema)

@@ -9,6 +9,8 @@ class QuizService{
         this.deleteOne = this.deleteOne.bind(this);
         this.deleteAll = this.deleteAll.bind(this);
         this.updateOne = this.updateOne.bind(this);
+        this.getCount = this.getCount.bind(this)
+        this.getOneByUser = this.getOneByUser.bind(this)
     }
 
      insert(quiz){
@@ -22,6 +24,20 @@ class QuizService{
         return new Promise((resolve, reject)=>{resolve(quizs)})
     }
 
+    getCount(){
+
+        const count = this.quizRepository.getCount();
+        return new Promise((resolve, reject)=>{resolve(count)})
+
+    }
+
+    getOneByUser(user){ 
+
+        const quiz = this.quizRepository.getOneByUser(user);
+        return new Promise((resolve, reject)=>{resolve(quiz)})
+
+     }
+
     getOne(id){
 
         const quiz = this.quizRepository.getOne(id);
@@ -30,8 +46,8 @@ class QuizService{
 
     updateOne(id, quiz){
 
-        const quiz = this.quizRepository.updateOne(id, quiz);
-        return new Promise((resolve, reject)=>{resolve(quiz)})
+        const a_quiz = this.quizRepository.updateOne(id, quiz);
+        return new Promise((resolve, reject)=>{resolve(a_quiz)})
     }
     deleteOne(id){
 

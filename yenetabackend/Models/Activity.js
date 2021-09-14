@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const ActivitySchema = new Schema
 ({
     level: { type: String, required: true },
-    due_date: { type: Date, required: true },
+    due_date: { type: Date},
     questions:[{
         type : Schema.Types.ObjectId,
         ref:"QuestionClass"
@@ -22,4 +22,4 @@ class Activity {
 }
 
 ActivitySchema.loadClass(Activity)
-module.exports = mongoose.model('ActivityClass', ActivitySchema)
+module.exports =  mongoose.models.ActivityClass || mongoose.model('ActivityClass', ActivitySchema)

@@ -6,16 +6,21 @@ const TopicSchema = new Schema({
     topic: { 
         type: String,
          required: true
-         }
+         },
+         user: { 
+            type : Schema.Types.ObjectId,
+            ref:"UserClass" ,
+            required:true
+        }
 }, {
         timestamps: true
     })
 
 class Topic {
 
-    constructor(topic) {
+    constructor(topic, user) {
         this.topic = topic;
-
+        this.user= user
     }
 
 }
@@ -23,4 +28,4 @@ class Topic {
 
 TopicSchema.loadClass(Topic)
 
-module.exports = mongoose.model('TopicClass', TopicSchema)
+module.exports = mongoose.models.TopicClass || mongoose.model('TopicClass', TopicSchema)

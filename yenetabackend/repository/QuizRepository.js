@@ -8,9 +8,22 @@ class QuizRepository {
 
     create(quiz) {
         return new Promise((resolve, reject) => {
-            this.model(quiz).save();
-            resolve(quiz);
+            resolve(this.model(quiz).save());
         });
+    }
+
+    getCount(){
+
+        return new Promise((resolve, reject)=>{        
+            const count = this.model.count();
+            resolve(count)}); 
+    }
+
+    getOneByUser(user){ 
+        return new Promise((resolve, reject)=>{ 
+            const aquiz = this.model.find({user:user}) 
+            resolve(aquiz) 
+        }); 
     }
 
     getAll() {

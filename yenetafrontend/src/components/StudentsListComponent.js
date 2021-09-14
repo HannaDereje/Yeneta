@@ -1,52 +1,61 @@
-import React, {Component } from 'react'
+import React, { Component } from 'react'
 import "bootstrap/dist/css/bootstrap.min.css"
+import axios from 'axios'
+import '../css/register.css'
+import { Container, Jumbotron, Button, Form, Table } from "react-bootstrap"
+export default class Studentlist extends Component {
+    constructor() {
+        super()
+        this.state = {
+            students: [],
+            users:[]
+        }
 
-export default class Studentlist extends Component{
+    }
+    componentDidMount() {
 
-    render(){
+        const header ={
+            "x-access-token": localStorage.getItem("token")
+        }
+        axios.get("http://localhost:5000/getAllStudent", {headers:header})
+            .then(res => {
+                console.log(res.data)
+                this.setState({ students: res.data.students, users:res.data.users })
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+    }
+
+    render() {
         return (
             <div>
                 <h4 className="text-center">Student List</h4>
-                <table className="table table-striped table-bordered table-hover tablestyle">
+
+                <Table className=" slist widthstyle m-auto">
                     <th>Full Name</th>
                     <th>Username</th>
                     <th>Email</th>
                     <th>Age</th>
                     <th>Country</th>
                     <th>Level</th>
-                    <tr>
-                       <td>Helina taye</td> 
-                       <td>Helu</td> 
-                       <td>Helu@gmail.com</td> 
-                       <td>12</td> 
-                       <td>Canada</td> 
-                       <td>Beginner</td> 
-                    </tr>
-                    <tr>
-                       <td>Kalkidan Urga</td> 
-                       <td>Kali</td> 
-                       <td>Kali@gmail.com</td> 
-                       <td>13</td> 
-                       <td>England</td> 
-                       <td>Beginner</td> 
-                    </tr>
-                    <tr>
-                       <td>Hiwot Tadesse</td> 
-                       <td>Hiwi</td> 
-                       <td>Hiwi@gmail.com</td> 
-                       <td>12</td> 
-                       <td>Russia</td> 
-                       <td>Intermediate</td> 
-                    </tr>
-                    <tr>
-                       <td>Hanna Dereje</td> 
-                       <td>Hanna</td> 
-                       <td>Hanna@gmail.com</td> 
-                       <td>17</td> 
-                       <td>America</td> 
-                       <td>Intermediate</td> 
-                    </tr>
-                </table>
+                    {this.state.students.map(student =>
+                     <tr>
+                         
+                         <td key={student.name}>{student.name}</td>
+                        {this.state.users.map(user=>{
+
+                            return  <td key={user._id}>{user.username}</td>
+
+                        })}
+                       
+                            <td key={student.name}>{student.email}</td>
+                            <td key={student.name}>{student.age}</td>
+                            <td key={student.name}>{student.country}</td>
+                            <td key={student.name}>{student.level}</td>
+                        </tr>)}
+
+                </Table>
             </div>
         )
 

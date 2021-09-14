@@ -8,8 +8,7 @@ class MessageRepository {
 
     create(message) {
         return new Promise((resolve, reject) => {
-            this.model(message).save();
-            resolve(message);
+            resolve(this.model(message).save());
         });
     }
 
@@ -26,6 +25,23 @@ class MessageRepository {
             resolve(oneMessage)
         });
     }
+
+    getOneAndUpdateLike(id){
+     
+        return new Promise((resolve, reject) => {
+            const oneMessage = this.model.findOneAndUpdate({ _id: id }, { $inc:{like:1}})
+            resolve(oneMessage)
+        });
+    }
+
+    getOneAndUpdateReport(id){
+     
+        return new Promise((resolve, reject) => {
+            const oneMessage = this.model.findOneAndUpdate({ _id: id }, { $inc:{report:1}})
+            resolve(oneMessage)
+        });
+    }
+
     updateOne(id, message) {
         let set = {};
         for (const key in message) {

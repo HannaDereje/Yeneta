@@ -8,8 +8,7 @@ class AdminRepository {
 
     create(admin) {
         return new Promise((resolve, reject) => {
-            this.model(admin).save();
-            resolve(activity);
+            resolve(this.model(admin).save());
         });
     }
 

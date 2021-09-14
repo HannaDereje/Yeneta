@@ -12,7 +12,12 @@ class TopicController{
     }
 
      insert(req, res){
-         return  this.topicService.insert(req.body)
+
+        const topic ={
+            topic:req.body.topic
+            
+        }
+         return  this.topicService.insert(topic)
                                 .then((response) => res.json(response))
                                 .catch((err)=>{
                                     res.status(403)

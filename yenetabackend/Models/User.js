@@ -30,22 +30,33 @@ const UserSchema = new Schema({
         type : Schema.Types.ObjectId,
         ref:"RoleClass",
         required:true
+    },
+    status:{
+        type:String,
+        default:"Pending",
+        enum : ["Pending", "Active"]
+    },
+    expireDate:{
+        type:Date
     }
+    
 
 })
 
 class User{
 
-    constructor(username, password,email, accessToken,  role){
+    constructor(username, password,email, accessToken,  role, status, expireDate){
         this.username = username;
         this.password = password;
         this.role =role;
         this.email = email;
         this.accessToken = accessToken;
+        this.status = status;
+        this.expireDate = expireDate
     }
 
 }
 UserSchema.loadClass(User)
 
 
-module.exports = mongoose.model('UserClass', UserSchema)
+module.exports = mongoose.models.UserClass ||  mongoose.model('UserClass', UserSchema)

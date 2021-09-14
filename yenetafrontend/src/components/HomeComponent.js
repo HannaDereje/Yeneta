@@ -3,9 +3,46 @@ import {BrowserRouter as  Router, Route} from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {Container, Jumbotron, Button, Card } from "react-bootstrap"
 import HomeNavBar from './HomeNavbarComponent'
-import '../css/register.css'
+import '../css/register.css';
+import axios from "axios"
+
 export default class Home extends Component{
 
+    constructor(props){
+        super(props)
+        this.state= {
+            active:"Active",
+            code:""
+        }
+
+        this.Welcome = this.Welcome.bind(this)
+        this.verifyUser = this.verifyUser.bind(this)
+    }
+
+     Welcome = (props) => {
+        if (props.match.path === "/confirm/:code") {
+            this.verifyUser(props.match.params.code);
+        }
+
+    }
+
+    verifyUser = (code) => {
+        return axios.put("http://localhost:5000/confirm/" + code, {}).then((response) => {
+          return response.data;
+        });
+      };
+
+    
+
+      
+
+    componentDidMount(){
+        const code = this.props.match.params.code
+        if(code){
+            this.Welcome(this.props)
+        }
+        console.log(code)
+    }
 
     render(){
         return (

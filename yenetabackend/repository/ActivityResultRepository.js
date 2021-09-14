@@ -6,10 +6,9 @@ class ActivityResultRepository {
         this.model = model;
     }
 
-    create(ActivityResult) {
+    create(activityResult) {
         return new Promise((resolve, reject) => {
-            this.model(activityResult).save();
-            resolve(activityResult);
+            resolve(this.model(activityResult).save());
         });
     }
 

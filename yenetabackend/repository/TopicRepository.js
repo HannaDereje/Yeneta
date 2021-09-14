@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-class Topic {
+class TopicRepository {
 
     constructor(model) {
         this.model = model;
@@ -8,8 +8,7 @@ class Topic {
 
     create(topic) {
         return new Promise((resolve, reject) => {
-            this.model(topic).save();
-            resolve(topic);
+            resolve(this.model(topic).save());
         });
     }
 

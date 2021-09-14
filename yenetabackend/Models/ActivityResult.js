@@ -27,4 +27,4 @@ class ActivityResult {
 }
 
 ActivityResultSchema.loadClass(ActivityResult)
-module.exports = mongoose.model('ActivityResultClass', ActivityResultSchema)
+module.exports = mongoose.models.ActivityResultClass || mongoose.model('ActivityResultClass', ActivityResultSchema)

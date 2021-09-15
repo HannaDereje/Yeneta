@@ -4,6 +4,11 @@
     height: 700px;
     background-image: url("../bim.jpg");
 }
+.certificate{
+    width: 100%;
+    height: 700px;
+    background-image: url("../star-border.png");
+}
 .conlogin{
     width: 100%;
     height: 700px;

@@ -93,7 +93,8 @@ export default class Exam extends Component{
                 level :this.state.input["quiz_level"],
                 question:this.state.question,
                 answer:this.state.answer, 
-                allowedTime :this.state.input["allowed_Time"]
+                allowedTime :this.state.input["allowed_Time"],
+                questionNumber :this.state.count+1
             }
 
             const header ={

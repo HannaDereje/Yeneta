@@ -46,7 +46,8 @@ export default class ClassRoom extends Component {
             allowedTime:"0",
             noSpareTime:'',
             time:"",
-            image:""
+            image:"",
+            level:''
         }
         this.handleShow = this.handleShow.bind(this)
         this.handleClose = this.handleClose.bind(this)
@@ -183,12 +184,24 @@ export default class ClassRoom extends Component {
                 } 
                 
                 const level = new URLSearchParams(this.props.location.search).get("level ")
+
         
                 axios.get("http://localhost:5000/getStudent", { headers: header })
                 .then(response => {
                     console.log(response.data)
                     var lesson = response.data.Student.lessons
                     var quiz = response.data.Student.quizes
+
+                    if(quiz.length == 3){
+
+                        window.location.href = "/"
+                        URLSearchParams.set("level ", "Intermediate")
+                        this.handleLesson()
+                    }
+                    if(quiz.length == 6){
+                        URLSearchParams.set("level ", "Advanced")
+                        this.handleLesson()
+                    }
                     
                     if(lesson.length % 3 == 0 && lesson.length >0 && lesson[lesson.length - 1].split("_")[1] == "submitted"){
                        
@@ -529,7 +542,7 @@ handleClose() {
                 var lesson = response.data.Student.lessons
 
                 if(lesson.length==0){
-                    this.handleLesson(level, header);
+                    this.handleLesson();
                     
                 }else{
                     this.availLesson()

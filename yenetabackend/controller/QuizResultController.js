@@ -103,11 +103,22 @@ class QuizResultController{
                        this.studentService.updateOne(student._id, student)
                       .then(updatedStudent=>{
 
-                         this.quizResultService.insert(quizResult)
-                        .then(quiz=>{
- 
-                              res.status(200).json({"result":result, "correct":correctAnswers, "quiz":quiz, "student":updatedStudent})
-                        })
+                         this.quizResultService.getOneByQuizId(req.body.quiz_id)
+                            .then(quiz=>{
+
+                                if(quiz){
+
+                                    res.status(200).json({"result":"You have already Submitted"})
+                         
+                                }else{
+                                    this.quizResultService.insert(quizResult)
+                                    .then(quiz=>{
+             
+                                          res.status(200).json({"result":result, "correct":correctAnswers, "quiz":quiz, "student":updatedStudent})
+                                    })
+                                }
+                            })
+                         
                          
                       })
                   }
@@ -121,13 +132,25 @@ class QuizResultController{
           console.log(err);
       })
             
+    }
 
-           
+    getAverage(req, res){
 
-      
+        var average = 0
 
+        this.quizResultService.getAll()
+            then(quizes=>{
 
-    
+                quizes.forEach(quiz => {
+                    
+                    average+=quiz.result
+
+                });
+
+                average = average/3
+
+            })
+
     }
 
     

@@ -18,6 +18,7 @@ import EntranceQuiz from "./components/QuizComponent"
 import DiscussionRoom from "./components/StudentDiscussionRoomComponent"
 import ResetPassword from "./components/ResetPasswordComponent"
 import PasswordResetLink from "./components/LinkToEmailToResetPasswordComponent"
+import Certificate from "./components/certificateComponent"
 
 function App() {
   return ( 
@@ -39,6 +40,7 @@ function App() {
     <Route path="/room?topic=''&username=''&id=''" component={DiscussionRoom}/>
     <Route path="/reset" component = {ResetPassword}/>
     <Route path="/passwordReset/:accessToken" component={PasswordResetLink}/>
+    <Route path="/certificate" component={Certificate}/>
     </Router>
    
   );

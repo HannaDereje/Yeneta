@@ -15,6 +15,9 @@ const QuizSchema = new Schema
         type : Schema.Types.ObjectId,
         ref:"UserClass" ,
         required:true
+    },
+    questionNumber:{
+        type:Number
     }
 }, 
  {
@@ -22,7 +25,7 @@ const QuizSchema = new Schema
     })
 
 class Quiz {
-    constructor(number, date, level, allowedTime, questions, approved, user) {
+    constructor(number, date, level, allowedTime, questions, approved, user, questionNumber) {
         this.date = date;
         this.level = level;
         this.allowedTime = allowedTime;

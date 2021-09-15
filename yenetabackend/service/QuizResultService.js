@@ -9,6 +9,7 @@ class QuizResultService {
         this.deleteOne = this.deleteOne.bind(this);
         this.deleteAll = this.deleteAll.bind(this);
         this.updateOne = this.updateOne.bind(this);
+        this.getOneByQuizId = this.getOneByQuizId.bind(this)
     }
 
     insert(quizResult) {
@@ -19,6 +20,12 @@ class QuizResultService {
     getAll() {
 
         const quizResults = this.quizResultRepository.getAll();
+        return new Promise((resolve, reject) => { resolve(quizResults) })
+    }
+
+    getOneByQuizId(id) {
+     
+        const quizResults = this.quizResultRepository.getOneByQuizId(id);
         return new Promise((resolve, reject) => { resolve(quizResults) })
     }
 

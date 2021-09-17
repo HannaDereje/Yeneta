@@ -1,12 +1,12 @@
-const Student = require("../models/Student")
+const Student = require("../Models/Student")
 const StudentRepository = require("../repository/StudentRepository")
 const StudentService = require("../service/StudentService")
 
-const ContentManager = require("../models/ContentManager")
+const ContentManager = require("../Models/ContentManager")
 const ContentManagerRepository = require("../repository/ContentManagerRepository")
 const ContentManagerService = require("../service/ContentManagerService")
 
-const User = require("../models/User")
+const User = require("../Models/User")
 const UserRepository = require("../repository/UserRepository")
 const UserService = require("../service/UserService")
 const UserController = require("../controller/UserController")
@@ -15,19 +15,19 @@ const Role = require("../Models/Role")
 const RoleRepository = require("../repository/RoleRepository")
 const RoleService = require("../service/RoleService")
 
-const Lesson = require("../models/Lesson")
+const Lesson = require("../Models/Lesson")
 const LessonRepository = require("../repository/LessonRepository")
 const LessonService = require("../service/LessonService")
 
-const Activity = require("../models/Activity")
+const Activity = require("../Models/Activity")
 const ActivityRepository = require("../repository/ActivityRepository")
 const ActivityService = require("../service/ActivityService")
 
-const Quiz = require("../models/Quiz")
+const Quiz = require("../Models/Quiz")
 const QuizRepository = require("../repository/QuizRepository")
 const QuizService = require("../service/QuizService")
 
-const Admin = require("../models/Admin")
+const Admin = require("../Models/Admin")
 const AdminRepository = require("../repository/AdminRepository")
 const AdminService = require("../service/AdminService")
 

@@ -24,8 +24,8 @@ class Server{
     Start(){
         dotenv.config();
         
-        var server =   app.listen(process.env.PORT, ()=>{
-                console.log("The app is listening on port " + process.env.PORT)
+        var server =   app.listen(process.env.PORT || 5000, ()=>{
+                console.log("The app is listening on port " + process.env.PORT || 5000)
             })
             this.initSocket(server, options)
         

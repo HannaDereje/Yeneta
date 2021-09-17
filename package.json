@@ -4,8 +4,8 @@
   "description": "yenetabackend",
   "main": "server.js",
   "scripts": {
-    "start": "concurrently \"npm run server\" \" cd ../yenetafrontend && npm start\"",
-    "server": "nodemon server.js"
+    "server": "nodemon server.js",
+    "heroku-postbuild": "cd yenetafrontend && npm install --only=dev && npm install && npm run build"
   },
   "author": "Yeneta Team",
   "license": "ISC",

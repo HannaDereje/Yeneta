@@ -13,7 +13,7 @@ const Role = require("../Models/Role")
 const RoleRepository = require("../repository/RoleRepository")
 const RoleService = require("../service/RoleService")
 
-const Lesson = require("../Models/Lesson")
+const Lesson = require("../Models/lesson")
 const LessonRepository = require("../repository/LessonRepository")
 const LessonService = require("../service/LessonService")
 

@@ -77,7 +77,7 @@ class Server{
         topic(app)
         const admin = require("./routes/Admin")
         admin(app)
-        const lesson = require("./routes/lesson")
+        const lesson = require("./routes/Lesson")
         lesson(app)
         const activity = require("./routes/Activity")
         activity(app)

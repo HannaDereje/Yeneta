@@ -24,7 +24,7 @@ class Server{
     Start(){
         dotenv.config();
         app.get("*", (req, res) => {
-            res.sendFile(path.join(__dirname, "yenetafrontend", "build", "index.html"));
+            res.sendFile(path.join(__dirname, "yenetafrontend", "build", "index.js"));
         })
         var server =   app.listen(process.env.PORT, ()=>{
                 console.log("The app is listening on port " + process.env.PORT)

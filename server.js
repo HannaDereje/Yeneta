@@ -36,7 +36,8 @@ class Server{
         app.use(express.json());
         app.use(cors());
         app.use(bodyParser.json())
-        mongoose.connect('mongodb+srv://yenetaUser:hhhk1234@yeneta.ablnz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+        //mongodb+srv://yenetaUser:hhhk1234@yeneta.ablnz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+        mongoose.connect('mongodb://localhost/blog', {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useCreateIndex: true
@@ -48,10 +49,12 @@ class Server{
 
     initRoutes(){
 
-        app.use(express.static(path.join(__dirname, "yenetafrontend", "build")))
+       /* app.use(express.static(path.join(__dirname, "yenetafrontend", "build")))
         app.get("*", (req, res) => {
             res.sendFile(path.join(__dirname, "yenetafrontend", "build", "index.html"));
-        })
+        })*/
+        //
+    //"heroku-postbuild": "cd yenetafrontend && npm install --only=dev && npm install && npm run build"
 
 
         app.use(express.static("QuizImages"))

@@ -355,3 +355,7 @@ table tr:nth-child(odd){
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
+.msgbox{
+    position: absolute; bottom: 0;
+}
+

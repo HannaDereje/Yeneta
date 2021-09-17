@@ -102,7 +102,7 @@ export default class DiscussionRoom extends Component{
         socket.on("reportedMessage", ({report, leave})=>{
           
             if(leave == true){
-                this.handleShow()
+               this.props.history.goBack() 
             }
             window.location.reload();
 
@@ -144,6 +144,8 @@ export default class DiscussionRoom extends Component{
 
         socket.emit("reportedMessage",  {id})
 
+        
+
     }
 
     
@@ -181,6 +183,21 @@ export default class DiscussionRoom extends Component{
                                     useHistory().goBack()
                                  })
                         })
+                }
+
+                else if(this.state.users.length ==0){
+                    axios.delete("http://localhost:5000/deleteRoom")
+                    .then(room=>{
+
+                        axios.delete("http://localhost:5000/deleteMessages")
+                             .then(msgs=>{
+                                this.setState({noSpareTime:"Time is up!!"})
+                                alert("Time is up")
+                                clearInterval(timer)
+                                
+                                useHistory().goBack()
+                             })
+                    })
                 }
              }, 1000);
             
@@ -248,8 +265,6 @@ export default class DiscussionRoom extends Component{
 
                 <Form className="formStyle msgbox">
                     <InputGroup className="mb-3 inputGroupStyle">
-
-                       
                         <FormControl
                         type="text" placeholder="Message" name ="message" 
                         value={this.state.msg}  onChange={this.onChangeMsg}

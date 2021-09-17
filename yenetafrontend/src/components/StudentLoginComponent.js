@@ -92,8 +92,6 @@ export default class Login extends Component {
 
             axios.post("http://localhost:5000/login", info, {})
                 .then(response=>{
-                    console.log(response)
-
                     if(response.data.role =="STUDENT"){
                     
                         localStorage.setItem('token', response.data.token);
@@ -105,6 +103,7 @@ export default class Login extends Component {
                         
                         axios.get("http://localhost:5000/getStudent",  {headers:header})
                         .then(response=>{
+                            console.log(response.data)
 
                             if(response.data.Student.approved == true){
                             

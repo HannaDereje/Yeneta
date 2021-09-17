@@ -78,7 +78,7 @@ export default class ClassRoom extends Component {
                 "x-access-token": localStorage.getItem("token")
             }
     
-            const level = new URLSearchParams(this.props.location.search).get("level ")
+            const level = new URLSearchParams(this.props.location.search).get("level")
             console.log(level)
             
             axios.get(`http://localhost:5000/takeLesson?level=${level}`, { headers: header })
@@ -144,7 +144,7 @@ export default class ClassRoom extends Component {
                     "x-access-token": localStorage.getItem("token")
                 }
         
-                const level = new URLSearchParams(this.props.location.search).get("level ")
+                const level = new URLSearchParams(this.props.location.search).get("level")
                 
 
                 axios.get(`http://localhost:5000/takeQuiz?level=${level}`, {headers:header})
@@ -196,7 +196,7 @@ export default class ClassRoom extends Component {
                     "x-access-token": localStorage.getItem("token")
                 } 
                 
-                const level = new URLSearchParams(this.props.location.search).get("level ")
+                const level = new URLSearchParams(this.props.location.search).get("level")
 
         
                 axios.get("http://localhost:5000/getStudent", { headers: header })
@@ -246,9 +246,80 @@ export default class ClassRoom extends Component {
 
                         
                     }
+                    if(quiz.length == 4){
+
+                        quiz.forEach(quiz=>{
+                            if(quiz.split("_")[1] == "submitted"){
+                                ready = true
+                            }else{
+                                ready = false
+                            }
+                           
+                        })
+                        axios.get("http://localhost:5000/getStudent",  {headers:header})
+                        .then(response=>{
+                            if(response.data.Student.certificates.length == 2){
+                                ready= false;
+                            }
+                            else if(response.data.Student.certificates.length == 1)
+                            {
+                                ready= true; 
+                            }
+
+                            if(ready){
+
+                                axios.put("http://localhost:5000/updateStudent", {level:"Advanced"}, {headers:header})
+                                    .then(response=>{
+                                        console.log(response.data)
+    
+                                        axios.put("http://localhost:5000/updateStudentOnCertificate", {}, { headers: header })
+                                        .then(response => {
+                                            
+                                             window.location.href = "/certificate"
+                                        })
+        
+                                    })
+     
+                            }
+                        })
+                    }
+
                     if(quiz.length == 6){
-                        URLSearchParams.set("level ", "Advanced")
-                        this.handleLesson()
+
+                        quiz.forEach(quiz=>{
+                            if(quiz.split("_")[1] == "submitted"){
+                                ready = true
+                            }else{
+                                ready = false
+                            }
+                           
+                        })
+                        axios.get("http://localhost:5000/getStudent",  {headers:header})
+                        .then(response=>{
+                            if(response.data.Student.certificates.length == 3){
+                                ready= false;
+                            }
+                            else if(response.data.Student.certificates.length == 2)
+                            {
+                                ready= true; 
+                            }
+
+                            if(ready){
+
+                                axios.put("http://localhost:5000/updateStudent", {level:"Advanced"}, {headers:header})
+                                    .then(response=>{
+                                        console.log(response.data)
+    
+                                        axios.put("http://localhost:5000/updateStudentOnCertificate", {}, { headers: header })
+                                        .then(response => {
+                                            
+                                             window.location.href = "/certificate"
+                                        })
+        
+                                    })
+     
+                            }
+                        })
                     }
                     
                     if(lesson.length % 3 == 0 && lesson.length >0 && lesson[lesson.length - 1].split("_")[1] == "submitted"){
@@ -327,7 +398,7 @@ export default class ClassRoom extends Component {
                     "x-access-token": localStorage.getItem("token")
                 } 
                 
-                const level = new URLSearchParams(this.props.location.search).get("level ")
+                const level = new URLSearchParams(this.props.location.search).get("level")
 
                 if(level == "Advanced"){
             
@@ -429,7 +500,7 @@ export default class ClassRoom extends Component {
                         axios.get(`http://localhost:5000/getActivityResultById/${res.data.activity}`, {headers:header})
                                  .then(result=>{
                                      console.log(result)
-                                     if(result.data){
+                                     if(result.data.user == this.state.user._id){
                                          this.setState({disabled:true})
                                      }else{
                                         this.setState({disabled:false})   
@@ -608,7 +679,7 @@ handleLessonsClick(id) {
 }
 
 handleShow() {
-    const level = new URLSearchParams(this.props.location.search).get("level ")
+    const level = new URLSearchParams(this.props.location.search).get("level")
     if(level == "Advanced"){
     
     if(this.state.joinchatText == "CreateChat"){

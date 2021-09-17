@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const app = express();
 const mongoose = require("mongoose")
 const bodyParser = require("body-parser")
+const path = require("path")
 
 var options = {
     cors:true, 
@@ -22,20 +23,22 @@ class Server{
 
     Start(){
         dotenv.config();
-      var server =   app.listen(process.env.PORT, ()=>{
-            console.log("The app is listening on port " + process.env.PORT)
+        app.get("*", (req, res) => {
+            res.sendFile(path.join(__dirname, "yenetafrontend", "build", "index.html"));
         })
-        this.initSocket(server, options)
-       
+        var server =   app.listen(process.env.PORT, ()=>{
+                console.log("The app is listening on port " + process.env.PORT)
+            })
+            this.initSocket(server, options)
+        
     }
 
     initDB(){
         
         app.use(express.json());
         app.use(cors());
-       // mongodb+srv://yenetaUser:hhhk1234@yeneta.ablnz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
         app.use(bodyParser.json())
-        mongoose.connect('mongodb://localhost/blog', {
+        mongoose.connect('mongodb+srv://yenetaUser:hhhk1234@yeneta.ablnz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useCreateIndex: true
@@ -46,6 +49,8 @@ class Server{
     }
 
     initRoutes(){
+
+        app.use(express.static(path.join(__dirname, "yenetafrontend", "build")))
 
         app.use(express.static("QuizImages"))
         app.use(express.static("uploads"))

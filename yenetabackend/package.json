@@ -5,8 +5,11 @@
   "main": "server.js",
   "scripts": {
     "start": "node server",
-    "dev": "nodemon server",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client npm run build --prefix client"
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+  },
+
+  "engines": {
+    "node": "14.16.0"
   },
   "author": "Yeneta Team",
   "license": "ISC",

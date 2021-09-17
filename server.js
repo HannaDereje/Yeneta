@@ -23,9 +23,7 @@ class Server{
 
     Start(){
         dotenv.config();
-        app.get("*", (req, res) => {
-            res.sendFile(path.join(__dirname, "yenetafrontend", "build", "index.js"));
-        })
+        
         var server =   app.listen(process.env.PORT, ()=>{
                 console.log("The app is listening on port " + process.env.PORT)
             })
@@ -51,6 +49,9 @@ class Server{
     initRoutes(){
 
         app.use(express.static(path.join(__dirname, "yenetafrontend", "build")))
+        app.get("*", (req, res) => {
+            res.sendFile(path.join(__dirname, "yenetafrontend", "build", "index.js"));
+        })
 
         app.use(express.static("QuizImages"))
         app.use(express.static("uploads"))

@@ -50,7 +50,7 @@ class Server{
 
         app.use(express.static(path.join(__dirname, "yenetafrontend", "build")))
         app.get("*", (req, res) => {
-            res.sendFile(path.join(__dirname, "yenetafrontend", "build", "index.html"));
+            res.sendFile(path.join(__dirname, "yenetafrontend", "public", "index.html"));
         })
 
 

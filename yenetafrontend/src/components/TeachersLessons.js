@@ -20,7 +20,7 @@ export default class TeachersLessons extends Component {
         this.handleCkeditorStateForAnswer = this.handleCkeditorStateForAnswer.bind(this)
         this.handleCkeditorStateForNote = this.handleCkeditorStateForNote.bind(this)
         this.handleCkeditorStateForQuestion = this.handleCkeditorStateForQuestion.bind(this)
-
+        this.componentDidMount = this.componentDidMount.bind(this)
 
     }
 
@@ -30,8 +30,10 @@ export default class TeachersLessons extends Component {
         }
         const ids2 = []
 
+        console.log("fkjgdsfh")
         axios.get(`http://localhost:5000/teachersLessons`, { headers: header })
         .then(res => {
+            console.log(res.data)
 
             const lessons = res.data
             lessons.forEach(lesson=>{
@@ -117,13 +119,10 @@ export default class TeachersLessons extends Component {
         });
     }
 
-    componentDidMount(){
-
-        
-    }
-
+    
     render() {
 
+        console.log(this.state.lesson)
         return (
             <div>
                     
@@ -132,6 +131,7 @@ export default class TeachersLessons extends Component {
 
                 <div className ="approvals">
 
+                <div>
                 {this.state.lesson.map((lesson) =>
                 <Card style={{ width: '18rem' }}>
                 <Card.Body>
@@ -147,7 +147,6 @@ export default class TeachersLessons extends Component {
                                 data={lesson.lesson.note}
                                 editor={ClassicEditor}
                                 config={{
-                                    isReadOnly: true,
                                     toolbar: ['']
                                 }}
  
@@ -162,7 +161,6 @@ export default class TeachersLessons extends Component {
                      data={question.content}
                      editor={ClassicEditor}
                      config={{
-                         isReadOnly: true,
                          toolbar: ['']
                      }}
                      
@@ -194,7 +192,7 @@ export default class TeachersLessons extends Component {
                 </Card>
                 )}
                
-
+               </div>
                 </div>
 
             </div>

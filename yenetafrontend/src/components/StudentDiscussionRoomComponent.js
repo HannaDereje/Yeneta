@@ -31,7 +31,8 @@ export default class DiscussionRoom extends Component{
             time:"",
             likedMessage:"",
             noSpareTime:'',
-            now:""
+            now:"",
+            user:''
 
         }
 
@@ -173,11 +174,11 @@ export default class DiscussionRoom extends Component{
 
                             axios.delete("http://localhost:5000/deleteMessages")
                                  .then(msgs=>{
-                                    useHistory().goBack()
                                     this.setState({noSpareTime:"Time is up!!"})
                                     alert("Time is up")
-                                    window.location.reload()
                                     clearInterval(timer)
+                                    
+                                    useHistory().goBack()
                                  })
                         })
                 }
@@ -191,12 +192,22 @@ export default class DiscussionRoom extends Component{
     componentDidMount(){
 
         this.compareAllowedWithNow()
+
+        const header ={
+            "x-access-token": localStorage.getItem("token")
+        }
+
+        axios.get("http://localhost:5000/getStudent",  {headers:header})
+                    .then(response=>{
+                        this.setState({user:response.data.Student})
+                        console.log(response.data)
+                    })
     }
         
 
     render(){
         return (
-            <StudentNavBar name = "Leave Chat" handleShow={this.handleShow}>
+            <StudentNavBar name = "Leave Chat" handleShow={this.handleShow} image ={"http://localhost:5000/"+ this.state.user.image}>
             <div className="mainContainer">
 
                 <div id="sidebar">
@@ -211,21 +222,9 @@ export default class DiscussionRoom extends Component{
                 </div>
                 <div id="mainpage">
 
+                <h6>You have {this.state.now} minutes left.</h6>
                     
-                    <Form className="formStyle">
-                    <h6>You have {this.state.now} minutes left.</h6>
-                    <InputGroup className="mb-3 inputGroupStyle">
-
-                       
-                        <FormControl
-                        type="text" placeholder="Message" name ="message" 
-                        value={this.state.msg}  onChange={this.onChangeMsg}
-                        />
-                        <InputGroup.Append>
-                        <Button variant="success" type= "submit" onClick={this.sendMessage}>Send</Button>
-                        </InputGroup.Append>
-                    </InputGroup>
-                </Form>
+                    
  
                 {this.state.messages.map((msg)=>
                 
@@ -244,8 +243,24 @@ export default class DiscussionRoom extends Component{
                 <Button className="btnStyle btn btn-warning" onClick={()=>this.onchangeReport(msg.id)} >Report {msg.report}</Button>    
                 </div>  
                 </div>
-                )}     
+                )}  
+
+
+                <Form className="formStyle msgbox">
+                    <InputGroup className="mb-3 inputGroupStyle">
+
+                       
+                        <FormControl
+                        type="text" placeholder="Message" name ="message" 
+                        value={this.state.msg}  onChange={this.onChangeMsg}
+                        />
+                        <InputGroup.Append>
+                        <Button variant="success" type= "submit" onClick={this.sendMessage}>Send</Button>
+                        </InputGroup.Append>
+                    </InputGroup>
+                </Form>   
                 </div>
+
                 </div>
                 </StudentNavBar>
                 

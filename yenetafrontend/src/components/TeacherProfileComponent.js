@@ -72,7 +72,7 @@ export default class TeacherProfile extends Component{
     render(){
         return (
             <div>
-                <TeacherNavBar handleNewLessonsClick ={this.handleNewLessonsClick} handleNewQuizesClick = {this.handleNewQuizesClick}>
+                <TeacherNavBar handleNewLessonsClick ={this.handleNewLessonsClick} handleNewQuizesClick = {this.handleNewQuizesClick} name = {this.state.user.username}>
                     <div className="whole">
                         <div className = "info">Teacher Information<hr/>
                         

@@ -87,14 +87,13 @@ module.exports = (server) => {
         new LessonController(lessonServ, activityServ, questionServ, contentServ, userServ).getAll)
 
     server.get("/getLesson/:id",
-        //new UserController(userServ, roleServ).verifyToken,
-        //new UserController(userServ, roleServ).authRole("TEACHER"),
         new LessonController(lessonServ, activityServ, questionServ, contentServ, userServ).getOne)
-   /*  server.put("/approveLesson/:id",
-        //new UserController(userServ, roleServ).verifyToken,
-        //new UserController(userServ, roleServ).authRole("TEACHER"),
-        new LessonController(lessonServ, activityServ, questionServ).approveLesson)
- */
+
+     server.put("/approveLesson/:id",
+        new UserController(userServ, roleServ).verifyToken,
+        new UserController(userServ, roleServ).authRole("ADMIN"),
+        new LessonController(lessonServ, activityServ, questionServ, contentServ, userServ).approveLesson)
+ 
 
     server.put("/updateLesson/:id",
         new UserController(userServ, roleServ).verifyToken,

@@ -66,21 +66,17 @@ class QuizController{
     }
 
     approveQuiz(req, res) {
-        if (!req.body.approved) {
-            req.body.approved = true
-        }
-        return this.quizService.updateOne(req.params.id, req.body)
-            .then((response) => res.json(response))
-            .catch((err) => {
-                res.send(403)
-                console.log("err");
+        return  this.quizService.getOne(req.params.id)
+        .then((quiz)=>{
+            quiz.approved = "true"
+            this.quizService.updateOne(quiz._id, quiz)
+            .then((quiz)=>{
+                res.json(quiz)
             })
-
-
+        })
     }
 
-    getTeachersQuiz(req, res){
-    }
+    
     
 
 }

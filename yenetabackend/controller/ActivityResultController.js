@@ -1,38 +1,22 @@
 class ActivityResultController{
 
-    constructor(activityService, activityAnswerService, questionService, activityResultService){
-        this.questionService = questionService;
+    constructor(activityResultService){
         this.activityResultService = activityResultService
-        this.activityService = activityService
-        this.activityAnswerService = activityAnswerService
-        this.checkResultForActivity = this.checkResultForActivity.bind(this)
+        this.getOne = this.getOne.bind(this)
         
     }
-    checkResultForActivity(req, res) {
-        this.activityService.getOne(req.params.id)
-            then((activity)=>{
-                this.activityAnswerService.getByActivity(activity._id)
-                    .then((studentAnswers)=>{
-                        for (question in activity.questions) {
-                            this.questionService.getOne(question.id)
-                                then((result)=>{
-                                    const answer = result.answer
 
-                                    for (let i = 0; i < studentAnswers.length; i++) {
-                                        if (studentAnswers[i] == answer) {
-                                            total = total + 1;
-                                        }
-                        
-                                    }
+    getOne(req, res){
+        return this.activityResultService.getActivityresult(req.params.id)
+                                .then((response) => res.json(response))
+                                .catch((err)=>{
+                                    res.send(403)
+                                    console.log(err);
                                 })
-                        }
-
-                        res.status(200).json(total);
-                    })
-
-            })
-
     }
+
+
+
 }
 
 module.exports = ActivityResultController

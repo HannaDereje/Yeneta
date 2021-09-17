@@ -1,7 +1,7 @@
 const ActivityResultController = require('../controller/ActivityResultController');
 const ActivityResult = require("../Models/ActivityResult")
 const ActivityResultRepository = require("../repository/ActivityResultRepository")
-const ActivityResultService = require("../repository/ActivityResultRepository")
+const ActivityResultService = require("../service/ActivityResultService")
 
 const UserController = require('../controller/UserController');
 const User = require("../Models/User")
@@ -27,10 +27,11 @@ module.exports = (server) => {
     const activityResultRepo = new ActivityResultRepository(ActivityResult)
     const activityResultServ = new ActivityResultService(activityResultRepo)
 
-    server.get("/getActivityResult", 
+
+    server.get("/getActivityResultById/:id", 
             new UserController(userServ, roleServ).verifyToken,
             new UserController(userServ, roleServ).authRole("STUDENT"),
-            new ActivityResultController(activityResultServ).checkResultForActivity)
+            new ActivityResultController(activityResultServ).getOne)
 
 
 

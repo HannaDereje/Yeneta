@@ -119,5 +119,10 @@ module.exports = (server) => {
              new UserController(userServ, roleServ).authRole("ADMIN"),
              new StudentController(studentServ, userServ, roleServ, lessonServ, quizServ, activityResultServ).getAll)
      
+    server.put("/updateStudentOnCertificate",
+             new UserController(userServ, roleServ).verifyToken,
+             new UserController(userServ, roleServ).authRole("STUDENT"),
+             new StudentController(studentServ, userServ, roleServ, lessonServ, quizServ, activityResultServ).updateOnCertificate)
+     
 
 }

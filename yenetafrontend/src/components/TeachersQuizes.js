@@ -11,7 +11,9 @@ export default class TeachersQuizes extends Component {
         super()
         this.state = {
             quizes: [],
-            singleQuiz:''
+            singleQuiz:'',
+            question:'',
+            answer:''
 
         }
         this.handleCkeditorStateForAnswer = this.handleCkeditorStateForAnswer.bind(this)
@@ -52,15 +54,12 @@ export default class TeachersQuizes extends Component {
 
                                 const concated={}
                                 var all = []
-
-                                
-
                                 concated["quiz"]= quiz
                                 concated["questions"] = questions.data
                                 all.push(concated)
 
                                 this.setState({
-                                    quizes: this.state.quizes.concat(all),
+                                    quizes: this.state.quizes.concat(all)
                                     
                                 })
 
@@ -74,7 +73,13 @@ export default class TeachersQuizes extends Component {
     
 
     editQuestionAnswer = async(id) => {
-        await axios.get(`http://localhost:5000/posts/edit/${id}`).then(res=>{
+
+        const info ={
+            question:this.state.question,
+            answer:this.state.answer
+        }
+        console.log(info)
+        await axios.put(`http://localhost:5000/updateQuestion/${id}`, info).then(res=>{
             console.log(res);
         });
     }
@@ -102,10 +107,11 @@ export default class TeachersQuizes extends Component {
      data={question.content}
      editor={ClassicEditor}
      config={{
-         isReadOnly: true,
          toolbar: ['']
      }}
      
+     onChange={this.handleCkeditorStateForQuestion}
+                   
  />
  <p>Question Number {index+1} Answer</p>
   <CKEditor
@@ -113,15 +119,14 @@ export default class TeachersQuizes extends Component {
      data={question.answer}
      editor={ClassicEditor}
      config={{
-         isReadOnly: true,
          toolbar: ['']
      }}
-     
+     onChange={this.handleCkeditorStateForAnswer}
+                
  />
 
  <div className="top">
-<Button variant="primary" onClick={()=>this.deleteQuestion(question._id)} type="submit" >Save</Button>
-<Button  classname ="spaced" onClick={()=>this.editQuestionAnswer(question._id)} variant="danger" type="submit" >Delete</Button>
+<Button variant="primary" onClick={()=>this.editQuestionAnswer(question._id)} type="submit" >Save</Button>
 </div>
  </div>
     )}

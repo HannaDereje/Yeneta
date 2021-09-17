@@ -117,8 +117,8 @@ module.exports = (server) => {
                                 level: req.body.level,
                                 questions: ids,
                                 number: number + 1,
-                                user:req.user_id._id
-
+                                user:req.user_id._id,
+                                questionNumber:req.body.questionNumber
                             }
                             return quizServ.insert(quiz)
                                 .then((quiz) => {
@@ -149,7 +149,7 @@ module.exports = (server) => {
                                     return res.send("You need to sign in.")
                                 }
 
-                                return this.quizServ.getOneByUser(req.user_id._id)
+                                return quizServ.getOneByUserId(req.user_id._id)
                                             .then(quiz=>{
                                                 res.send(quiz)
                                             })
@@ -184,13 +184,15 @@ module.exports = (server) => {
         new QuizController(quizServ).deleteOne)
 
     server.delete("/deleteQuizes",
-        //new UserController(userServ, roleServ).verifyToken, 
-        //new UserController(userServ, roleServ).authRole("TEACHER"),
+        new UserController(userServ, roleServ).verifyToken, 
+        new UserController(userServ, roleServ).authRole("TEACHER"),
         new QuizController(quizServ).deleteAll)
      server.put("/approveQuiz/:id",
         new UserController(userServ, roleServ).verifyToken,
         new UserController(userServ, roleServ).authRole("ADMIN"),
         new QuizController(quizServ).approveQuiz) 
+
+    
 
    
 }

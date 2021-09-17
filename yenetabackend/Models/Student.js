@@ -51,6 +51,10 @@ const StudentSchema = new Schema({
 quizes:[{ 
         type:String,
         required:true
+    }],
+    certificates:[{
+        type:String,
+        required:true
     }]
 }, {
         timestamps: true
@@ -58,7 +62,7 @@ quizes:[{
 
 class Student {
 
-    constructor(name, email, age, country, image, level, approved, user, lessons, quizes) {
+    constructor(name, email, age, country, image, level, approved, user, lessons, quizes, certificates) {
         this.name = name;
         this.email = email;
         this.age = age;
@@ -69,6 +73,7 @@ class Student {
         this.lessons = lessons;
         this.quizes = quizes
         this.approved = approved
+        this.certificates = certificates
     }
 
 }

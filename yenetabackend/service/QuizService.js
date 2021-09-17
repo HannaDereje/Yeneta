@@ -10,7 +10,7 @@ class QuizService{
         this.deleteAll = this.deleteAll.bind(this);
         this.updateOne = this.updateOne.bind(this);
         this.getCount = this.getCount.bind(this)
-        this.getOneByUser = this.getOneByUser.bind(this)
+        this.getOneByUserId = this.getOneByUserId.bind(this)
     }
 
      insert(quiz){
@@ -31,7 +31,7 @@ class QuizService{
 
     }
 
-    getOneByUser(user){ 
+    getOneByUserId(user){ 
 
         const quiz = this.quizRepository.getOneByUser(user);
         return new Promise((resolve, reject)=>{resolve(quiz)})

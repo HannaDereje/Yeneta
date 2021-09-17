@@ -64,6 +64,11 @@ module.exports = (server) => {
       //  new UserController(userServ, roleServ).authRole("STUDENT"),
         new QuizResultController(quizServ, quizAnswerServ, questionServ, quizResultServ,  userServ, studentServ).checkEntranceQuiz)
 
+    server.get("/getAverage", 
+        new UserController(userServ, roleServ).verifyToken,
+        new UserController(userServ, roleServ).authRole("STUDENT"),
+        new QuizResultController(quizServ, quizAnswerServ, questionServ, quizResultServ, userServ, studentServ).getAverage)
+
 
 
 }

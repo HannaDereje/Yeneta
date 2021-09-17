@@ -93,7 +93,8 @@ export default class Exam extends Component{
                 level :this.state.input["quiz_level"],
                 question:this.state.question,
                 answer:this.state.answer, 
-                allowedTime :this.state.input["allowed_Time"]
+                allowedTime :this.state.input["allowed_Time"],
+                questionNumber :this.state.count+1
             }
 
             const header ={
@@ -176,10 +177,6 @@ export default class Exam extends Component{
         }
         
 
-        if(!input["quiz_question_type"]){
-            isValid = false;
-            errors["quiz_question_type"] = "Please enter Question Type.";
-        }
         if(!input["allowed_Time"]){
             isValid = false;
             errors["allowed_Time"] = "Please enter Allowed Time.";
@@ -215,16 +212,7 @@ export default class Exam extends Component{
                             </Form.Control>
                         </Form.Group>
 
-                        <Form.Group className="form_width">
-                            <Form.Label>Exam Question Type</Form.Label>
-                            <Form.Control as="select" name = "quiz_question_type"  value={this.state.input.quiz_question_type} onChange={this.handleChange}>
-                                <option selected="true" disabled="disabled">Choose Question Type</option>  
-                                <option value ="choose">Choose</option>
-                                <option value = "shortanswer">Short Answer</option>
-                                <option value = "match">Match</option>
-                            </Form.Control>
-                        </Form.Group>
-                        <Form.Group className="form_width">
+                       <Form.Group className="form_width">
                             <Form.Label>Allowed Time</Form.Label>
                             <Form.Control type="number" id="topic" name="allowed_Time" value={this.state.input.allowed_Time} onChange={this.handleChange} placeholder="Allowed Time in minutes" />
                         </Form.Group>

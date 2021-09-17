@@ -6,13 +6,12 @@ import axios from "axios"
 
 export default class Certificate extends Component{
 
-    constructor(props){
-        super(props)
+    constructor(){
+        super()
         this.state = {
 
             student:"",
-            average:"",
-            level:""
+            average:""
         }
 
         this.getStudent = this.getStudent.bind(this)
@@ -20,7 +19,6 @@ export default class Certificate extends Component{
 
     }
 
-  
     getStudent(){
 
         const header ={
@@ -29,9 +27,7 @@ export default class Certificate extends Component{
         axios.get("http://localhost:5000/getStudent", { headers: header })
         .then(response => {
             console.log(response.data)
-            this.setState({student:response.data.Student, 
-                            level:response.data.Student.level})
-
+            this.setState({student:response.data.Student})
         })
 
     }
@@ -43,30 +39,23 @@ export default class Certificate extends Component{
 
         axios.get("http://localhost:5000/getAverage", {headers:header})
             .then(response=>{
-                console.log(response.data)
-                this.setState({average:response.data})
+
+                this.setState({average:response.data.result})
             })
     }
-
-    
-
     componentDidMount(){
 
         this.getStudent()
         this.getAverage()
-        console.log(this.state.level)
     }
 
     render(){
+        console.log(this.state.student)
         return (
 
-            <div className="conlogin">
-                <Container className="certificate">
-                <Form.Group className="form_width btnstyle">
-                            <Button type="submit" className="btnstyle" onClick={()=>{ this.props.history.push(`classroom?level= ${this.state.level}`);}}>Continue Taking Lesson</Button>
-                </Form.Group>
-                <div className="content">
-                <div className="certificatediv">
+            <div className="certificate">
+                <Container className="conlogin">
+
                     <h1>CERTIFICATE</h1>
                     <h5>OF COMPLETION</h5>
 
@@ -75,13 +64,10 @@ export default class Certificate extends Component{
                     <p>has successfull completed</p>
 
                     <h4>{this.state.student.level} Level</h4>
-                    <p>With Average Mark {this.state.average.average}</p>
+                    <p>With Average Mark {this.state.average}</p>
 
-                    <img src = "../certificate-star.png" width="150" height ="100"/>
-                    </div>
-                    </div>
+                    <img src = "../certificate-star.png" width="50" height ="50"/>
                    </Container>
-                  
 
             </div>
         )

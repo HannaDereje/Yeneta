@@ -23,6 +23,7 @@ class StudentController{
         this.updateOnSubmission = this.updateOnSubmission.bind(this)
         this.getAvailableLessons = this.getAvailableLessons.bind(this)
         this.getAll= this.getAll.bind(this)
+        this.updateOnCertificate = this.updateOnCertificate.bind(this)
 
     }
 
@@ -227,6 +228,44 @@ class StudentController{
 
 
             })
+    }
+
+    updateOnCertificate(req, res){
+
+        if(req.user_id === null){
+            res.status(403)
+            return res.send("You need to sign in.")
+        }  
+        return  this.userService.getOne(req.user_id._id)
+                    .then((user)=>{
+                        this.studentService.getOneByEmail(user.email)
+                            .then((student)=>{
+
+                                if(student.level == "Intermediate"){
+
+                                    if(student.certificates.length == 0){
+                                    student.certificates.push("For_Beginner")
+                                    }
+                                }
+                                else if(student.level == "Advanced"){
+                                    if(student.certificates.length == 1){
+                                    student.certificates.push("For_Intermediate")
+                                    }
+                                }
+                                else if(student.level == "Advanced"){
+                                    if(student.certificates.length == 2){
+                                    student.certificates.push("For_Advanced")
+                                    }
+                                }
+                                this.studentService.updateOne(student._id, student)
+                                    .then(updatedStudent=>{
+
+                                        res.status(200).json({"certified":updatedStudent});
+                                              
+                                    })
+                            })
+
+                        })
     }
 
      updateOnSubmission(req, res){

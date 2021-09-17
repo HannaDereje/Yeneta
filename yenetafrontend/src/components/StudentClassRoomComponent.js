@@ -43,10 +43,13 @@ export default class ClassRoom extends Component {
             joinchat:false,
             joinchatText:"", 
             zerolesson:'',
-            allowedTime:"0",
+            allowedTime:0,
             noSpareTime:'',
             time:"",
-            image:""
+            image:"",
+            level:'',
+            disabled:false,
+            certified:false
         }
         this.handleShow = this.handleShow.bind(this)
         this.handleClose = this.handleClose.bind(this)
@@ -64,6 +67,7 @@ export default class ClassRoom extends Component {
         this.getAvailableLessons = this.getAvailableLessons.bind(this)
         this.availLesson = this.availLesson.bind(this)
         this.compareAllowedWithNow = this.compareAllowedWithNow.bind(this)
+        this.getQuiz = this.getQuiz.bind(this)
     }
 
     handleLesson() {
@@ -75,6 +79,7 @@ export default class ClassRoom extends Component {
             }
     
             const level = new URLSearchParams(this.props.location.search).get("level ")
+            console.log(level)
             
             axios.get(`http://localhost:5000/takeLesson?level=${level}`, { headers: header })
                 .then(res => {
@@ -95,6 +100,14 @@ export default class ClassRoom extends Component {
                         .then(response => {
                             console.log(response)
                             this.setState({ les: response.data })
+
+                            axios.get(`http://localhost:5000/getActivityResultById/${response.data.activity}`,  {headers:header})
+                                 .then(result=>{
+                                     if(result){
+                                         this.setState({disabled:true})
+                                     }
+                                 })
+
                             axios.get(`http://localhost:5000/getActivity/${response.data.activity}`)
                                 .then(response => {
                                     console.log(response)
@@ -147,7 +160,8 @@ export default class ClassRoom extends Component {
         
                         axios.get(`http://localhost:5000/getQuiz/${tobeTaken}`,  {headers:header})
                             .then(response=>{
-                                this.setState({allowedTime:response.data.allowedTime})
+                               this.setState({allowedTime:response.data.allowedTime})
+                               this.compareAllowedWithNow()
                                var questionids= response.data.questions
         
                                questionids.forEach(element=>{
@@ -183,21 +197,75 @@ export default class ClassRoom extends Component {
                 } 
                 
                 const level = new URLSearchParams(this.props.location.search).get("level ")
+
         
                 axios.get("http://localhost:5000/getStudent", { headers: header })
                 .then(response => {
                     console.log(response.data)
                     var lesson = response.data.Student.lessons
                     var quiz = response.data.Student.quizes
+                    var ready = false
+
+                    if(quiz.length == 2){
+
+                        quiz.forEach(quiz=>{
+                            if(quiz.split("_")[1] == "submitted"){
+                                ready = true
+                            }else{
+                                ready = false
+                            }
+                           
+                        })
+
+                        axios.get("http://localhost:5000/getStudent",  {headers:header})
+                        .then(response=>{
+                            if(response.data.Student.certificates.length == 1){
+                                ready= false;
+                            }
+                            else if(response.data.Student.certificates.length == 0)
+                            {
+                                ready= true; 
+                            }
+
+                            if(ready){
+
+                                axios.put("http://localhost:5000/updateStudent", {level:"Intermediate"}, {headers:header})
+                                    .then(response=>{
+                                        console.log(response.data)
+    
+                                        axios.put("http://localhost:5000/updateStudentOnCertificate", {}, { headers: header })
+                                        .then(response => {
+                                            
+                                             window.location.href = "/certificate"
+                                        })
+        
+                                    })
+     
+                            }
+                        })
+
+                        
+                    }
+                    if(quiz.length == 6){
+                        URLSearchParams.set("level ", "Advanced")
+                        this.handleLesson()
+                    }
                     
                     if(lesson.length % 3 == 0 && lesson.length >0 && lesson[lesson.length - 1].split("_")[1] == "submitted"){
                        
                         if((quiz.length/lesson.length) == (1/3) && quiz[quiz.length - 1].split("_")[1] == "submitted"){
                             this.handleLesson();
-                        }else{
-                            this.handleQuiz();
-                            this.compareAllowedWithNow()
                         }
+                        else if(quiz.length == 0){
+                            this.handleQuiz();
+                        }
+                        else if(quiz.length > 0 && quiz[quiz.length - 1].split("_")[1] !== "submitted"){
+                            this.getQuiz()
+                        }
+                        else{
+                            this.handleQuiz();
+                        }
+                        
                         
                     }
                     else{
@@ -209,6 +277,16 @@ export default class ClassRoom extends Component {
                         .then(response => {
                             console.log(response)
                             this.setState({ les: response.data })
+                            console.log(response.data.activity)
+                            axios.get(`http://localhost:5000/getActivityResultById/${response.data.activity}`,  {headers:header})
+                                 .then(result=>{
+                                     if(result.data){
+                                         this.setState({disabled:true})
+                                     }else{
+                                         
+                                        this.setState({disabled:false})
+                                     }
+                                 })
                             axios.get(`http://localhost:5000/getActivity/${response.data.activity}`)
                                 .then(response => {
                                     this.setState({ activity: response.data })
@@ -248,6 +326,10 @@ export default class ClassRoom extends Component {
                 var header ={
                     "x-access-token": localStorage.getItem("token")
                 } 
+                
+                const level = new URLSearchParams(this.props.location.search).get("level ")
+
+                if(level == "Advanced"){
             
                 axios.get("http://localhost:5000/getAllRooms")
                                 .then(room=>{
@@ -270,6 +352,7 @@ export default class ClassRoom extends Component {
                                 .catch(function (error) {
                                     console.log(error)
                             })
+                        }
                       
                 
             }
@@ -294,11 +377,12 @@ export default class ClassRoom extends Component {
 
 
         if(this.state.allowedTime !== ""){
+            console.log(this.state.allowedTime)
       
             var count = moment().format('hh:mm a')
-            var time = moment().add(15, 'minutes').format('hh:mm a')
+            var time = moment().add(this.state.allowedTime, 'minutes').format('hh:mm a')
 
-            setInterval(() => {
+            var timer = setInterval(() => {
                 
                 count = moment().format('hh:mm a')
                   var x = moment.utc(moment(time, "HH:mm:ss").diff(moment(count, "HH:mm:ss"))).format("mm")
@@ -307,10 +391,11 @@ export default class ClassRoom extends Component {
 
                   if(x == 0){
 
+                    clearInterval(timer)
                     this.setState({noSpareTime:"Time is up!!"})
-                    this.submitAnswerForQuiz()
                     alert("Time is up")
                     window.location.reload()
+                    
                 }
             }, 1000);
               
@@ -332,16 +417,31 @@ export default class ClassRoom extends Component {
             }
         
     getOne(id) {
+
+        const header ={
+            "x-access-token": localStorage.getItem("token")
+        }
                 axios.get(`http://localhost:5000/getLesson/${id}`)
                     .then(res => {
                         this.setState({ lesson: true })
                         this.setState({ les: res.data })
+
+                        axios.get(`http://localhost:5000/getActivityResultById/${res.data.activity}`, {headers:header})
+                                 .then(result=>{
+                                     console.log(result)
+                                     if(result.data){
+                                         this.setState({disabled:true})
+                                     }else{
+                                        this.setState({disabled:false})   
+                                     }
+                                 })
 
                         axios.get(`http://localhost:5000/getActivity/${res.data.activity}`)
                                 .then(response => {
                                     this.setState({ activity: response.data })
                                     const questions = []
                                     for (let i = 0; i < response.data.questions.length; i++) {
+
         
                                         axios.get(`http://localhost:5000/getQuestion/${response.data.questions[i]}`)
                                             .then(response => {
@@ -366,8 +466,6 @@ export default class ClassRoom extends Component {
     e.preventDefault()
     let j = 0
     let a1 = this.state.answers
-
-    console.log(this.state.tobelearnt)
 
     for (var i = 0; i < this.state.questions2.length; i++) {
 
@@ -436,6 +534,43 @@ submitAnswerForQuiz(e){
 
 }
 
+getQuiz(){
+
+    const header ={
+        "x-access-token": localStorage.getItem("token")
+    }
+    var ids=[]
+
+    axios.get("http://localhost:5000/getStudent",  {headers:header})
+    .then(response=>{
+
+       var quiz = response.data.Student.quizes
+       var tobeTaken = quiz[quiz.length-1].split("_")[0]
+       this.setState({tobeTaken:tobeTaken})
+
+       axios.get(`http://localhost:5000/getQuiz/${tobeTaken}`,  {headers:header})
+           .then(response=>{
+              this.setState({allowedTime:response.data.allowedTime})
+              this.compareAllowedWithNow()
+              var questionids= response.data.questions
+
+              questionids.forEach(element=>{
+                  ids.push(element)
+              })
+
+              console.log(ids)
+
+            axios.post("http://localhost:5000/getMany", {ids:ids}, {headers:header})  
+                  .then(response=>{
+                      console.log(response.data)
+
+                      this.setState({todayQuiz: response.data})
+                  })
+           })
+
+    })
+}
+
 handleAnswer(e){
         
     let answer = this.state.answer
@@ -473,6 +608,8 @@ handleLessonsClick(id) {
 }
 
 handleShow() {
+    const level = new URLSearchParams(this.props.location.search).get("level ")
+    if(level == "Advanced"){
     
     if(this.state.joinchatText == "CreateChat"){
         
@@ -489,13 +626,14 @@ handleShow() {
 
     axios.get("http://localhost:5000/getCurrentUser", {headers:header})
     .then(res => {
+        console.log(res.data)
         this.setState({ user: res.data })
         
         if(this.state.topic && this.state.topic!== ""){
             window.location.href=`/room?topic=${this.state.topic}&username=${this.state.user.username}&id=${this.state.user._id}`
         }
 })
-                    
+    }      
     
 }
 
@@ -520,22 +658,31 @@ handleClose() {
 
         const level = new URLSearchParams(this.props.location.search).get("level")
 
-
-        this.getAvailableLessons()
         axios.get("http://localhost:5000/getStudent", { headers: header })
             .then(response => {
 
                 this.setState({image:response.data.Student.image})
                 var lesson = response.data.Student.lessons
+                var quiz = response.data.Student.quizes
+                var certificate = response.data.Student.certificates
 
                 if(lesson.length==0){
-                    this.handleLesson(level, header);
+                    this.handleLesson();
+                    this.getAvailableLessons()
                     
-                }else{
-                    this.availLesson()
-                }
-                
+                }else if(lesson.length == 6 && quiz.length == 2 && certificate.length == 1){
+                    
+                    console.log(true)
+                    this.handleLesson();
+                    this.getAvailableLessons()
 
+                }
+                else{
+                    this.availLesson()
+                    this.getAvailableLessons()
+                }
+
+                
                 })
             .catch(function (error) {
                 console.log(error)
@@ -583,7 +730,7 @@ handleClose() {
                     <div>
                         <p className="intro">Basic Introduction</p>
                         
-                        <p className="topic" key={this.state.les._id}>{this.state.les.topic}</p>
+                        <h4 className="topic" key={this.state.les._id}>{this.state.les.topic}</h4>
                         <div className="note_des divsindedent">
                             <p className="title">Notes</p>
                             <CKEditor
@@ -635,13 +782,12 @@ handleClose() {
                                     />
                                     <br />
 
-                                        <Form.Control  type="text" placeholder="add Answer" onChange={this.handleChange.bind(this, i)} /><br/>
+                                        <Form.Control  type="text" disabled={this.state.disabled} placeholder="add Answer" onChange={this.handleChange.bind(this, i)} /><br/>
                                 </Form.Group>
                             )}
-                            <br />
 
                             <Form.Group className="btnStyle2">
-                                 <Button type="submit" onClick={this.onSubmitActivity} className="btnstyle">Submit Answer</Button>
+                                 <Button type="submit" onClick={this.onSubmitActivity} disabled={this.state.disabled} className="btnstyle">Submit Answer</Button>
                             </Form.Group>
                             </Form>
                              {this.state.activityTaken === true?<div><div className="text-danger">{this.state.result}/{this.state.total}</div>
@@ -653,12 +799,12 @@ handleClose() {
                         <div>
                         <Form className="textStyle ">
                         <h4 className="title top">Today's Quiz</h4>
-                        you have {this.state.allowedTime} Minutes from Now. {this.state.now}
+                        you have {this.state.now} Minutes from Now.
                       
                             {this.state.todayQuiz.map((list, index)=>
                         
 
-                            <div className="top widthstyle">
+                            <div className="top widthstyle">{index+1}
                             
                         <CKEditor
                                 key={list._id}
@@ -673,7 +819,7 @@ handleClose() {
  
                             /><br/> 
                             <Form.Group>
-                                    <Form.Control type="text" placeholder="add Answer"  name={index+ "_"+list._id} onChange={this.handleAnswer} />
+                                    <Form.Control type="text"  placeholder="add Answer"  name={index+ "_"+list._id} onChange={this.handleAnswer} />
                                 </Form.Group><br />
                          
                             <div></div>
@@ -690,7 +836,7 @@ handleClose() {
                     )}
                     {this.state.quizTaken === false?
                         <Form.Group className="btnStyle2">
-                            <Button variant="success" onClick={this.submitAnswerForQuiz}>Submit Answer</Button>
+                            <Button variant="success"  onClick={this.submitAnswerForQuiz}>Submit Answer</Button>
                         </Form.Group>:""}
 
                         {this.state.quizTaken === true?
@@ -702,6 +848,7 @@ handleClose() {
                     </div>}
                     </div>
                     </div>
+                    
               
             </StudentNavBar>
         )

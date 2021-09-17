@@ -11,112 +11,73 @@ export default class UnapprovedQuizes extends Component {
     constructor() {
         super()
         this.state = {
-            approvedQuizes: [],
-            questions2: [],
-
-
+            approvedQuizes: []
         }
-        this.approve = this.approve.bind(this)
+
         this.getQuizes = this.getQuizes.bind(this)
-        this.resetClicks = this.resetClicks.bind(this)
-        this.componentDidMount = this.componentDidMount.bind(this)
     }
-    async approve(id) {
-        console.log(id)
-        axios.get(`http://localhost:5000/getQuiz/${id}`)
-            .then(res => {
-                console.log(res.data)
-                if (res.data.approved == false) {
-                    axios.put(`http://localhost:5000/approveQuiz/${id}`)
-                        .then(res => {
-                            console.log(res)
-                            this.componentDidMount()
-                        })
-                }
-
-                console.log(res)
-            })
-            .catch(function (error) {
-                console.log(error)
-            })
-
-
-    }
-    resetClicks() {
-        this.setState({
-
-            questions2: []
-        })
-    }
+    
+    
     getQuizes() {
-        var quiz2 = []
-        const qs = []
-        const qs2 = []
-        const ids = []
+
         const header = {
             "x-access-token": localStorage.getItem("token")
         }
-        axios.get("http://localhost:5000/getAllQuizes", {})
+
+        axios.get("http://localhost:5000/getAllQuizes", {headers:header})
             .then(res => {
-                console.log(res.data)
-                const quizes = res.data
-                for (var i = 0; i < quizes.length; i++) {
-                    var quiz = quizes[i]
 
+                res.data.forEach(element => {
 
-                    if (quiz.approved) {
-                        quiz2.push(quiz)
-                        // console.log(quiz2)
-                    }
+                    if(element.approved){
 
-                }
-                this.setState({ approvedQuizes: quiz2 })
-                this.state.approvedQuizes.forEach(element => {
-                    axios.post(`http://localhost:5000/getManyQs`, { ids: element.questions })
+                    axios.post(`http://localhost:5000/getMany`, { ids : element.questions })
                         .then(res => {
-                            var questions = []
-                            var questions3 = []
-                            questions.push(res.data)
+
+                            var concated={}
+                            var all = []
+                            concated["quiz"]= element
+                            concated["questions"] = res.data
+                            all.push(concated)
 
                             this.setState({
-                                questions2: this.state.questions2.concat(questions)
+                                approvedQuizes:this.state.approvedQuizes.concat(all)
                             })
-                            // console.log(this.state.questions2)
+                            console.log(this.state.approvedQuizes)
                         })
+                    }
                 })
-
-
-            })
-            .catch(function (error) {
-                console.log(error)
-            })
+            
+             })
     }
 
 
+
     componentDidMount() {
-        //this.resetClicks()
         this.getQuizes()
     }
 
     render() {
-        console.log(this.state.approvedQuizes)
         return (
 
             <div>
-                <h4 className="text-center">Approved Quizes</h4>
+            <h4 className="text-center">Unapproved Quizes</h4>
+                
+                <div className="approvals">
+             
+             {this.state.approvedQuizes.map((quiz)=>
+                 
+                <Card style={{ width: '18rem' }}>
+                    <Card.Title className="text-center">Quiz {quiz.quiz.number} with time Allowd time {quiz.quiz.allowedTime} Minutes</Card.Title>
+                    <Card.Text>
+                    <h6>{quiz.quiz.level} Level</h6>
+                    </Card.Text>
 
-                <div>
-                {this.state.questions2.map(question => {
-                    return (
-                        <div className ="unapprovals top">
-                            {question.map((qu2, i) => {
+                            {quiz.questions.map((qu2, i) => {
                                 return (
 
-                                    <Card style={{ width: '18rem' }}>
                                     <Card.Body>
-                                        <Card.Title>Lesson {qu2.level}</Card.Title>
-                                       
-                                        <Card.Body>
+                                        <h6>Question</h6>
                                         <CKEditor
                                             key={qu2._id}
                                             data={qu2.content}
@@ -126,26 +87,25 @@ export default class UnapprovedQuizes extends Component {
                                                 isReadOnly: true,
                                                 toolbar: ['']
                                             }}
-            
-            
                                         />
-
-                                            </Card.Body>
-                                            <Card.Text>
+                                            <Card.Text> 
+                                                <h6>Answer</h6>
                                                 <p>{qu2.answer} Level</p>
                                             </Card.Text>
-                                            <Button variant="primary" type="submit" onClick={() => this.approve()} >Approve</Button>
                                         </Card.Body>
-                                        </Card>
+                                        
                                     )
 
                             })}
                            
-                                </div>
-                    )
-                })}
+                            
+                    </Card>
+                    
+                )}
                 </div>
-            </div >
+
+
+            </div>
         )
     }
 

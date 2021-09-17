@@ -1,4 +1,6 @@
 
+//"server": "nodemon server.js"
+   // "start": "concurrently \"npm run server\" \" cd ../yenetafrontend && npm start\"",
 class UserService{
 
     constructor(userRepository){

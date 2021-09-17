@@ -9,6 +9,8 @@ import TopicCreate from './CreateTopicComponent'
 import TeachersLessons from "./TeachersLessons"
 import TeachersQuizes from "./TeachersQuizes"
 
+import axios from 'axios'
+
 export default class TeacherHome extends Component{
 
     constructor(props)
@@ -20,6 +22,8 @@ export default class TeacherHome extends Component{
         this.state = {newLesson :false}
         this.state = {newQuiz :false}
         this.state = {newTopic :false}
+        
+        this.state = {user:[]}
 
         this.handleLessonsClick = this.handleLessonsClick.bind(this)
         this.handleQuizesClick = this.handleQuizesClick.bind(this)
@@ -88,13 +92,24 @@ export default class TeacherHome extends Component{
 
     componentDidMount(){
 
+        const header ={
+            "x-access-token": localStorage.getItem("token")
+        }
+        
+        axios.get("http://localhost:5000/getTeacher", {headers:header})
+        .then(response=>{
+            this.setState({user:response.data.user})
+        })
+        .catch((error)=>
+            console.log(error)
+        )
     }
 
     render(){
         return (
             <div>
 
-                <TeacherNavBar handleNewLessonsClick ={this.handleNewLessonsClick} handleNewQuizesClick = {this.handleNewQuizesClick}>
+                <TeacherNavBar handleNewLessonsClick ={this.handleNewLessonsClick} handleNewQuizesClick = {this.handleNewQuizesClick} name = {this.state.user.username}>
 
                 <div id="sidebar">
                     <div className="title">

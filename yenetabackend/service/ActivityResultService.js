@@ -9,6 +9,7 @@ class ActivityResultService{
         this.deleteOne = this.deleteOne.bind(this);
         this.deleteAll = this.deleteAll.bind(this);
         this.updateOne = this.updateOne.bind(this);
+        this.getActivityresult = this.getActivityresult.bind(this)
     }
 
      insert(activityResult){
@@ -32,6 +33,12 @@ class ActivityResultService{
 
         const a_activityResult = this.activityResultRepository.updateOne(id, activityResult);
         return new Promise((resolve, reject)=>{resolve(a_activityResult)})
+    }
+
+    getActivityresult(activity) {
+     
+        const activityResults = this.activityResultRepository.getOneByactivityId(activity);
+        return new Promise((resolve, reject) => { resolve(activityResults) })
     }
     deleteOne(id){
 

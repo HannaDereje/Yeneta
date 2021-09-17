@@ -20,7 +20,16 @@ export default class Studentlist extends Component {
         axios.get("http://localhost:5000/getAllStudent", {headers:header})
             .then(res => {
                 console.log(res.data)
+                
                 this.setState({ students: res.data.students, users:res.data.users })
+                this.state.students.forEach(s=>{
+                    if(this.state.users.find(user => user.email == s.email)){
+                        var user = this.state.users.find(user => user.email == s.email)
+
+                       s["username"]= user.username
+                       this.setState({students:this.state.students})
+                    }
+                })
             })
             .catch(function (error) {
                 console.log(error)
@@ -39,16 +48,10 @@ export default class Studentlist extends Component {
                     <th>Age</th>
                     <th>Country</th>
                     <th>Level</th>
-                    {this.state.students.map(student =>
+                    {this.state.students.map((student, index) =>
                      <tr>
-                         
-                         <td key={student.name}>{student.name}</td>
-                        {this.state.users.map(user=>{
-
-                            return  <td key={user._id}>{user.username}</td>
-
-                        })}
-                       
+                            <td key={student.name}>{student.name}</td>
+                            <td key={student.name}>{student.username}</td>
                             <td key={student.name}>{student.email}</td>
                             <td key={student.name}>{student.age}</td>
                             <td key={student.name}>{student.country}</td>

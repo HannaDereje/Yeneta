@@ -15,6 +15,7 @@ class LessonController{
         this.deleteAll = this.deleteAll.bind(this);
         this.updateOne = this.updateOne.bind(this);
         this.getTeachersLesson = this.getTeachersLesson.bind(this)
+        this.approveLesson = this.approveLesson.bind(this)
     }
 
     insert(req, res) {
@@ -135,13 +136,25 @@ class LessonController{
 
         return this.lessonService.getOneByUser(req.user_id._id)
                     .then(lesson=>{
-                        console.log(lesson)
+                        console.log("dskfhskdfh")
                         res.send(lesson)
                     })
     
         
     }
+
     
+     approveLesson(req, res) {
+        return  this.lessonService.getOne(req.params.id)
+        .then((lesson)=>{
+            lesson.approved = "true"
+            this.lessonService.updateOne(lesson._id, lesson)
+            .then((lesson)=>{
+                console.log(lesson)
+                res.json(lesson)
+            })
+        })
+    }
 
 }
 

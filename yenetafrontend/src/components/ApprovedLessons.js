@@ -69,8 +69,7 @@ export default class Studentlist extends Component {
                             />
 
                     </Card.Body>
-                    <Button variant="primary" type="submit" onClick={() => this.approve(`${approved._id}`)}>Approve</Button>
-                </Card.Body>
+                 </Card.Body>
                 </Card>
                 )}
                

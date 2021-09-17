@@ -37,6 +37,13 @@ export default class AdminHome extends Component {
 
     }
 
+    logout(){
+
+        localStorage.clear();
+        window.location.href = "/studentLogin";
+
+    }
+
     handleTeachersClick() {
         this.resetClicks();
         this.setState({ teachers: true });
@@ -94,7 +101,7 @@ export default class AdminHome extends Component {
                         <li onClick={this.handleApprovedQuizesClick}>Approved Quizes</li>
                         <li onClick={this.handleUnApprovedLessonsClick}>UnApproved Lessons</li>
                         <li onClick={this.handleUnApprovedQuizesClick}>UnApproved Quizes</li>
-                        <li>Logout</li>
+                        <li onClick={this.logout}>Logout</li>
                     </ul>
                 </div>
                 <div id="mainpage">

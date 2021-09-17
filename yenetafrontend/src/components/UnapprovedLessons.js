@@ -14,30 +14,21 @@ export default class Studentlist extends Component {
             approvedLessons: [],
             approvedLessons2: []
         }
+
         this.approve = this.approve.bind(this)
 
-        this.componentDidMount = this.componentDidMount.bind(this)
     }
     async approve(id) {
-        console.log(id)
-        axios.get(`http://localhost:5000/getLesson/${id}`)
+
+        const header = {
+            "x-access-token": localStorage.getItem("token")
+        }
+        axios.put(`http://localhost:5000/approveLesson/${id}`,{}, {headers: header})
             .then(res => {
-                if (res.data.approved == false) {
-                    axios.put(`http://localhost:5000/approveLesson/${id}`)
-                        .then(res => {
-                            console.log(res)
-                            this.componentDidMount()
-                        })
-                }
-
                 console.log(res)
-            })
-            .catch(function (error) {
-                console.log(error)
-            })
+                })
 
-
-    }
+        }
 
     componentDidMount() {
         const lesson2 = []

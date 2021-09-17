@@ -170,7 +170,7 @@ export default class StudentProfile extends Component{
                         <div className = "info">User Information<hr/>
                              <div>
 
-                                    <img src={"http://localhost:5000/"+ this.state.student.image} width="200" height ="200"/>
+                                    <img className="profile" src={"http://localhost:5000/"+ this.state.student.image} width="200" height ="200"/>
                                     <p>Username: <span>{this.state.user.username}</span></p>   
                                     <p>Name: <span>{this.state.student.name}</span></p> 
                                     <p>Email: <span>{this.state.student.email}</span></p> 

@@ -235,14 +235,16 @@ export default class Lessons extends Component {
 
 
                     <h4 className="text-center">Activity</h4>
+                    {this.createUI()}
                     <Form.Group className="">
-                        {this.createUI()}
-                        <Button onClick={this.addClick} className="btnstyle top">Add Questions</Button>
+                        
+                        <div className="bottom">
+                        <Button onClick={this.addClick} className="btnstyle ">Add Questions</Button>
+                        
+                        <Button type="submit" onClick={this.onSubmit} className="btnstyle left">Add Lesson</Button>
+                        </div>
                     </Form.Group>
 
-                    <Form.Group className="top">
-                        <Button type="submit" onClick={this.onSubmit} className="btnstyle">Add Lesson</Button>
-                    </Form.Group>
 
 
                 </div>

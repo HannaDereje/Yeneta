@@ -164,13 +164,8 @@ getAll(req, res) {
 
 }
 
-getTeachersLesson(req, res){
 
-    if(req.user_id === null){
-        res.status(403)
-        return res.send("You need to sign in.")
-    }
-}
+
 
 
 

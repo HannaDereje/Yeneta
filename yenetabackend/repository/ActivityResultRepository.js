@@ -21,10 +21,18 @@ class ActivityResultRepository {
 
     getOne(id) {
         return new Promise((resolve, reject) => {
-            const oneActivityResult = this.model.findById({ _id: id })
-            resolve(OneActivityResult)
+            const oneactivityResult = this.model.findById({ _id: id })
+            resolve(oneactivityResult)
         });
     }
+
+    getOneByactivityId(id) {
+        return new Promise((resolve, reject) => {
+            const oneactivityResult = this.model.findOne({ activity: id })
+            resolve(oneactivityResult)
+        });
+    }
+    
     updateOne(id, activityResult) {
         let set = {};
         for (const key in activityResult) {
@@ -32,20 +40,20 @@ class ActivityResultRepository {
 
         }
         return new Promise((resolve, reject) => {
-            const oneActivityResult = this.model.updateOne({ _id: id }, { $set: set })
-            resolve(oneActivityResult)
+            const oneactivityResult = this.model.updateOne({ _id: id }, { $set: set })
+            resolve(oneactivityResult)
         });
     }
     deleteOne(id) {
         return new Promise((resolve, reject) => {
-            const oneActivityResult1 = this.model.remove({ _id: id })
-            resolve(OneActivityResult1)
+            const oneactivityResult1 = this.model.remove({ _id: id })
+            resolve(oneactivityResult1)
         });
     }
     deleteAll() {
         return new Promise((resolve, reject) => {
-            const allActivityResults = this.model.remove()
-            resolve(allActivityResults)
+            const allactivityResults = this.model.remove()
+            resolve(allactivityResults)
         });
     }
 

@@ -15,7 +15,7 @@ export default class TeacherNavBar extends Component {
         return (
 
             <div>
-                <Navbar variant="dark" className="navStyle">
+                <Navbar sticky="top" variant="dark" className="navStyle">
                     <Navbar.Brand href="/" className="brand">Yeneta/የኔታ</Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">

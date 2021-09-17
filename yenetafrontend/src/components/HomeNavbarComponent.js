@@ -13,7 +13,7 @@ export default class HomeNavBar extends Component {
     return (
 
       <div>
-        <Navbar collapseOnSelect variant="dark" className="navStyle">
+        <Navbar sticky="top" collapseOnSelect variant="dark" className="navStyle">
           <Navbar.Brand href="/" className="brand">Yeneta/የኔታ</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">

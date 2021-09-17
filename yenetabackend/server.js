@@ -33,8 +33,9 @@ class Server{
         
         app.use(express.json());
         app.use(cors());
+       // mongodb+srv://yenetaUser:hhhk1234@yeneta.ablnz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
         app.use(bodyParser.json())
-        mongoose.connect('mongodb+srv://yenetaUser:hhhk1234@yeneta.ablnz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+        mongoose.connect('mongodb://localhost/blog', {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useCreateIndex: true
@@ -77,6 +78,8 @@ class Server{
         room(app)
         const messages = require("./routes/message")
         messages(app)
+        const activityResult = require("./routes/ActivityResult")
+        activityResult(app)
     }
 
     initSocket(server){
